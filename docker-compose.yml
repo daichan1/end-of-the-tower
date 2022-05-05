@@ -1,0 +1,53 @@
+version: '3'
+services:
+  client:
+    build:
+      context: .
+      dockerfile: docker/client/Dockerfile
+    ports:
+      - "3333:3333"
+    volumes:
+      - ./client:/var/www
+    depends_on:
+      - nginx
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - puma_socket:/var/www/tmp/sockets
+      - ./client/build:/var/www/public
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/var/www
+      - puma_socket:/var/www/tmp/sockets
+      - bundle:/usr/local/bundle
+    command: bash -c "rm -f tmp/pids/server.pid && puma -C config/puma.rb"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    env_file:
+      - ./docker/db/db-variables.env
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/db/mysql_data:/var/lib/mysql
+
+volumes:
+  puma_socket:
+  bundle:

@@ -1,0 +1,23 @@
+.DS_Store
+
+client/build
+client/node_modules
+client/.env
+client/coverage
+
+api/.env
+api/.bundle
+api/log/*
+api/tmp/*
+api/storage/*
+# 各ディレクトリをGit管理対象にする(ファイルは対象外)
+!api/log/.keep
+!api/tmp/.keep
+!api/storage/.keep
+# デバック時に生成されるファイル
+api/.byebug_history
+api/config/master.key
+
+docker/db/mysql_data
+docker/db/db-variables.env
+docker/nginx/nginx.conf
