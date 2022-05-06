@@ -13,7 +13,7 @@ api/storage/*
 # 各ディレクトリをGit管理対象にする(ファイルは対象外)
 !api/log/.keep
 !api/tmp/.keep
-!api/tmp/pids
+!api/tmp/pids/.keep
 !api/storage/.keep
 # デバック時に生成されるファイル
 api/.byebug_history
