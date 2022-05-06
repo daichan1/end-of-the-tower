@@ -20,4 +20,3 @@ api/config/master.key
 
 docker/db/mysql_data
 docker/db/db-variables.env
-docker/nginx/nginx.conf
