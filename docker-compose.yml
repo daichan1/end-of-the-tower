@@ -8,6 +8,7 @@ services:
       - "3333:3333"
     volumes:
       - ./client:/var/www
+      - node_modules:/var/www/node_modules
     depends_on:
       - nginx
 
@@ -51,3 +52,4 @@ services:
 volumes:
   puma_socket:
   bundle:
+  node_modules:
