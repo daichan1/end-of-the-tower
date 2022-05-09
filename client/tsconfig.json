@@ -15,7 +15,9 @@
     "moduleResolution":"node",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true
   },
   "include": [
     "src"
