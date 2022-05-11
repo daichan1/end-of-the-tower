@@ -2,6 +2,10 @@ import Container from '@mui/material/Container';
 import Circle from './root_select/circle';
 import Line from './root_select/line';
 
+type Display = {
+  disable: boolean
+}
+
 type Position = {
   left: number
   top: number
@@ -38,12 +42,16 @@ const Lines: React.FC = () => {
   return <div>{ lines }</div>
 }
 
-const RootSelect: React.FC = () => {
+const RootSelect: React.FC<Display> = (props) => {
+  const { disable } = props;
+
   return (
-    <Container fixed>
-      <Circles />
-      <Lines />
-    </Container>
+    <div style={{ display: disable ? 'none' : '' }}>
+      <Container fixed>
+        <Circles />
+        <Lines />
+      </Container>
+    </div>
   )
 }
 

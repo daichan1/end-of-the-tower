@@ -1,9 +1,16 @@
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-const GameTitle: React.FC = () => {
+type Display = {
+  disable: boolean
+  onClick: () => void
+}
+
+const GameTitle: React.FC<Display> = (props) => {
+  const { disable, onClick } = props;
+
   return (
-    <div>
+    <div style={{ display: disable ? 'none' : '' }}>
       <Grid
         container
         direction="column"
@@ -14,6 +21,7 @@ const GameTitle: React.FC = () => {
         <h1 style={{ marginBottom: 100 }}>End of the Tower</h1>
         <Button
           variant="contained"
+          onClick={onClick}
         >
           ゲームスタート
         </Button>
