@@ -2,8 +2,13 @@ import Container from '@mui/material/Container';
 import Circle from './root_select/circle';
 import Line from './root_select/line';
 
-type Display = {
+type Props = {
   disable: boolean
+  onClick: () => void
+}
+
+type Click = {
+  onClick: () => void
 }
 
 type Position = {
@@ -28,9 +33,16 @@ const linePosition: Position = [
   { left: 70, top: 200 },  // 5列目
 ];
 
-const Circles: React.FC = () => {
+const Circles: React.FC<Click> = (props) => {
+  const { onClick } = props;
+
   const circles = circlePosition.map((pos, index) =>
-    <Circle left={pos.left} top={pos.top} key={index}/>
+    <Circle
+      left={pos.left}
+      top={pos.top}
+      key={index}
+      onClick={onClick}
+    />
   );
   return <div>{ circles }</div>
 }
@@ -42,13 +54,13 @@ const Lines: React.FC = () => {
   return <div>{ lines }</div>
 }
 
-const RootSelect: React.FC<Display> = (props) => {
-  const { disable } = props;
+const RootSelect: React.FC<Props> = (props) => {
+  const { disable, onClick } = props;
 
   return (
     <div style={{ display: disable ? 'none' : '' }}>
       <Container fixed>
-        <Circles />
+        <Circles onClick={onClick} />
         <Lines />
       </Container>
     </div>
