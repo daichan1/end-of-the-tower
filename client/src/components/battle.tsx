@@ -11,6 +11,10 @@ import enemyImg from '../images/enemy.png';
 import cardImg from '../images/card.png';
 import '../styles/battle/style.scss';
 
+type Props = {
+  disable: boolean
+}
+
 const HP_MIN = 0;
 const HP_MAX = 1000;
 const hpAdjustment = (value: number): number => ((value - HP_MIN) * 100) / (HP_MAX - HP_MIN);
@@ -31,9 +35,11 @@ const CustomLinearProgress = styled(LinearProgress)({
 });
 
 
-const Battle: React.FC = () => {
+const Battle: React.FC<Props> = (props) => {
+  const { disable } = props;
+
   return (
-    <div>
+    <div style={{ display: disable ? 'none' : '' }}>
       <CustomAppBar position='static'>
         <Toolbar>
           <CustomTypography variant="h6">プレイヤー</CustomTypography>

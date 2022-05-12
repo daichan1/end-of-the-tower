@@ -6,10 +6,16 @@ import Battle from './components/battle';
 const App = () => {
   const [gameTitleDisable, setGameTitleDisable] = useState(false);
   const [rootSelectDisable, setRootSelectDisable] = useState(true);
+  const [battleDisable, setBattleDisable] = useState(true);
 
   const gameStart = (): void => {
     setGameTitleDisable(true);
     setRootSelectDisable(false);
+  }
+
+  const battleStart = (): void => {
+    setRootSelectDisable(true);
+    setBattleDisable(false);
   }
 
   return (
@@ -18,8 +24,11 @@ const App = () => {
         disable={gameTitleDisable}
         onClick={gameStart}
       />
-      <RootSelect disable={rootSelectDisable} />
-      <Battle />
+      <RootSelect
+        disable={rootSelectDisable}
+        onClick={battleStart}
+      />
+      <Battle disable={battleDisable} />
     </div>
   )
 }

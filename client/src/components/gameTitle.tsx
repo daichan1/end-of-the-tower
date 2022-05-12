@@ -1,12 +1,12 @@
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-type Display = {
+type Props = {
   disable: boolean
   onClick: () => void
 }
 
-const GameTitle: React.FC<Display> = (props) => {
+const GameTitle: React.FC<Props> = (props) => {
   const { disable, onClick } = props;
 
   return (
