@@ -1,5 +1,5 @@
-import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid'
+import Button from '@mui/material/Button'
 
 type Props = {
   disable: boolean
@@ -7,7 +7,7 @@ type Props = {
 }
 
 const GameTitle: React.FC<Props> = (props) => {
-  const { disable, onClick } = props;
+  const { disable, onClick } = props
 
   return (
     <div style={{ display: disable ? 'none' : '' }}>
@@ -30,4 +30,4 @@ const GameTitle: React.FC<Props> = (props) => {
   )
 }
 
-export default GameTitle;
+export default GameTitle

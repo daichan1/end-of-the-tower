@@ -6,8 +6,8 @@ type Props = {
 }
 
 const Line: React.FC<Props> = (props) => {
-  const circleHeight: number = 20;
-  const circleWidth: number = 20;
+  const circleHeight = 20
+  const circleWidth = 20
 
   return (
     <div
@@ -23,4 +23,4 @@ const Line: React.FC<Props> = (props) => {
   )
 }
 
-export default Line;
+export default Line

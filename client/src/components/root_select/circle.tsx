@@ -7,7 +7,7 @@ type Props = {
 }
 
 const Circle: React.FC<Props> = (props) => {
-  const { left, top, onClick } = props;
+  const { left, top, onClick } = props
 
   return (
     <div
@@ -19,4 +19,4 @@ const Circle: React.FC<Props> = (props) => {
   )
 }
 
-export default Circle;
+export default Circle
