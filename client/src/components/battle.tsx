@@ -43,7 +43,6 @@ const Battle: React.FC<Props> = (props) => {
       <CustomAppBar position='static'>
         <Toolbar>
           <CustomTypography variant="h6">プレイヤー</CustomTypography>
-          <Typography variant="h6">50/50</Typography>
         </Toolbar>
       </CustomAppBar>
       <Container fixed>
