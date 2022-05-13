@@ -1,42 +1,42 @@
-import { createTheme } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import LinearProgress from '@mui/material/LinearProgress';
-import playerImg from '../images/player.png';
-import enemyImg from '../images/enemy.png';
-import cardImg from '../images/card.png';
-import '../styles/battle/style.scss';
+import { createTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import AppBar from '@mui/material/AppBar'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import LinearProgress from '@mui/material/LinearProgress'
+import playerImg from '../images/player.png'
+import enemyImg from '../images/enemy.png'
+import cardImg from '../images/card.png'
+import '../styles/battle/style.scss'
 
 type Props = {
   disable: boolean
 }
 
-const HP_MIN = 0;
-const HP_MAX = 1000;
-const hpAdjustment = (value: number): number => ((value - HP_MIN) * 100) / (HP_MAX - HP_MIN);
+const HP_MIN = 0
+const HP_MAX = 1000
+const hpAdjustment = (value: number): number => ((value - HP_MIN) * 100) / (HP_MAX - HP_MIN)
 
-const theme = createTheme();
+const theme = createTheme()
 
 const CustomAppBar = styled(AppBar)({
   backgroundColor: "black"
-});
+})
 
 const CustomTypography = styled(Typography)({
   marginRight: `${theme.spacing(3)}`
-});
+})
 
 const CustomLinearProgress = styled(LinearProgress)({
   width: 100,
   margin: "auto"
-});
+})
 
 
 const Battle: React.FC<Props> = (props) => {
-  const { disable } = props;
+  const { disable } = props
 
   return (
     <div style={{ display: disable ? 'none' : '' }}>
@@ -79,4 +79,4 @@ const Battle: React.FC<Props> = (props) => {
   )
 }
 
-export default Battle;
+export default Battle
