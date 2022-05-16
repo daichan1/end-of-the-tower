@@ -48,6 +48,7 @@ services:
       - "3306:3306"
     volumes:
       - ./docker/db/mysql_data:/var/lib/mysql
+      - ./docker/db/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
 
 volumes:
   puma_socket:
