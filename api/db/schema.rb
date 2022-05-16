@@ -12,7 +12,7 @@
 
 ActiveRecord::Schema.define(version: 2022_05_15_023826) do
 
-  create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.text "description", null: false
     t.string "image_url", null: false
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2022_05_15_023826) do
     t.index ["player_id"], name: "index_cards_on_player_id"
   end
 
-  create_table "enemies", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "enemies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.string "image_url", null: false
     t.integer "hp", null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2022_05_15_023826) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "players", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "players", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
     t.string "image_url", null: false
     t.integer "hp", null: false
