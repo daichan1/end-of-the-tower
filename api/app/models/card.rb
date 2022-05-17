@@ -5,7 +5,7 @@ class Card < ActiveRecord::Base
   validates :description, presence: true
   validates :image_url, presence: true
   validates :cost, presence: true
-  validates :type, presence: true
+  validates :card_type, presence: true
   validates :attack, presence: true
   validates :defense, presence: true
   validates :player_id, presence: true

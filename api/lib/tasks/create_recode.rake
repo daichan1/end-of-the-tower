@@ -48,4 +48,30 @@ namespace :create_record do
       end
     end
   end
+
+  desc "create cards record"
+  task cards: :environment do
+    begin
+      csv_path = Rails.root.join("tmp/card_data.csv")
+    rescue
+      puts "ファイルが存在していません"
+      return
+    end
+
+    ActiveRecord::Base.transaction do
+      CSV.foreach(csv_path, headers: true) do |data|
+        card = Card.new(
+          name: data['name'],
+          description: data['description'],
+          image_url: data['image_url'],
+          cost: data['cost'],
+          card_type: data['card_type'],
+          attack: data['attack'],
+          defense: data['defense'],
+          player_id: data['player_id']
+        )
+        card.save!
+      end
+    end
+  end
 end
