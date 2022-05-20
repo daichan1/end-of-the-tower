@@ -36,3 +36,36 @@
 .card-list {
   margin-top: 100px;
 }
+
+.deck {
+  background-color: #000;
+  position: absolute;
+  margin-left: 4px;
+  margin-top: 0px;
+  width: 48px;
+  height: 76px;
+  border-radius: 2px;
+  border: solid 1px currentColor;
+}
+
+.deck:before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 48px;
+  height: 76px;
+  border-top: solid 2px currentColor;
+  border-left: solid 2px currentColor;
+}
+
+.deck:after {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: -16px;
+  width: 48px;
+  height: 76px;
+  border-top: solid 2px currentColor;
+  border-left: solid 2px currentColor;
+}
