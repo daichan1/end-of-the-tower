@@ -26,6 +26,15 @@ type Enemy = {
   defense: number
 }
 
+type Player = {
+  name: string
+  imageUrl: string
+  hp: number
+  attack: number
+  defense: number
+  energy: number
+}
+
 const ENERGY_MAX = 3
 const HP_MIN = 0
 const HP_MAX = 80
@@ -57,7 +66,7 @@ const Battle: React.FC<Props> = (props) => {
     attack: 0,
     defense: 0
   }])
-  const [player, setPlayer] = useState({
+  const [player, setPlayer] = useState<Player>({
     name: "",
     imageUrl: "",
     hp: 0,
@@ -89,14 +98,14 @@ const Battle: React.FC<Props> = (props) => {
   const getPlayer = async () => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/players`)
     .then(res => {
-      const data = res.data
+      const resPlayer = res.data
       setPlayer({
-        name: data.name,
-        imageUrl: data.image_url,
-        hp: data.hp,
-        attack: data.attack,
-        defense: data.defense,
-        energy: data.energy
+        name: resPlayer.name,
+        imageUrl: resPlayer.image_url,
+        hp: resPlayer.hp,
+        attack: resPlayer.attack,
+        defense: resPlayer.defense,
+        energy: resPlayer.energy
       })
     })
     .catch(error => {
