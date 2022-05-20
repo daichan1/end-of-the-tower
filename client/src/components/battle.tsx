@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 import { createTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
@@ -15,8 +17,9 @@ type Props = {
   disable: boolean
 }
 
+const ENERGY_MAX = 3
 const HP_MIN = 0
-const HP_MAX = 1000
+const HP_MAX = 80
 const hpAdjustment = (value: number): number => ((value - HP_MIN) * 100) / (HP_MAX - HP_MIN)
 
 const theme = createTheme()
@@ -37,25 +40,61 @@ const CustomLinearProgress = styled(LinearProgress)({
 
 const Battle: React.FC<Props> = (props) => {
   const { disable } = props
+  const [player, setPlayer] = useState({
+    name: "",
+    imageUrl: "",
+    hp: 0,
+    attack: 0,
+    defense: 0,
+    energy: 0
+  })
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/players`)
+      .then(res => {
+        const data = res.data
+        setPlayer({
+          name: data.name,
+          imageUrl: data.image_url,
+          hp: data.hp,
+          attack: data.attack,
+          defense: data.defense,
+          energy: data.energy
+        })
+      })
+  }, [])
 
   return (
     <div style={{ display: disable ? 'none' : '' }}>
       <CustomAppBar position='static'>
         <Toolbar>
           <CustomTypography variant="h6">プレイヤー</CustomTypography>
+          <Typography variant="h6">{player.name}</Typography>
         </Toolbar>
       </CustomAppBar>
+
       <Container fixed>
+
         <Grid container className='character'>
           <Grid item xs={6} className='player'>
             <img src={playerImg} alt='プレイヤー' className='player-img' />
-            <CustomLinearProgress variant="determinate" value={hpAdjustment(100)}/>
+            <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp)}/>
+            <Typography variant="subtitle1" component="div">
+              {player.hp}/{HP_MAX}
+            </Typography>
           </Grid>
           <Grid item xs={6} className='enemy'>
             <img src={enemyImg} alt='敵' className='enemy-img' />
             <CustomLinearProgress variant="determinate" value={hpAdjustment(100)}/>
           </Grid>
         </Grid>
+
+        <Grid container className='energy'>
+          <Grid item xs={12}>
+            {player.energy}/{ENERGY_MAX}
+          </Grid>
+        </Grid>
+
         <Grid container className='card-list'>
           <Grid item xs={2}>
             <img src={cardImg} alt='カード1' className='card' />
@@ -73,6 +112,7 @@ const Battle: React.FC<Props> = (props) => {
             <img src={cardImg} alt='カード5' className='card' />
           </Grid>
         </Grid>
+
       </Container>
     </div>
   )
