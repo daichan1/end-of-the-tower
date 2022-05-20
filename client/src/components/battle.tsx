@@ -171,6 +171,9 @@ const Battle: React.FC<Props> = (props) => {
           <Grid item xs={2}>
             <img src={cardImg} alt='カード5' className='card' />
           </Grid>
+          <Grid item xs={1}>
+            <div className='cemetery'></div>
+          </Grid>
         </Grid>
 
       </Container>
