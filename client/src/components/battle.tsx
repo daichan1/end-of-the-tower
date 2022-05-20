@@ -17,6 +17,15 @@ type Props = {
   disable: boolean
 }
 
+type Enemy = {
+  id: number
+  name: string
+  imageUrl: string
+  hp: number
+  attack: number
+  defense: number
+}
+
 const ENERGY_MAX = 3
 const HP_MIN = 0
 const HP_MAX = 80
@@ -40,6 +49,14 @@ const CustomLinearProgress = styled(LinearProgress)({
 
 const Battle: React.FC<Props> = (props) => {
   const { disable } = props
+  const [enemies, setEnemies] = useState<Enemy[]>([{
+    id: 0,
+    name: "",
+    imageUrl: "",
+    hp: 0,
+    attack: 0,
+    defense: 0
+  }])
   const [player, setPlayer] = useState({
     name: "",
     imageUrl: "",
@@ -49,19 +66,47 @@ const Battle: React.FC<Props> = (props) => {
     energy: 0
   })
 
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/players`)
-      .then(res => {
-        const data = res.data
-        setPlayer({
-          name: data.name,
-          imageUrl: data.image_url,
-          hp: data.hp,
-          attack: data.attack,
-          defense: data.defense,
-          energy: data.energy
-        })
+  const getEnemies = async () => {
+    await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
+    .then(res => {
+      const resEnemies = res.data
+      setEnemies(resEnemies.map((enemy: { id: number; name: string; image_url: string; hp: number; attack: number; defense: number }) => {
+        return {
+          id: enemy.id,
+          name: enemy.name,
+          imageUrl: enemy.image_url,
+          hp: enemy.hp,
+          attack: enemy.attack,
+          defense: enemy.defense
+        }
+      }))
+    })
+    .catch(error => {
+      console.log("敵の取得に失敗しました")
+    })
+  }
+
+  const getPlayer = async () => {
+    await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/players`)
+    .then(res => {
+      const data = res.data
+      setPlayer({
+        name: data.name,
+        imageUrl: data.image_url,
+        hp: data.hp,
+        attack: data.attack,
+        defense: data.defense,
+        energy: data.energy
       })
+    })
+    .catch(error => {
+      console.log("プレイヤーの取得に失敗しました")
+    })
+  }
+
+  useEffect(() => {
+    getEnemies()
+    getPlayer()
   }, [])
 
   return (
@@ -85,7 +130,10 @@ const Battle: React.FC<Props> = (props) => {
           </Grid>
           <Grid item xs={6} className='enemy'>
             <img src={enemyImg} alt='敵' className='enemy-img' />
-            <CustomLinearProgress variant="determinate" value={hpAdjustment(100)}/>
+            <CustomLinearProgress variant="determinate" value={hpAdjustment(enemies[0].hp)}/>
+            <Typography variant="subtitle1" component="div">
+              {enemies[0].hp}/{enemies[0].hp}
+            </Typography>
           </Grid>
         </Grid>
 
