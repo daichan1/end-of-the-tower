@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
+import Card from '../components/battle/card'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
-import cardImg from '../images/card.png'
 import '../styles/battle/style.scss'
 
 type Props = {
@@ -35,7 +35,7 @@ type Player = {
   energy: number
 }
 
-type Card = {
+type CardType = {
   name: string
   description: string
   imageUrl: string
@@ -84,7 +84,7 @@ const Battle: React.FC<Props> = (props) => {
     defense: 0,
     energy: 0
   })
-  const [cards, setCards] = useState<Card[]>([{
+  const [cards, setCards] = useState<CardType[]>([{
     name: "",
     description: "",
     imageUrl: "",
@@ -150,6 +150,14 @@ const Battle: React.FC<Props> = (props) => {
     })
   }
 
+  const nameplate = (): JSX.Element[] => {
+    return cards.map((card, index) =>
+      <Grid item xs={2} key={index}>
+        <Card card={card} />
+      </Grid>
+    )
+  }
+
   useEffect(() => {
     getEnemies()
     getPlayer()
@@ -194,21 +202,7 @@ const Battle: React.FC<Props> = (props) => {
           <Grid item xs={1}>
             <div className='deck'></div>
           </Grid>
-          <Grid item xs={2}>
-            <img src={cardImg} alt='カード1' className='card' />
-          </Grid>
-          <Grid item xs={2}>
-            <img src={cardImg} alt='カード2' className='card' />
-          </Grid>
-          <Grid item xs={2}>
-            <img src={cardImg} alt='カード3' className='card' />
-          </Grid>
-          <Grid item xs={2}>
-            <img src={cardImg} alt='カード4' className='card' />
-          </Grid>
-          <Grid item xs={2}>
-            <img src={cardImg} alt='カード5' className='card' />
-          </Grid>
+          { nameplate() }
           <Grid item xs={1}>
             <div className='cemetery'></div>
           </Grid>
