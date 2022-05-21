@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :players, only: [:index]
       resources :enemies, only: [:index]
+      resources :cards, only: [:index]
       root "tests#index"
     end
   end

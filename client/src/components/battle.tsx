@@ -35,6 +35,16 @@ type Player = {
   energy: number
 }
 
+type Card = {
+  name: string
+  description: string
+  imageUrl: string
+  cost: number
+  cardType: string
+  attack: number
+  defense: number
+}
+
 const ENERGY_MAX = 3
 const HP_MIN = 0
 const HP_MAX = 80
@@ -74,6 +84,15 @@ const Battle: React.FC<Props> = (props) => {
     defense: 0,
     energy: 0
   })
+  const [cards, setCards] = useState<Card[]>([{
+    name: "",
+    description: "",
+    imageUrl: "",
+    cost: 0,
+    cardType: "",
+    attack: 0,
+    defense: 0
+  }])
 
   const getEnemies = async () => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
@@ -113,9 +132,28 @@ const Battle: React.FC<Props> = (props) => {
     })
   }
 
+  const getCards = async () => {
+    await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
+    .then(res => {
+      const resCards = res.data
+      setCards(resCards.map((card: { name: string, description: string, image_url: string, cost: number, card_type: string, attack: number, defense: number }) => {
+        return {
+          name: card.name,
+          description: card.description,
+          imageUrl: card.image_url,
+          cost: card.cost,
+          cardType: card.card_type,
+          attack: card.attack,
+          defense: card.defense
+        }
+      }))
+    })
+  }
+
   useEffect(() => {
     getEnemies()
     getPlayer()
+    getCards()
   }, [])
 
   return (
