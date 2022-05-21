@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
 import Card from '../components/battle/card'
 import { PlayerType, EnemyType, CardType } from '../types/model'
+import { ResPlayer, ResEnemies, ResCards } from '../types/api/response'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
@@ -70,8 +71,8 @@ const Battle = (props: Props): JSX.Element => {
   const getEnemies = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
     .then(res => {
-      const resEnemies = res.data
-      setEnemies(resEnemies.map((enemy: { id: number; name: string; image_url: string; hp: number; attack: number; defense: number }) => {
+      const resEnemies: ResEnemies[] = res.data
+      setEnemies(resEnemies.map((enemy: ResEnemies) => {
         return {
           id: enemy.id,
           name: enemy.name,
@@ -90,7 +91,7 @@ const Battle = (props: Props): JSX.Element => {
   const getPlayer = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/players`)
     .then(res => {
-      const resPlayer = res.data
+      const resPlayer: ResPlayer = res.data
       setPlayer({
         name: resPlayer.name,
         imageUrl: resPlayer.image_url,
@@ -108,8 +109,8 @@ const Battle = (props: Props): JSX.Element => {
   const getCards = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
     .then(res => {
-      const resCards = res.data
-      setCards(resCards.map((card: { name: string, description: string, image_url: string, cost: number, card_type: string, attack: number, defense: number }) => {
+      const resCards: ResCards[] = res.data
+      setCards(resCards.map((card: ResCards) => {
         return {
           name: card.name,
           description: card.description,
