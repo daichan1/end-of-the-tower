@@ -6,7 +6,7 @@ type Props = {
   onClick: () => void
 }
 
-const GameTitle: React.FC<Props> = (props) => {
+const GameTitle = (props: Props): JSX.Element => {
   const { disable, onClick } = props
 
   return (

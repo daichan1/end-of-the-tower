@@ -1,20 +1,12 @@
 import Container from '@mui/material/Container'
 import Circle from './root_select/circle'
 import Line from './root_select/line'
+import { Click, Position } from '../types/root_select/index'
 
 type Props = {
   disable: boolean
   onClick: () => void
 }
-
-type Click = {
-  onClick: () => void
-}
-
-type Position = {
-  left: number
-  top: number
-}[]
 
 const circlePosition: Position = [
   { left: 10, top: 200 }, // 1列目
@@ -33,7 +25,7 @@ const linePosition: Position = [
   { left: 70, top: 200 },  // 5列目
 ]
 
-const Circles: React.FC<Click> = (props) => {
+const Circles = (props: Click): JSX.Element => {
   const { onClick } = props
 
   const circles = circlePosition.map((pos, index) =>
@@ -47,14 +39,14 @@ const Circles: React.FC<Click> = (props) => {
   return <div>{ circles }</div>
 }
 
-const Lines: React.FC = () => {
+const Lines = (): JSX.Element => {
   const lines = linePosition.map((pos, index) =>
     <Line left={pos.left} top={pos.top} key={index} />
   )
   return <div>{ lines }</div>
 }
 
-const RootSelect: React.FC<Props> = (props) => {
+const RootSelect = (props: Props): JSX.Element => {
   const { disable, onClick } = props
 
   return (

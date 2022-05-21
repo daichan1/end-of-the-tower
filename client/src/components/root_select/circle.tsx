@@ -6,7 +6,7 @@ type Props = {
   onClick: () => void
 }
 
-const Circle: React.FC<Props> = (props) => {
+const Circle = (props: Props): JSX.Element => {
   const { left, top, onClick } = props
 
   return (

@@ -9,40 +9,13 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
 import Card from '../components/battle/card'
+import { PlayerType, EnemyType, CardType } from '../types/model'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
 
 type Props = {
   disable: boolean
-}
-
-type Enemy = {
-  id: number
-  name: string
-  imageUrl: string
-  hp: number
-  attack: number
-  defense: number
-}
-
-type Player = {
-  name: string
-  imageUrl: string
-  hp: number
-  attack: number
-  defense: number
-  energy: number
-}
-
-type CardType = {
-  name: string
-  description: string
-  imageUrl: string
-  cost: number
-  cardType: string
-  attack: number
-  defense: number
 }
 
 const ENERGY_MAX = 3
@@ -66,9 +39,9 @@ const CustomLinearProgress = styled(LinearProgress)({
 })
 
 
-const Battle: React.FC<Props> = (props) => {
+const Battle = (props: Props): JSX.Element => {
   const { disable } = props
-  const [enemies, setEnemies] = useState<Enemy[]>([{
+  const [enemies, setEnemies] = useState<EnemyType[]>([{
     id: 0,
     name: "",
     imageUrl: "",
@@ -76,7 +49,7 @@ const Battle: React.FC<Props> = (props) => {
     attack: 0,
     defense: 0
   }])
-  const [player, setPlayer] = useState<Player>({
+  const [player, setPlayer] = useState<PlayerType>({
     name: "",
     imageUrl: "",
     hp: 0,
@@ -94,7 +67,7 @@ const Battle: React.FC<Props> = (props) => {
     defense: 0
   }])
 
-  const getEnemies = async () => {
+  const getEnemies = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
     .then(res => {
       const resEnemies = res.data
@@ -114,7 +87,7 @@ const Battle: React.FC<Props> = (props) => {
     })
   }
 
-  const getPlayer = async () => {
+  const getPlayer = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/players`)
     .then(res => {
       const resPlayer = res.data
@@ -132,7 +105,7 @@ const Battle: React.FC<Props> = (props) => {
     })
   }
 
-  const getCards = async () => {
+  const getCards = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
     .then(res => {
       const resCards = res.data
@@ -158,7 +131,7 @@ const Battle: React.FC<Props> = (props) => {
     )
   }
 
-  useEffect(() => {
+  useEffect((): void => {
     getEnemies()
     getPlayer()
     getCards()
