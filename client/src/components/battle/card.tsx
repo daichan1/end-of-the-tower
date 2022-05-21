@@ -24,7 +24,7 @@ const CustomCardHeader = styled(CardHeader)({
   height: 30
 })
 
-const Card = (props: Props) => {
+const Card = (props: Props): JSX.Element => {
   const { card } = props
   return (
     <CardContainer sx={{ maxWidth: 100, maxHeight: 150 }}>

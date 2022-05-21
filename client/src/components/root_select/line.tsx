@@ -5,7 +5,7 @@ type Props = {
   top: number
 }
 
-const Line: React.FC<Props> = (props) => {
+const Line = (props: Props): JSX.Element => {
   const circleHeight = 20
   const circleWidth = 20
 

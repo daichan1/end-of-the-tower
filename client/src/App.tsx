@@ -3,7 +3,7 @@ import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
 
-const App = () => {
+const App = (): JSX.Element => {
   const [gameTitleDisable, setGameTitleDisable] = useState(false)
   const [rootSelectDisable, setRootSelectDisable] = useState(true)
   const [battleDisable, setBattleDisable] = useState(true)
