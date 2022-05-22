@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { deckShuffle } from './battle/deck'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
@@ -130,6 +131,7 @@ const App = (): JSX.Element => {
         defaultDeck.push(protection)
       }
     }
+    deckShuffle(defaultDeck)
     setDeck(defaultDeck)
   }
 
