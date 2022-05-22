@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { deckShuffle } from './battle/deck'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
@@ -117,7 +118,7 @@ const App = (): JSX.Element => {
   }
 
   const initializeDeck = (cardList: CardType[]): void => {
-    const defaultDeck: CardType[] = []
+    let defaultDeck: CardType[] = []
     const strike: CardType | undefined = cardList.find((card: CardType) => card.name === "ストライク")
     const protection: CardType | undefined = cardList.find((card: CardType) => card.name === "ぼうぎょ")
     if (strike !== undefined) {
@@ -130,6 +131,7 @@ const App = (): JSX.Element => {
         defaultDeck.push(protection)
       }
     }
+    defaultDeck = deckShuffle(defaultDeck)
     setDeck(defaultDeck)
   }
 
