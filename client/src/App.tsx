@@ -118,7 +118,7 @@ const App = (): JSX.Element => {
   }
 
   const initializeDeck = (cardList: CardType[]): void => {
-    const defaultDeck: CardType[] = []
+    let defaultDeck: CardType[] = []
     const strike: CardType | undefined = cardList.find((card: CardType) => card.name === "ストライク")
     const protection: CardType | undefined = cardList.find((card: CardType) => card.name === "ぼうぎょ")
     if (strike !== undefined) {
@@ -131,7 +131,7 @@ const App = (): JSX.Element => {
         defaultDeck.push(protection)
       }
     }
-    deckShuffle(defaultDeck)
+    defaultDeck = deckShuffle(defaultDeck)
     setDeck(defaultDeck)
   }
 
