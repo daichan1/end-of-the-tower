@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { deckShuffle } from './battle/deck'
+import { initializeDeck } from './battle/deck'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
@@ -97,6 +97,7 @@ const App = (): JSX.Element => {
   const getCards = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
     .then(res => {
+      let defaultDeck: CardType[] = []
       const resCards: ResCards[] = res.data
       const newCards: CardType[] = resCards.map((card: ResCards) => {
         return {
@@ -110,29 +111,12 @@ const App = (): JSX.Element => {
         }
       })
       setCards(newCards)
-      initializeDeck(newCards)
+      defaultDeck = initializeDeck(newCards)
+      setDeck(defaultDeck)
     })
     .catch(error => {
       console.log("カードの取得に失敗しました")
     })
-  }
-
-  const initializeDeck = (cardList: CardType[]): void => {
-    let defaultDeck: CardType[] = []
-    const strike: CardType | undefined = cardList.find((card: CardType) => card.name === "ストライク")
-    const protection: CardType | undefined = cardList.find((card: CardType) => card.name === "ぼうぎょ")
-    if (strike !== undefined) {
-      for (let i = 0; i < 5; i++) {
-        defaultDeck.push(strike)
-      }
-    }
-    if (protection !== undefined) {
-      for (let i = 0; i < 5; i++) {
-        defaultDeck.push(protection)
-      }
-    }
-    defaultDeck = deckShuffle(defaultDeck)
-    setDeck(defaultDeck)
   }
 
   useEffect((): void => {
