@@ -67,6 +67,15 @@ const Battle = (props: Props): JSX.Element => {
     attack: 0,
     defense: 0
   }])
+  const [deck, setDeck] = useState<CardType[]>([{
+    name: "",
+    description: "",
+    imageUrl: "",
+    cost: 0,
+    cardType: "",
+    attack: 0,
+    defense: 0
+  }])
 
   const getEnemies = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
@@ -110,7 +119,7 @@ const Battle = (props: Props): JSX.Element => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
     .then(res => {
       const resCards: ResCards[] = res.data
-      setCards(resCards.map((card: ResCards) => {
+      const newCards: CardType[] = resCards.map((card: ResCards) => {
         return {
           name: card.name,
           description: card.description,
@@ -120,7 +129,12 @@ const Battle = (props: Props): JSX.Element => {
           attack: card.attack,
           defense: card.defense
         }
-      }))
+      })
+      setCards(newCards)
+      initializeDeck(newCards)
+    })
+    .catch(error => {
+      console.log("カードの取得に失敗しました")
     })
   }
 
@@ -130,6 +144,23 @@ const Battle = (props: Props): JSX.Element => {
         <Card card={card} />
       </Grid>
     )
+  }
+
+  const initializeDeck = (cardList: CardType[]): void => {
+    const defaultDeck: CardType[] = []
+    const strike: CardType | undefined = cardList.find((card: CardType) => card.name === "ストライク")
+    const protection: CardType | undefined = cardList.find((card: CardType) => card.name === "ぼうぎょ")
+    if (strike !== undefined) {
+      for (let i = 0; i < 5; i++) {
+        defaultDeck.push(strike)
+      }
+    }
+    if (protection !== undefined) {
+      for (let i = 0; i < 5; i++) {
+        defaultDeck.push(protection)
+      }
+    }
+    setDeck(defaultDeck)
   }
 
   useEffect((): void => {
