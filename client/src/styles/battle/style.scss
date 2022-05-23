@@ -35,6 +35,7 @@
 
 .card-list {
   margin-top: 30px;
+  justify-content: center;
 }
 
 .deck, .cemetery {
@@ -46,6 +47,10 @@
   height: 76px;
   border-radius: 2px;
   border: solid 1px currentColor;
+}
+
+.deck {
+  left: 50px
 }
 
 .deck:before {
@@ -68,6 +73,10 @@
   height: 76px;
   border-top: solid 2px currentColor;
   border-left: solid 2px currentColor;
+}
+
+.cemetery {
+  right: 50px;
 }
 
 .cemetery:before {

@@ -58,9 +58,9 @@ const Battle = (props: Props): JSX.Element => {
     setDrawButtonDisable(true)
   }
 
-  const defaultNameplate = (): JSX.Element[] => {
+  const displayNameplate = (): JSX.Element[] => {
     return nameplate.map((card, index) =>
-      <Grid item xs={2} key={index}>
+      <Grid item xs={1} key={index}>
         <Card card={card} />
       </Grid>
     )
@@ -115,13 +115,9 @@ const Battle = (props: Props): JSX.Element => {
         </Grid>
 
         <Grid container className='card-list'>
-          <Grid item xs={1}>
-            <div className='deck'></div>
-          </Grid>
-          { defaultNameplate() }
-          <Grid item xs={1}>
-            <div className='cemetery'></div>
-          </Grid>
+          <div className='deck'></div>
+          { displayNameplate() }
+          <div className='cemetery'></div>
         </Grid>
 
       </Container>

@@ -18,6 +18,10 @@ type Props = {
   }
 }
 
+const CustomCardContainer = styled(CardContainer)({
+  marginRight: 5
+})
+
 const CustomCardHeader = styled(CardHeader)({
   color: "white",
   backgroundColor: "black",
@@ -27,7 +31,7 @@ const CustomCardHeader = styled(CardHeader)({
 const Card = (props: Props): JSX.Element => {
   const { card } = props
   return (
-    <CardContainer sx={{ maxWidth: 100, maxHeight: 150 }}>
+    <CustomCardContainer sx={{ maxWidth: 100, maxHeight: 150 }}>
       <CustomCardHeader
         disableTypography
         subheader={<Typography variant="body2">{card.name}</Typography>}
@@ -43,7 +47,7 @@ const Card = (props: Props): JSX.Element => {
           {card.description}
         </Typography>
       </CardContent>
-    </CardContainer>
+    </CustomCardContainer>
   )
 }
 
