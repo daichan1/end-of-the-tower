@@ -55,6 +55,7 @@ const Battle = (props: Props): JSX.Element => {
         cards.push(card)
       }
     })
+    deck.splice(0, 5)
     setNameplate(cards)
     setDrawButtonDisable(true)
   }
