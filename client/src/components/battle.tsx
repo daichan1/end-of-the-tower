@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
+import Avatar from '@mui/material/Avatar'
 import LinearProgress from '@mui/material/LinearProgress'
 import Card from '../components/battle/card'
 import { PlayerType, EnemyType, CardType } from '../types/model'
@@ -115,7 +116,9 @@ const Battle = (props: Props): JSX.Element => {
         </Grid>
 
         <Grid container className='card-list'>
-          <div className='deck'></div>
+          <div className='deck'>
+            <Avatar className='deck-count'>{deck.length}</Avatar>
+          </div>
           { displayNameplate() }
           <div className='cemetery'></div>
         </Grid>
