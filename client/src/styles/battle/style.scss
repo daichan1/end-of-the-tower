@@ -34,7 +34,7 @@
 }
 
 .card-list {
-  margin-top: 100px;
+  margin-top: 30px;
 }
 
 .deck, .cemetery {
@@ -90,4 +90,8 @@
   height: 76px;
   border-top: solid 2px currentColor;
   border-right: solid 2px currentColor;
+}
+
+.draw-button {
+  margin-top: 30px;
 }

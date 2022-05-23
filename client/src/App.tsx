@@ -27,24 +27,8 @@ const App = (): JSX.Element => {
     defense: 0,
     energy: 0
   })
-  const [cards, setCards] = useState<CardType[]>([{
-    name: "",
-    description: "",
-    imageUrl: "",
-    cost: 0,
-    cardType: "",
-    attack: 0,
-    defense: 0
-  }])
-  const [deck, setDeck] = useState<CardType[]>([{
-    name: "",
-    description: "",
-    imageUrl: "",
-    cost: 0,
-    cardType: "",
-    attack: 0,
-    defense: 0
-  }])
+  const [cards, setCards] = useState<CardType[]>([])
+  const [deck, setDeck] = useState<CardType[]>([])
 
   const gameStart = (): void => {
     setGameTitleDisable(true)
