@@ -47,6 +47,7 @@ const Battle = (props: Props): JSX.Element => {
   const { disable, enemies, player, deck } = props
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [nameplate, setNameplate] = useState<CardType[]>([])
+  const [cemetery, setCemetery] = useState<CardType[]>([])
 
   const cardDraw = (): void => {
     const cards: CardType[] = []
@@ -121,7 +122,9 @@ const Battle = (props: Props): JSX.Element => {
             <Avatar className='deck-count'>{deck.length}</Avatar>
           </div>
           { displayNameplate() }
-          <div className='cemetery'></div>
+          <div className='cemetery'>
+            <Avatar className='cemetery-count'>{cemetery.length}</Avatar>
+          </div>
         </Grid>
 
       </Container>
