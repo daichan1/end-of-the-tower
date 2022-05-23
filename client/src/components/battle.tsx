@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { createTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import AppBar from '@mui/material/AppBar'
@@ -5,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
+import Button from '@mui/material/Button'
 import LinearProgress from '@mui/material/LinearProgress'
 import Card from '../components/battle/card'
 import { PlayerType, EnemyType, CardType } from '../types/model'
@@ -42,9 +44,22 @@ const CustomLinearProgress = styled(LinearProgress)({
 
 const Battle = (props: Props): JSX.Element => {
   const { disable, enemies, player, deck } = props
+  const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
+  const [nameplate, setNameplate] = useState<CardType[]>([])
 
-  const nameplate = (): JSX.Element[] => {
-    return deck.map((card, index) =>
+  const cardDraw = (): void => {
+    const cards: CardType[] = []
+    deck.forEach((card, i) => {
+      if (i < 5) {
+        cards.push(card)
+      }
+    })
+    setNameplate(cards)
+    setDrawButtonDisable(true)
+  }
+
+  const defaultNameplate = (): JSX.Element[] => {
+    return nameplate.map((card, index) =>
       <Grid item xs={2} key={index}>
         <Card card={card} />
       </Grid>
@@ -85,11 +100,25 @@ const Battle = (props: Props): JSX.Element => {
           </Grid>
         </Grid>
 
+        <Grid container className='draw-button'>
+          <Grid item xs={12}>
+            <Button
+              variant="contained"
+              color="success"
+              size="small"
+              onClick={cardDraw}
+              disabled={ drawButtonDisable ? true : false }
+            >
+              ドロー
+            </Button>
+          </Grid>
+        </Grid>
+
         <Grid container className='card-list'>
           <Grid item xs={1}>
             <div className='deck'></div>
           </Grid>
-          { nameplate() }
+          { defaultNameplate() }
           <Grid item xs={1}>
             <div className='cemetery'></div>
           </Grid>
