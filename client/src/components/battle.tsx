@@ -9,8 +9,10 @@ import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import Paper from '@mui/material/Paper'
+import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
 import Card from '../components/battle/card'
+import ModalCard from '../components/battle/modalCard'
 import { PlayerType, EnemyType, CardType } from '../types/model'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
@@ -62,6 +64,19 @@ const Battle = (props: Props): JSX.Element => {
   const [nameplate, setNameplate] = useState<CardType[]>([])
   const [cemetery, setCemetery] = useState<CardType[]>([])
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
+  const [open, setOpen] = useState<boolean>(false)
+  const [confirmCard, setConfirmCard] = useState<CardType>({
+    name: "",
+    description: "",
+    imageUrl: "",
+    cost: 0,
+    cardType: "",
+    attack: 0,
+    defense: 0
+  })
+
+  const handleOpen = (): void => setOpen(true)
+  const handleClose = (): void => setOpen(false)
 
   const cardDraw = (): void => {
     const cards: CardType[] = []
@@ -78,7 +93,12 @@ const Battle = (props: Props): JSX.Element => {
   const displayNameplate = (): JSX.Element[] => {
     return nameplate.map((card, index) =>
       <Grid item xs={1} key={index}>
-        <Card card={card} />
+        <Card
+          card={card}
+          width={100}
+          height={150}
+          clickCard={selectCard}
+        />
       </Grid>
     )
   }
@@ -89,6 +109,15 @@ const Battle = (props: Props): JSX.Element => {
     } else {
       return <EnemyTurn elevation={1} >敵のターン</EnemyTurn>
     }
+  }
+
+  const selectCard = (card: CardType): void => {
+    setConfirmCard(card)
+    handleOpen()
+  }
+
+  const actionCard = (card: CardType): void => {
+    console.log("カード実行処理")
   }
 
   return (
@@ -156,6 +185,22 @@ const Battle = (props: Props): JSX.Element => {
         </Grid>
 
       </Container>
+
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+      >
+        <div id='modal-modal-title' className='modal-card'>
+          <ModalCard
+            card={confirmCard}
+            width={150}
+            height={200}
+            clickCard={actionCard}
+          />
+        </div>
+      </Modal>
+
     </div>
   )
 }

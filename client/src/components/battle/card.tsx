@@ -4,18 +4,14 @@ import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
+import { CardType } from '../../types/model'
 import playerImg from '../../images/player.png'
 
 type Props = {
-  card: {
-    name: string
-    description: string
-    imageUrl: string
-    cost: number
-    cardType: string
-    attack: number
-    defense: number
-  }
+  card: CardType
+  width: number
+  height: number
+  clickCard: (card: CardType) => void
 }
 
 const CustomMuiCard = styled(MuiCard)({
@@ -29,11 +25,13 @@ const CustomCardHeader = styled(CardHeader)({
 })
 
 const Card = (props: Props): JSX.Element => {
-  const { card } = props
+  const { card, width, height, clickCard } = props
+
   return (
     <CustomMuiCard
-      sx={{ maxWidth: 100, maxHeight: 150 }}
+      sx={{ width: width, height: height }}
       className='card'
+      onClick={() => clickCard(card)}
     >
       <CustomCardHeader
         disableTypography
