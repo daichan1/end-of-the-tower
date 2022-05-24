@@ -1,5 +1,5 @@
 import { styled } from '@mui/material/styles'
-import CardContainer from '@mui/material/Card'
+import MuiCard from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
@@ -18,7 +18,7 @@ type Props = {
   }
 }
 
-const CustomCardContainer = styled(CardContainer)({
+const CustomMuiCard = styled(MuiCard)({
   marginRight: 5
 })
 
@@ -31,7 +31,10 @@ const CustomCardHeader = styled(CardHeader)({
 const Card = (props: Props): JSX.Element => {
   const { card } = props
   return (
-    <CustomCardContainer sx={{ maxWidth: 100, maxHeight: 150 }}>
+    <CustomMuiCard
+      sx={{ maxWidth: 100, maxHeight: 150 }}
+      className='card'
+    >
       <CustomCardHeader
         disableTypography
         subheader={<Typography variant="body2">{card.name}</Typography>}
@@ -47,7 +50,7 @@ const Card = (props: Props): JSX.Element => {
           {card.description}
         </Typography>
       </CardContent>
-    </CustomCardContainer>
+    </CustomMuiCard>
   )
 }
 

@@ -25,17 +25,12 @@
   height: 50px;
 }
 
-.card {
-  width: 100px;
-  height: 150px;
-}
-
 .character {
-  margin-top: 180px;
+  margin-top: 150px;
 }
 
 .energy {
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
 .card-list {
@@ -114,4 +109,12 @@
   position: relative;
   top: 80px;
   left: 5px;
+}
+
+.card {
+  &:hover {
+    position: relative;
+    top: -8px;
+    left: -8px;
+  }
 }
