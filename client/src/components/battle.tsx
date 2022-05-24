@@ -8,6 +8,7 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
+import Paper from '@mui/material/Paper'
 import LinearProgress from '@mui/material/LinearProgress'
 import Card from '../components/battle/card'
 import { PlayerType, EnemyType, CardType } from '../types/model'
@@ -33,6 +34,18 @@ const CustomAppBar = styled(AppBar)({
   backgroundColor: "black"
 })
 
+const PlayerTurn = styled(Paper)({
+  backgroundColor: "#009688",
+  padding: `${theme.spacing(1)}`,
+  width: 160
+})
+
+const EnemyTurn = styled(Paper)({
+  backgroundColor: "#d50000",
+  padding: `${theme.spacing(1)}`,
+  width: 160
+})
+
 const CustomTypography = styled(Typography)({
   marginRight: `${theme.spacing(3)}`
 })
@@ -48,6 +61,7 @@ const Battle = (props: Props): JSX.Element => {
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [nameplate, setNameplate] = useState<CardType[]>([])
   const [cemetery, setCemetery] = useState<CardType[]>([])
+  const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
 
   const cardDraw = (): void => {
     const cards: CardType[] = []
@@ -69,6 +83,14 @@ const Battle = (props: Props): JSX.Element => {
     )
   }
 
+  const DisplayTurn = (): JSX.Element => {
+    if (isPlayerTurn) {
+      return <PlayerTurn elevation={1} >プレイヤーのターン</PlayerTurn>
+    } else {
+      return <EnemyTurn elevation={1} >敵のターン</EnemyTurn>
+    }
+  }
+
   return (
     <div style={{ display: disable ? 'none' : '' }}>
       <CustomAppBar position='static'>
@@ -79,6 +101,12 @@ const Battle = (props: Props): JSX.Element => {
       </CustomAppBar>
 
       <Container fixed>
+
+        <Grid container justifyContent="center" className='turn'>
+          <Grid item>
+            <DisplayTurn/>
+          </Grid>
+        </Grid>
 
         <Grid container className='character'>
           <Grid item xs={6} className='player'>
