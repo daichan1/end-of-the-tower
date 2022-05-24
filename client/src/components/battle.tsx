@@ -111,6 +111,12 @@ const Battle = (props: Props): JSX.Element => {
     }
   }
 
+  const turnEnd = (): void => {
+    setIsPlayerTurn(false)
+    setCemetery(nameplate)
+    setNameplate([])
+  }
+
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
     handleOpen()
@@ -161,7 +167,7 @@ const Battle = (props: Props): JSX.Element => {
         </Grid>
 
         <Grid container className='draw-button'>
-          <Grid item xs={12}>
+          <Grid item xs={6}>
             <Button
               variant="contained"
               color="success"
@@ -170,6 +176,17 @@ const Battle = (props: Props): JSX.Element => {
               disabled={ drawButtonDisable ? true : false }
             >
               ドロー
+            </Button>
+          </Grid>
+          <Grid item xs={6} className='turn-end'>
+            <Button
+              variant="contained"
+              color="inherit"
+              size="small"
+              onClick={turnEnd}
+              disabled={ isPlayerTurn ? false : true }
+            >
+              ターン終了
             </Button>
           </Grid>
         </Grid>
