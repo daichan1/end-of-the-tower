@@ -125,6 +125,10 @@ const Battle = (props: Props): JSX.Element => {
     console.log("カード実行処理")
   }
 
+  const isBlankEnemies = (): boolean => {
+    return enemies.length === 0 ? true : false
+  }
+
   return (
     <div style={{ display: disable ? 'none' : '' }}>
       <CustomAppBar position='static'>
@@ -152,9 +156,9 @@ const Battle = (props: Props): JSX.Element => {
           </Grid>
           <Grid item xs={6} className='enemy'>
             <img src={enemyImg} alt='敵' className='enemy-img' />
-            <CustomLinearProgress variant="determinate" value={hpAdjustment(enemies[0].hp)}/>
+            <CustomLinearProgress variant="determinate" value={hpAdjustment(isBlankEnemies() ? 0 : enemies[0].hp)}/>
             <Typography variant="subtitle1" component="div">
-              {enemies[0].hp}/{enemies[0].hp}
+              {isBlankEnemies() ? 0 : enemies[0].hp}/{isBlankEnemies() ? 0 : enemies[0].hp}
             </Typography>
           </Grid>
         </Grid>
