@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 import { styled } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
@@ -9,13 +10,28 @@ import playerImg from '../../images/player.png'
 
 type Props = {
   card: CardType
-  width: number
-  height: number
+  isModal: boolean
   clickCard: (card: CardType) => void
 }
 
-const CustomMuiCard = styled(MuiCard)({
-  marginRight: 5
+const NameplateMuiCard = styled(MuiCard)({
+  width: 100,
+  height: 150,
+  marginRight: 5,
+  "&:hover": {
+    position: "relative",
+    top: -8,
+    left: -8
+  }
+})
+
+const ModalMuiCard = styled(MuiCard)({
+  width: 150,
+  height: 200,
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)"
 })
 
 const CustomCardHeader = styled(CardHeader)({
@@ -25,14 +41,26 @@ const CustomCardHeader = styled(CardHeader)({
 })
 
 const Card = (props: Props): JSX.Element => {
-  const { card, width, height, clickCard } = props
+  const { card, isModal, clickCard } = props
+
+  const CustomMuiCard = (props: { children: ReactNode }): JSX.Element => {
+    if (isModal) {
+      return (
+        <ModalMuiCard onClick={() => clickCard(card)}>
+          {props.children}
+        </ModalMuiCard>
+      )
+    } else {
+      return (
+        <NameplateMuiCard onClick={() => clickCard(card)}>
+          {props.children}
+        </NameplateMuiCard>
+      )
+    }
+  }
 
   return (
-    <CustomMuiCard
-      sx={{ width: width, height: height }}
-      className='card'
-      onClick={() => clickCard(card)}
-    >
+    <CustomMuiCard>
       <CustomCardHeader
         disableTypography
         subheader={<Typography variant="body2">{card.name}</Typography>}
