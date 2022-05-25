@@ -130,7 +130,7 @@ const Battle = (props: Props): JSX.Element => {
       <CustomAppBar position='static'>
         <Toolbar>
           <CustomTypography variant="h6">プレイヤー</CustomTypography>
-          <Typography variant="h6">{player.name}</Typography>
+          <Typography variant="h6">{player && player.name}</Typography>
         </Toolbar>
       </CustomAppBar>
 
@@ -147,7 +147,7 @@ const Battle = (props: Props): JSX.Element => {
             <img src={playerImg} alt='プレイヤー' className='player-img' />
             <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp)}/>
             <Typography variant="subtitle1" component="div">
-              {player.hp}/{HP_MAX}
+              {player && player.hp}/{HP_MAX}
             </Typography>
           </Grid>
           <Grid item xs={6} className='enemy'>
@@ -161,7 +161,7 @@ const Battle = (props: Props): JSX.Element => {
 
         <Grid container className='energy'>
           <Grid item xs={12}>
-            {player.energy}/{ENERGY_MAX}
+            {player && player.energy}/{ENERGY_MAX}
           </Grid>
         </Grid>
 
