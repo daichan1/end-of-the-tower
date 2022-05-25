@@ -11,14 +11,7 @@ const App = (): JSX.Element => {
   const [gameTitleDisable, setGameTitleDisable] = useState(false)
   const [rootSelectDisable, setRootSelectDisable] = useState(true)
   const [battleDisable, setBattleDisable] = useState(true)
-  const [enemies, setEnemies] = useState<EnemyType[]>([{
-    id: 0,
-    name: "",
-    imageUrl: "",
-    hp: 0,
-    attack: 0,
-    defense: 0
-  }])
+  const [enemies, setEnemies] = useState<EnemyType[]>([])
   const [player, setPlayer] = useState<PlayerType>({
     name: "",
     imageUrl: "",
