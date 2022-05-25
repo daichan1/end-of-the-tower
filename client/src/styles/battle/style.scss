@@ -111,21 +111,6 @@
   left: 5px;
 }
 
-.card {
-  &:hover {
-    position: relative;
-    top: -8px;
-    left: -8px;
-  }
-}
-
-.modal-card {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .turn-end {
   text-align: right;
 }

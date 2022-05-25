@@ -95,8 +95,7 @@ const Battle = (props: Props): JSX.Element => {
       <Grid item xs={1} key={index}>
         <Card
           card={card}
-          width={100}
-          height={150}
+          isModal={false}
           clickCard={selectCard}
         />
       </Grid>
@@ -208,11 +207,9 @@ const Battle = (props: Props): JSX.Element => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
       >
-        <div id='modal-modal-title' className='modal-card'>
+        <div id='modal-modal-title'>
           <ModalCard
             card={confirmCard}
-            width={150}
-            height={200}
             clickCard={actionCard}
           />
         </div>
