@@ -1,5 +1,5 @@
 import Card from './card'
-import { CardType } from '../../types/model'
+import { CardType } from '../../types/model/index'
 
 type Props = {
   card: CardType

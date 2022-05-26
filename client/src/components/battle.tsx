@@ -11,9 +11,10 @@ import Avatar from '@mui/material/Avatar'
 import Paper from '@mui/material/Paper'
 import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
+import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { PlayerType, EnemyType, CardType } from '../types/model'
+import { playerAction } from '../battle/index'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
@@ -57,7 +58,6 @@ const CustomLinearProgress = styled(LinearProgress)({
   margin: "auto"
 })
 
-
 const Battle = (props: Props): JSX.Element => {
   const { disable, enemies, player, deck } = props
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
@@ -72,7 +72,8 @@ const Battle = (props: Props): JSX.Element => {
     cost: 0,
     cardType: "",
     attack: 0,
-    defense: 0
+    defense: 0,
+    actionName: ""
   })
 
   const handleOpen = (): void => setOpen(true)
@@ -122,7 +123,7 @@ const Battle = (props: Props): JSX.Element => {
   }
 
   const actionCard = (card: CardType): void => {
-    console.log("カード実行処理")
+    playerAction(player, enemies, card)
   }
 
   const isBlankEnemies = (): boolean => {

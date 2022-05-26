@@ -25,4 +25,5 @@ export type ResCards = {
   card_type: string
   attack: number
   defense: number
+  action_name: string
 }

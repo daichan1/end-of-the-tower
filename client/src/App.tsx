@@ -4,7 +4,7 @@ import { initializeDeck } from './battle/deck'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
-import { PlayerType, EnemyType, CardType } from './types/model'
+import { PlayerType, EnemyType, CardType } from './types/model/index'
 import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
 
 const App = (): JSX.Element => {
@@ -84,7 +84,8 @@ const App = (): JSX.Element => {
           cost: card.cost,
           cardType: card.card_type,
           attack: card.attack,
-          defense: card.defense
+          defense: card.defense,
+          actionName: card.action_name
         }
       })
       setCards(newCards)
