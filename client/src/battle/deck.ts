@@ -1,4 +1,4 @@
-import { CardType } from '../types/model'
+import { CardType } from '../types/model/index'
 
 export const initializeDeck = (cardList: CardType[]): CardType[] => {
   let defaultDeck: CardType[] = []

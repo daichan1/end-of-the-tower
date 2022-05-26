@@ -24,4 +24,5 @@ export type CardType = {
   cardType: string
   attack: number
   defense: number
+  actionName: string
 }

@@ -5,7 +5,7 @@ import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
-import { CardType } from '../../types/model'
+import { CardType } from '../../types/model/index'
 import playerImg from '../../images/player.png'
 
 type Props = {
