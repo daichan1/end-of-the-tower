@@ -12,16 +12,18 @@ const App = (): JSX.Element => {
   const [rootSelectDisable, setRootSelectDisable] = useState(true)
   const [battleDisable, setBattleDisable] = useState(true)
   const [enemies, setEnemies] = useState<EnemyType[]>([])
+  const [cards, setCards] = useState<CardType[]>([])
   const [player, setPlayer] = useState<PlayerType>({
     name: "",
     imageUrl: "",
     hp: 0,
     attack: 0,
     defense: 0,
-    energy: 0
+    energy: 0,
+    deck: [],
+    nameplate: [],
+    cemetery: []
   })
-  const [cards, setCards] = useState<CardType[]>([])
-  const [deck, setDeck] = useState<CardType[]>([])
 
   const gameStart = (): void => {
     setGameTitleDisable(true)
@@ -63,7 +65,10 @@ const App = (): JSX.Element => {
         hp: resPlayer.hp,
         attack: resPlayer.attack,
         defense: resPlayer.defense,
-        energy: resPlayer.energy
+        energy: resPlayer.energy,
+        deck: [],
+        nameplate: [],
+        cemetery: []
       })
     })
     .catch(error => {
@@ -74,7 +79,6 @@ const App = (): JSX.Element => {
   const getCards = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
     .then(res => {
-      let defaultDeck: CardType[] = []
       const resCards: ResCards[] = res.data
       const newCards: CardType[] = resCards.map((card: ResCards) => {
         return {
@@ -89,8 +93,6 @@ const App = (): JSX.Element => {
         }
       })
       setCards(newCards)
-      defaultDeck = initializeDeck(newCards)
-      setDeck(defaultDeck)
     })
     .catch(error => {
       console.log("カードの取得に失敗しました")
@@ -102,6 +104,10 @@ const App = (): JSX.Element => {
     getPlayer()
     getCards()
   }, [])
+
+  useEffect((): void => {
+    player.deck = initializeDeck(cards)
+  }, [cards])
 
   return (
     <div>
@@ -117,7 +123,6 @@ const App = (): JSX.Element => {
         disable={battleDisable}
         enemies={enemies}
         player={player}
-        deck={deck}
       />
     </div>
   )
