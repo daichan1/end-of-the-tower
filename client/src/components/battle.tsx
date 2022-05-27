@@ -124,6 +124,7 @@ const Battle = (props: Props): JSX.Element => {
 
   const actionCard = (card: CardType): void => {
     playerAction(player, enemies, card)
+    handleClose()
   }
 
   const isBlankEnemies = (): boolean => {
