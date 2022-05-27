@@ -14,6 +14,9 @@ export type PlayerType = {
   attack: number
   defense: number
   energy: number
+  deck: CardType[]
+  nameplate: CardType[]
+  cemetery: CardType[]
 }
 
 export type CardType = {

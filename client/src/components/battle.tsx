@@ -23,7 +23,6 @@ type Props = {
   disable: boolean
   enemies: EnemyType[]
   player: PlayerType
-  deck: CardType[]
 }
 
 const ENERGY_MAX = 3
@@ -59,10 +58,8 @@ const CustomLinearProgress = styled(LinearProgress)({
 })
 
 const Battle = (props: Props): JSX.Element => {
-  const { disable, enemies, player, deck } = props
+  const { disable, enemies, player } = props
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
-  const [nameplate, setNameplate] = useState<CardType[]>([])
-  const [cemetery, setCemetery] = useState<CardType[]>([])
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
   const [confirmCard, setConfirmCard] = useState<CardType>({
@@ -80,19 +77,19 @@ const Battle = (props: Props): JSX.Element => {
   const handleClose = (): void => setOpen(false)
 
   const cardDraw = (): void => {
-    const cards: CardType[] = []
-    deck.forEach((card, i) => {
+    const nameplate: CardType[] = []
+    player.deck.forEach((card, i) => {
       if (i < 5) {
-        cards.push(card)
+        nameplate.push(card)
       }
     })
-    deck.splice(0, 5)
-    setNameplate(cards)
+    player.deck.splice(0, 5)
+    player.nameplate = nameplate
     setDrawButtonDisable(true)
   }
 
   const displayNameplate = (): JSX.Element[] => {
-    return nameplate.map((card, index) =>
+    return player.nameplate.map((card, index) =>
       <Grid item xs={1} key={index}>
         <Card
           card={card}
@@ -113,8 +110,8 @@ const Battle = (props: Props): JSX.Element => {
 
   const turnEnd = (): void => {
     setIsPlayerTurn(false)
-    setCemetery(nameplate)
-    setNameplate([])
+    player.cemetery = player.cemetery.concat(player.nameplate)
+    player.nameplate = []
   }
 
   const selectCard = (card: CardType): void => {
@@ -198,11 +195,11 @@ const Battle = (props: Props): JSX.Element => {
 
         <Grid container className='card-list'>
           <div className='deck'>
-            <Avatar className='deck-count'>{deck.length}</Avatar>
+            <Avatar className='deck-count'>{player.deck.length}</Avatar>
           </div>
           { displayNameplate() }
           <div className='cemetery'>
-            <Avatar className='cemetery-count'>{cemetery.length}</Avatar>
+            <Avatar className='cemetery-count'>{player.cemetery.length}</Avatar>
           </div>
         </Grid>
 
