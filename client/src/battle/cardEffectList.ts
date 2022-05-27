@@ -1,6 +1,6 @@
 import { PlayerType, EnemyType, CardType } from '../types/model'
 import { cardEffect } from '../types/battle/cardEffect'
-import { playerAttack } from '../common/battle'
+import { playerAttack, addBlock } from '../common/battle'
 
 export const cardEffectList: cardEffect[] = [
   {
@@ -18,5 +18,5 @@ const strike = (player: PlayerType, enemy: EnemyType, card: CardType): void => {
 }
 
 const protection = (player: PlayerType, card: CardType): void => {
-  console.log("ぼうぎょ")
+  addBlock(player, card)
 }
