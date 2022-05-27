@@ -84,7 +84,7 @@ const Battle = (props: Props): JSX.Element => {
       }
     })
     player.deck.splice(0, 5)
-    player.nameplate = nameplate
+    player.nameplate = player.nameplate.concat(nameplate)
     setDrawButtonDisable(true)
   }
 
