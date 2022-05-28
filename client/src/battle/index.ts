@@ -18,6 +18,17 @@ export const playerAction = (player: PlayerType, enemies: EnemyType[], card: Car
   }
 }
 
+export const cardDraw = (player: PlayerType): void => {
+  const nameplate: CardType[] = []
+  player.deck.forEach((card, i) => {
+    if (i < 5) {
+      nameplate.push(card)
+    }
+  })
+  player.deck.splice(0, 5)
+  player.nameplate = player.nameplate.concat(nameplate)
+}
+
 const searchCardEffect = (actionName: string): cardEffect | null => {
   const cardEffectObj = cardEffectList.find(item => item.name === actionName)
   if (cardEffectObj === undefined) { return null }
