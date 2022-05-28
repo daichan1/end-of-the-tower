@@ -9,6 +9,13 @@ export const playerAction = (player: PlayerType, enemies: EnemyType[], card: Car
     return
   }
   cardEffectObj.execution(player, enemies, card)
+
+  player.nameplate.forEach((nameplate, index) => {
+    if (nameplate.id === card.id) {
+      player.cemetery.push(nameplate)
+      player.nameplate.splice(index, 1)
+    }
+  })
 }
 
 const searchCardEffect = (actionName: string): cardEffect | null => {
