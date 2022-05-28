@@ -14,7 +14,8 @@ import LinearProgress from '@mui/material/LinearProgress'
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { playerAction, cardDraw } from '../battle/index'
+import { playerAction, cardDraw } from '../battle/player'
+import { enemyAction } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
@@ -106,6 +107,7 @@ const Battle = (props: Props): JSX.Element => {
     setIsPlayerTurn(false)
     player.cemetery = player.cemetery.concat(player.nameplate)
     player.nameplate = []
+    enemyTurn()
   }
 
   const selectCard = (card: CardType): void => {
@@ -120,6 +122,10 @@ const Battle = (props: Props): JSX.Element => {
 
   const isBlankEnemies = (): boolean => {
     return enemies.length === 0 ? true : false
+  }
+
+  const enemyTurn = (): void => {
+    enemyAction(player, enemies)
   }
 
   return (

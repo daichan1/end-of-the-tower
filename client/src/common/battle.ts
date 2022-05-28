@@ -6,6 +6,11 @@ export const playerAttack = (player: PlayerType, enemy: EnemyType, card: CardTyp
   enemy.hp -= damage
 }
 
+export const enemyAttack = (player: PlayerType, enemy: EnemyType): void => {
+  const damage = calcDamage(enemy.attack, player.defense)
+  player.hp -= damage
+}
+
 export const addBlock = (player: PlayerType, card: CardType): void => {
   player.defense += card.defense
 }
