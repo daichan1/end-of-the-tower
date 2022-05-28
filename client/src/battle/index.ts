@@ -12,13 +12,7 @@ export const playerAction = (player: PlayerType, enemies: EnemyType[], card: Car
 
   if (isRemainsEnergy(player, card)) {
     subtractEnergy(player, card)
-
-    player.nameplate.forEach((nameplate, index) => {
-      if (nameplate.id === card.id) {
-        player.cemetery.push(nameplate)
-        player.nameplate.splice(index, 1)
-      }
-    })
+    moveNameplateToCemetery(player, card)
   } else {
     console.log("エナジーが不足しています")
   }
@@ -37,4 +31,13 @@ const isRemainsEnergy = (player: PlayerType, card: CardType): boolean => {
 
 const subtractEnergy = (player: PlayerType, card: CardType): void => {
   player.energy -= card.cost
+}
+
+const moveNameplateToCemetery = (player: PlayerType, card: CardType): void => {
+  player.nameplate.forEach((nameplate, index) => {
+    if (nameplate.id === card.id) {
+      player.cemetery.push(nameplate)
+      player.nameplate.splice(index, 1)
+    }
+  })
 }
