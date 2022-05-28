@@ -14,7 +14,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { playerAction } from '../battle/index'
+import { playerAction, cardDraw } from '../battle/index'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
@@ -77,15 +77,8 @@ const Battle = (props: Props): JSX.Element => {
   const handleOpen = (): void => setOpen(true)
   const handleClose = (): void => setOpen(false)
 
-  const cardDraw = (): void => {
-    const nameplate: CardType[] = []
-    player.deck.forEach((card, i) => {
-      if (i < 5) {
-        nameplate.push(card)
-      }
-    })
-    player.deck.splice(0, 5)
-    player.nameplate = player.nameplate.concat(nameplate)
+  const onClickDraw = (): void => {
+    cardDraw(player)
     setDrawButtonDisable(true)
   }
 
@@ -175,7 +168,7 @@ const Battle = (props: Props): JSX.Element => {
               variant="contained"
               color="success"
               size="small"
-              onClick={cardDraw}
+              onClick={onClickDraw}
               disabled={ drawButtonDisable ? true : false }
             >
               ドロー
