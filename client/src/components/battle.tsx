@@ -63,6 +63,7 @@ const Battle = (props: Props): JSX.Element => {
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
   const [confirmCard, setConfirmCard] = useState<CardType>({
+    id: 0,
     name: "",
     description: "",
     imageUrl: "",

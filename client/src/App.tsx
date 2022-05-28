@@ -4,7 +4,7 @@ import { initializeDeck } from './battle/deck'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
-import { PlayerType, EnemyType, CardType } from './types/model/index'
+import { PlayerType, EnemyType, CardBaseType } from './types/model/index'
 import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
 
 const App = (): JSX.Element => {
@@ -12,7 +12,7 @@ const App = (): JSX.Element => {
   const [rootSelectDisable, setRootSelectDisable] = useState(true)
   const [battleDisable, setBattleDisable] = useState(true)
   const [enemies, setEnemies] = useState<EnemyType[]>([])
-  const [cards, setCards] = useState<CardType[]>([])
+  const [cards, setCards] = useState<CardBaseType[]>([])
   const [player, setPlayer] = useState<PlayerType>({
     name: "",
     imageUrl: "",
@@ -80,7 +80,7 @@ const App = (): JSX.Element => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
     .then(res => {
       const resCards: ResCards[] = res.data
-      const newCards: CardType[] = resCards.map((card: ResCards) => {
+      const newCards: CardBaseType[] = resCards.map((card: ResCards) => {
         return {
           name: card.name,
           description: card.description,
