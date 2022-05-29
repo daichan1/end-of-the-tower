@@ -80,7 +80,7 @@ const Battle = (props: Props): JSX.Element => {
   const handleClose = (): void => setOpen(false)
 
   const onClickDraw = (): void => {
-    cardDraw(player)
+    cardDraw(player, 5)
     setDrawButtonDisable(true)
   }
 
