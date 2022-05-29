@@ -14,7 +14,8 @@ import LinearProgress from '@mui/material/LinearProgress'
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { playerAction, cardDraw } from '../battle/player'
+import { sleep } from '../common/battle'
+import { playerAction, cardDraw, recoveryEnergy } from '../battle/player'
 import { enemyAction } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
@@ -124,8 +125,16 @@ const Battle = (props: Props): JSX.Element => {
     return enemies.length === 0 ? true : false
   }
 
-  const enemyTurn = (): void => {
+  const enemyTurn = async (): Promise<void> => {
+    await sleep(2000)
     enemyAction(player, enemies)
+    enemyTurnEnd()
+  }
+
+  const enemyTurnEnd = (): void => {
+    setIsPlayerTurn(true)
+    setDrawButtonDisable(false)
+    recoveryEnergy(player, ENERGY_MAX)
   }
 
   return (
