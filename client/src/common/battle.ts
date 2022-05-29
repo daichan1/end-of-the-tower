@@ -17,6 +17,16 @@ export const addBlock = (player: PlayerType, card: CardType): void => {
 
 export const sleep = (msec: number) => new Promise(resolve => setTimeout(resolve, msec))
 
+export const deckShuffle = (deck: CardType[]): CardType[] => {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const r = Math.floor(Math.random() * (i + 1))
+    const tmp = deck[i]
+    deck[i] = deck[r]
+    deck[r] = tmp
+  }
+  return deck
+}
+
 const calcDamage = (attackPoint: number, defensePoint: number): number => {
   const diff = defensePoint - attackPoint
   const damage = diff < 0 ? Math.abs(diff) : 0

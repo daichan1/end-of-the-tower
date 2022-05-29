@@ -1,5 +1,6 @@
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import { cardEffect } from '../types/battle/cardEffect'
+import { deckShuffle } from '../common/battle'
 import { cardEffectList } from './cardEffectList'
 
 export const playerAction = (player: PlayerType, enemies: EnemyType[], card: CardType): void => {
@@ -18,14 +19,15 @@ export const playerAction = (player: PlayerType, enemies: EnemyType[], card: Car
   }
 }
 
-export const cardDraw = (player: PlayerType): void => {
+export const cardDraw = (player: PlayerType, drawNum: number): void => {
   const nameplate: CardType[] = []
+  if (player.deck.length < drawNum) { recoveryDeck(player) }
   player.deck.forEach((card, i) => {
-    if (i < 5) {
+    if (i < drawNum) {
       nameplate.push(card)
     }
   })
-  player.deck.splice(0, 5)
+  player.deck.splice(0, drawNum)
   player.nameplate = player.nameplate.concat(nameplate)
 }
 
@@ -55,4 +57,10 @@ const moveNameplateToCemetery = (player: PlayerType, card: CardType): void => {
       player.nameplate.splice(index, 1)
     }
   })
+}
+
+const recoveryDeck = (player: PlayerType): void => {
+  player.deck = player.deck.concat(player.cemetery)
+  player.deck = deckShuffle(player.deck)
+  player.cemetery = []
 }
