@@ -6,12 +6,15 @@ import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
 import { PlayerType, EnemyType, CardBaseType } from './types/model/index'
 import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
+import { EnemyList } from './types/data/enemy'
+import { createEnemyList } from './data/enemyList'
 
 const App = (): JSX.Element => {
   const [gameTitleDisable, setGameTitleDisable] = useState(false)
   const [rootSelectDisable, setRootSelectDisable] = useState(true)
   const [battleDisable, setBattleDisable] = useState(true)
   const [enemies, setEnemies] = useState<EnemyType[]>([])
+  const [fightEnemies, setFightEnemies] = useState<EnemyType[]>([])
   const [cards, setCards] = useState<CardBaseType[]>([])
   const [player, setPlayer] = useState<PlayerType>({
     name: "",
@@ -39,7 +42,7 @@ const App = (): JSX.Element => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
     .then(res => {
       const resEnemies: ResEnemies[] = res.data
-      setEnemies(resEnemies.map((enemy: ResEnemies) => {
+      const newEnemies: EnemyType[] = resEnemies.map((enemy: ResEnemies) => {
         return {
           id: enemy.id,
           name: enemy.name,
@@ -48,7 +51,12 @@ const App = (): JSX.Element => {
           attack: enemy.attack,
           defense: enemy.defense
         }
-      }))
+      })
+      setEnemies(newEnemies)
+      const enemyList: EnemyList = createEnemyList(newEnemies)
+      // Todo: ルート選択時に戦う敵を決める
+      // 今は仮の敵としてスライムを設定
+      setFightEnemies(enemyList.slime)
     })
     .catch(error => {
       console.log("敵の取得に失敗しました")
@@ -121,7 +129,7 @@ const App = (): JSX.Element => {
       />
       <Battle
         disable={battleDisable}
-        enemies={enemies}
+        enemies={fightEnemies}
         player={player}
       />
     </div>
