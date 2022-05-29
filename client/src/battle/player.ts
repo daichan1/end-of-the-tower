@@ -29,6 +29,10 @@ export const cardDraw = (player: PlayerType): void => {
   player.nameplate = player.nameplate.concat(nameplate)
 }
 
+export const recoveryEnergy = (player: PlayerType, maxEnergy: number): void => {
+  player.energy = maxEnergy
+}
+
 const searchCardEffect = (actionName: string): cardEffect | null => {
   const cardEffectObj = cardEffectList.find(item => item.name === actionName)
   if (cardEffectObj === undefined) { return null }

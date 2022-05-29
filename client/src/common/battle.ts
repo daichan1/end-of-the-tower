@@ -15,6 +15,8 @@ export const addBlock = (player: PlayerType, card: CardType): void => {
   player.defense += card.defense
 }
 
+export const sleep = (msec: number) => new Promise(resolve => setTimeout(resolve, msec))
+
 const calcDamage = (attackPoint: number, defensePoint: number): number => {
   const diff = defensePoint - attackPoint
   const damage = diff < 0 ? Math.abs(diff) : 0
