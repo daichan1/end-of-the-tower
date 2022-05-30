@@ -43,6 +43,11 @@ const App = (): JSX.Element => {
     setRootSelectDisable(false)
   }
 
+  const lose = (): void => {
+    setBattleDisable(true)
+    setGameTitleDisable(false)
+  }
+
   const getEnemies = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
     .then(res => {
@@ -137,6 +142,7 @@ const App = (): JSX.Element => {
         enemies={fightEnemies}
         player={player}
         victory={victory}
+        lose={lose}
       />
     </div>
   )

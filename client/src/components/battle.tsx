@@ -14,7 +14,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { sleep } from '../common/battle'
+import { sleep, isRemainsHp } from '../common/battle'
 import { playerAction, cardDraw, recoveryEnergy } from '../battle/player'
 import { enemyAction, checkRemainingHp, isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
@@ -26,6 +26,7 @@ type Props = {
   enemies: EnemyType[]
   player: PlayerType
   victory: () => void
+  lose: () => void
 }
 
 const ENERGY_MAX = 3
@@ -61,7 +62,7 @@ const CustomLinearProgress = styled(LinearProgress)({
 })
 
 const Battle = (props: Props): JSX.Element => {
-  const { disable, enemies, player, victory } = props
+  const { disable, enemies, player, victory, lose } = props
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
@@ -141,6 +142,7 @@ const Battle = (props: Props): JSX.Element => {
   const enemyTurn = async (): Promise<void> => {
     await sleep(2000)
     enemyAction(player, enemies)
+    if (!isRemainsHp(player)) { lose() }
     enemyTurnEnd()
   }
 
