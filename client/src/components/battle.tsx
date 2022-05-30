@@ -84,6 +84,20 @@ const Battle = (props: Props): JSX.Element => {
     setDrawButtonDisable(true)
   }
 
+  const displayEnemies = (): JSX.Element[] => {
+    const maxGridSize = 6
+    const gridSize = maxGridSize / enemies.length
+    return enemies.map((enemy, index) =>
+      <Grid item xs={gridSize} className='enemy' key={index}>
+        <img src={enemyImg} alt={enemy.name} className='enemy-img' />
+        <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp)}/>
+        <Typography variant="subtitle1" component="div">
+          {enemy.hp}/{enemy.hp}
+        </Typography>
+      </Grid>
+    )
+  }
+
   const displayNameplate = (): JSX.Element[] => {
     return player.nameplate.map((card, index) =>
       <Grid item xs={1} key={index}>
@@ -119,10 +133,6 @@ const Battle = (props: Props): JSX.Element => {
   const actionCard = (card: CardType): void => {
     playerAction(player, enemies, card)
     handleClose()
-  }
-
-  const isBlankEnemies = (): boolean => {
-    return enemies.length === 0 ? true : false
   }
 
   const enemyTurn = async (): Promise<void> => {
@@ -162,13 +172,7 @@ const Battle = (props: Props): JSX.Element => {
               {player && player.hp}/{HP_MAX}
             </Typography>
           </Grid>
-          <Grid item xs={6} className='enemy'>
-            <img src={enemyImg} alt='敵' className='enemy-img' />
-            <CustomLinearProgress variant="determinate" value={hpAdjustment(isBlankEnemies() ? 0 : enemies[0].hp)}/>
-            <Typography variant="subtitle1" component="div">
-              {isBlankEnemies() ? 0 : enemies[0].hp}/{isBlankEnemies() ? 0 : enemies[0].hp}
-            </Typography>
-          </Grid>
+          { displayEnemies() }
         </Grid>
 
         <Grid container className='energy'>
