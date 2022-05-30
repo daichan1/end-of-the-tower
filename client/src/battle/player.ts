@@ -35,6 +35,10 @@ export const recoveryEnergy = (player: PlayerType, maxEnergy: number): void => {
   player.energy = maxEnergy
 }
 
+export const resetPlayerStatus = (player: PlayerType): void => {
+  player.defense = 0
+}
+
 const searchCardEffect = (actionName: string): cardEffect | null => {
   const cardEffectObj = cardEffectList.find(item => item.name === actionName)
   if (cardEffectObj === undefined) { return null }

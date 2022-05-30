@@ -15,7 +15,7 @@ import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp } from '../common/battle'
-import { playerAction, cardDraw, recoveryEnergy } from '../battle/player'
+import { playerAction, cardDraw, recoveryEnergy, resetPlayerStatus } from '../battle/player'
 import { enemyAction, checkRemainingHp, isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
@@ -150,6 +150,7 @@ const Battle = (props: Props): JSX.Element => {
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
     recoveryEnergy(player, ENERGY_MAX)
+    resetPlayerStatus(player)
   }
 
   return (
