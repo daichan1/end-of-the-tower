@@ -14,3 +14,7 @@ export const checkRemainingHp = (enemies: EnemyType[]): void => {
     }
   })
 }
+
+export const isExistEnemy = (enemies: EnemyType[]): boolean => {
+  return enemies.length > 0 ? true : false
+}
