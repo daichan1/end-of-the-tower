@@ -16,7 +16,7 @@ import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep } from '../common/battle'
 import { playerAction, cardDraw, recoveryEnergy } from '../battle/player'
-import { enemyAction } from '../battle/enemy'
+import { enemyAction, checkRemainingHp } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
@@ -132,6 +132,7 @@ const Battle = (props: Props): JSX.Element => {
 
   const actionCard = (card: CardType): void => {
     playerAction(player, enemies, card)
+    checkRemainingHp(enemies)
     handleClose()
   }
 
