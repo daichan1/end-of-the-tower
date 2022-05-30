@@ -27,6 +27,10 @@ export const deckShuffle = (deck: CardType[]): CardType[] => {
   return deck
 }
 
+export const isRemainsHp = (character: PlayerType | EnemyType): boolean => {
+  return character.hp > 0 ? true : false
+}
+
 const calcDamage = (attackPoint: number, defensePoint: number): number => {
   const diff = defensePoint - attackPoint
   const damage = diff < 0 ? Math.abs(diff) : 0
