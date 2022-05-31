@@ -39,6 +39,13 @@ export const resetPlayerStatus = (player: PlayerType): void => {
   player.defense = 0
 }
 
+export const returnCardToDeck = (player: PlayerType): void => {
+  player.deck = player.deck.concat(player.nameplate)
+  player.deck = player.deck.concat(player.cemetery)
+  player.nameplate = []
+  player.cemetery = []
+}
+
 const searchCardEffect = (actionName: string): cardEffect | null => {
   const cardEffectObj = cardEffectList.find(item => item.name === actionName)
   if (cardEffectObj === undefined) { return null }

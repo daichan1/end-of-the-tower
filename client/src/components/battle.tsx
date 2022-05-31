@@ -15,7 +15,7 @@ import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp } from '../common/battle'
-import { playerAction, cardDraw, recoveryEnergy, resetPlayerStatus } from '../battle/player'
+import { playerAction, cardDraw, recoveryEnergy, resetPlayerStatus, returnCardToDeck } from '../battle/player'
 import { enemyAction, checkRemainingHp, isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
@@ -135,7 +135,13 @@ const Battle = (props: Props): JSX.Element => {
   const actionCard = (card: CardType): void => {
     playerAction(player, enemies, card)
     checkRemainingHp(enemies)
-    if (!isExistEnemy(enemies)) { victory() }
+    if (!isExistEnemy(enemies)) {
+      setIsPlayerTurn(true)
+      setDrawButtonDisable(false)
+      recoveryEnergy(player, 3)
+      returnCardToDeck(player)
+      victory()
+    }
     handleClose()
   }
 
