@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
-import { initializeDeck } from './battle/deck'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
 import { PlayerType, EnemyType, CardBaseType } from './types/model/index'
 import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
 import { EnemyList } from './types/data/enemy'
+import { initializeDeck } from './battle/deck'
 import { createEnemyList } from './data/enemyList'
 
 const App = (): JSX.Element => {
