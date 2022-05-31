@@ -53,7 +53,7 @@ const App = (): JSX.Element => {
   axiosRetry(axiosClient, { retries: 3 })
 
   const getEnemies = async (): Promise<void> => {
-    await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
+    await axiosClient.get('/v1/enemies')
     .then(res => {
       const resEnemies: ResEnemies[] = res.data
       const newEnemies: EnemyType[] = resEnemies.map((enemy: ResEnemies) => {
@@ -99,7 +99,7 @@ const App = (): JSX.Element => {
   }
 
   const getCards = async (): Promise<void> => {
-    await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/cards`)
+    await axiosClient.get('/v1/cards')
     .then(res => {
       const resCards: ResCards[] = res.data
       const newCards: CardBaseType[] = resCards.map((card: ResCards) => {
