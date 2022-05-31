@@ -34,9 +34,34 @@ const App = (): JSX.Element => {
     setRootSelectDisable(false)
   }
 
-  const battleStart = (): void => {
+  const battleStart = (rootNumber: number): void => {
+    decisionFightEnemies(rootNumber)
     setRootSelectDisable(true)
     setBattleDisable(false)
+  }
+
+  const decisionFightEnemies = (rootNumber: number): void => {
+    const enemyList: EnemyList = createEnemyList(enemies)
+    switch (rootNumber) {
+      case 0:
+        setFightEnemies(enemyList.slime)
+        break
+      case 1:
+        setFightEnemies(enemyList.gargoyle)
+        break
+      case 2:
+        setFightEnemies(enemyList.slimeAndGargoyle)
+        break
+      case 3:
+        setFightEnemies(enemyList.slimeAndGargoyle)
+        break
+      case 4:
+        setFightEnemies(enemyList.slimeAndGargoyle)
+        break
+      case 5:
+        setFightEnemies(enemyList.slimeAndGargoyle)
+        break
+    }
   }
 
   const victory = (): void => {
@@ -67,10 +92,6 @@ const App = (): JSX.Element => {
         }
       })
       setEnemies(newEnemies)
-      const enemyList: EnemyList = createEnemyList(newEnemies)
-      // Todo: ルート選択時に戦う敵を決める
-      // 今は仮の敵としてスライムを設定
-      setFightEnemies(enemyList.slime)
     })
     .catch(error => {
       console.log("敵の取得に失敗しました")
