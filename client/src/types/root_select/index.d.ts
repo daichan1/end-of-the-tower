@@ -1,5 +1,5 @@
 export type Click = {
-  onClick: () => void
+  onClick: (rootNumber: number) => void
 }
 
 export type Position = {

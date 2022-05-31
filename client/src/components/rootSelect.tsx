@@ -5,7 +5,7 @@ import { Click, Position } from '../types/root_select/index'
 
 type Props = {
   disable: boolean
-  onClick: () => void
+  onClick: (rootNumber: number) => void
 }
 
 const circlePosition: Position = [
@@ -33,6 +33,7 @@ const Circles = (props: Click): JSX.Element => {
       left={pos.left}
       top={pos.top}
       key={index}
+      rootNumber={index}
       onClick={onClick}
     />
   )
