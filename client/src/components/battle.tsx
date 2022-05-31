@@ -138,7 +138,7 @@ const Battle = (props: Props): JSX.Element => {
     if (!isExistEnemy(enemies)) {
       setIsPlayerTurn(true)
       setDrawButtonDisable(false)
-      recoveryEnergy(player, 3)
+      recoveryEnergy(player, ENERGY_MAX)
       returnCardToDeck(player)
       victory()
     }
