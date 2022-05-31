@@ -41,7 +41,8 @@ const App = (): JSX.Element => {
   }
 
   const decisionFightEnemies = (rootNumber: number): void => {
-    const enemyList: EnemyList = createEnemyList(enemies)
+    const parseEnemies = JSON.parse(JSON.stringify(enemies))
+    const enemyList: EnemyList = createEnemyList(parseEnemies)
     switch (rootNumber) {
       case 0:
         setFightEnemies(enemyList.slime)
