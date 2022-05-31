@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import axiosRetry from 'axios-retry'
 import { initializeDeck } from './battle/deck'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
@@ -48,6 +49,9 @@ const App = (): JSX.Element => {
     setGameTitleDisable(false)
   }
 
+  const axiosClient = axios.create({ baseURL: process.env.REACT_APP_API_URL_BROWSER })
+  axiosRetry(axiosClient, { retries: 3 })
+
   const getEnemies = async (): Promise<void> => {
     await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/enemies`)
     .then(res => {
@@ -74,7 +78,7 @@ const App = (): JSX.Element => {
   }
 
   const getPlayer = async (): Promise<void> => {
-    await axios.get(`${process.env.REACT_APP_API_URL_BROWSER}/v1/players`)
+    await axiosClient.get('/v1/players')
     .then(res => {
       const resPlayer: ResPlayer = res.data
       setPlayer({
