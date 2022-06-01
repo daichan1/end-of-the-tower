@@ -3,6 +3,7 @@ export type EnemyType = {
   name: string
   imageUrl: string
   hp: number
+  maxHp: number
   attack: number
   defense: number
 }
@@ -11,6 +12,7 @@ export type PlayerType = {
   name: string
   imageUrl: string
   hp: number
+  maxHp: number
   attack: number
   defense: number
   energy: number

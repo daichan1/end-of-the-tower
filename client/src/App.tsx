@@ -21,6 +21,7 @@ const App = (): JSX.Element => {
     name: "",
     imageUrl: "",
     hp: 0,
+    maxHp: 0,
     attack: 0,
     defense: 0,
     energy: 0,
@@ -88,6 +89,7 @@ const App = (): JSX.Element => {
           name: enemy.name,
           imageUrl: enemy.image_url,
           hp: enemy.hp,
+          maxHp: enemy.hp,
           attack: enemy.attack,
           defense: enemy.defense
         }
@@ -107,6 +109,7 @@ const App = (): JSX.Element => {
         name: resPlayer.name,
         imageUrl: resPlayer.image_url,
         hp: resPlayer.hp,
+        maxHp: resPlayer.hp,
         attack: resPlayer.attack,
         defense: resPlayer.defense,
         energy: resPlayer.energy,
