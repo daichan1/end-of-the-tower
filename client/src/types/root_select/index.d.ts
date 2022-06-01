@@ -1,5 +1,6 @@
 export type Click = {
-  onClick: (rootNumber: number) => void
+  playerStage: number
+  onClick: (rootNumber: number, playerStage: number) => void
 }
 
 export type Position = {

@@ -25,6 +25,7 @@ const App = (): JSX.Element => {
     attack: 0,
     defense: 0,
     energy: 0,
+    stage: 0,
     deck: [],
     nameplate: [],
     cemetery: []
@@ -35,10 +36,13 @@ const App = (): JSX.Element => {
     setRootSelectDisable(false)
   }
 
-  const battleStart = (rootNumber: number): void => {
-    decisionFightEnemies(rootNumber)
-    setRootSelectDisable(true)
-    setBattleDisable(false)
+  const battleStart = (rootNumber: number, playerStage: number): void => {
+    // 次のステージを選択した時のみバトルを開始する
+    if (playerStage === rootNumber) {
+      decisionFightEnemies(rootNumber)
+      setRootSelectDisable(true)
+      setBattleDisable(false)
+    }
   }
 
   const decisionFightEnemies = (rootNumber: number): void => {
@@ -67,6 +71,7 @@ const App = (): JSX.Element => {
   }
 
   const victory = (): void => {
+    setPlayer(player => ({ ...player, stage: player.stage + 1 }))
     setBattleDisable(true)
     setRootSelectDisable(false)
   }
@@ -113,6 +118,7 @@ const App = (): JSX.Element => {
         attack: resPlayer.attack,
         defense: resPlayer.defense,
         energy: resPlayer.energy,
+        stage: 0,
         deck: [],
         nameplate: [],
         cemetery: []
@@ -164,6 +170,7 @@ const App = (): JSX.Element => {
       />
       <RootSelect
         disable={rootSelectDisable}
+        playerStage={player.stage}
         onClick={battleStart}
       />
       <Battle

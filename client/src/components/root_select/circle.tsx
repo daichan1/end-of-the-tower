@@ -4,17 +4,18 @@ type Props = {
   left: number
   top: number
   rootNumber: number
-  onClick: (rootNumber: number) => void
+  playerStage: number
+  onClick: (rootNumber: number, playerStage: number) => void
 }
 
 const Circle = (props: Props): JSX.Element => {
-  const { left, top, rootNumber, onClick } = props
+  const { left, top, rootNumber, playerStage, onClick } = props
 
   return (
     <div
-      className='circle'
+      className={`circle ${playerStage === rootNumber ? "next-stage" : ""}`}
       style={{ left: left + '%', top: top }}
-      onClick={() => onClick(rootNumber)}
+      onClick={() => onClick(rootNumber, playerStage)}
     >
     </div>
   )
