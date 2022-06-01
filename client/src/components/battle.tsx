@@ -36,9 +36,6 @@ type Props = {
 }
 
 const ENERGY_MAX = 3
-const HP_MIN = 0
-const HP_MAX = 80
-const hpAdjustment = (value: number): number => ((value - HP_MIN) * 100) / (HP_MAX - HP_MIN)
 
 const theme = createTheme()
 
@@ -87,6 +84,10 @@ const Battle = (props: Props): JSX.Element => {
   const handleOpen = (): void => setOpen(true)
   const handleClose = (): void => setOpen(false)
 
+  const hpAdjustment = (value: number, maxHp: number, minHp: number): number => {
+    return ((value - minHp) * 100) / (maxHp - minHp)
+  }
+
   const onClickDraw = (): void => {
     cardDraw(player, 5)
     setDrawButtonDisable(true)
@@ -98,9 +99,9 @@ const Battle = (props: Props): JSX.Element => {
     return enemies.map((enemy, index) =>
       <Grid item xs={gridSize} className='enemy' key={index}>
         <img src={enemyImg} alt={enemy.name} className='enemy-img' />
-        <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp)}/>
+        <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
         <Typography variant="subtitle1" component="div">
-          {enemy.hp}/{enemy.hp}
+          {enemy.hp}/{enemy.maxHp}
         </Typography>
       </Grid>
     )
@@ -185,9 +186,9 @@ const Battle = (props: Props): JSX.Element => {
         <Grid container className='character'>
           <Grid item xs={6} className='player'>
             <img src={playerImg} alt='プレイヤー' className='player-img' />
-            <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp)}/>
+            <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp, player.maxHp, 0)}/>
             <Typography variant="subtitle1" component="div">
-              {player && player.hp}/{HP_MAX}
+              {player && player.hp}/{player.maxHp}
             </Typography>
           </Grid>
           { displayEnemies() }
