@@ -1,11 +1,5 @@
-import { PlayerType, EnemyType } from '../types/model/index'
-import { enemyAttack, isRemainsHp } from '../common/battle'
-
-export const enemyAction = (player: PlayerType, enemies: EnemyType[]): void => {
-  enemies.forEach((enemy) => {
-    enemyAttack(player, enemy)
-  })
-}
+import { EnemyType } from '../types/model/index'
+import { isRemainsHp } from '../common/battle'
 
 export const checkRemainingHp = (enemies: EnemyType[]): void => {
   enemies.forEach((enemy, index) => {
