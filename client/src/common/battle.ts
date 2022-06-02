@@ -6,11 +6,6 @@ export const playerAttack = (player: PlayerType, enemy: EnemyType, card: CardTyp
   enemy.hp -= damage
 }
 
-export const enemyAttack = (player: PlayerType, enemy: EnemyType): void => {
-  const damage = calcDamage(enemy.attack, player.defense)
-  player.hp -= damage
-}
-
 export const addBlock = (player: PlayerType, card: CardType): void => {
   player.defense += card.defense
 }
@@ -31,7 +26,7 @@ export const isRemainsHp = (character: PlayerType | EnemyType): boolean => {
   return character.hp > 0 ? true : false
 }
 
-const calcDamage = (attackPoint: number, defensePoint: number): number => {
+export const calcDamage = (attackPoint: number, defensePoint: number): number => {
   const diff = defensePoint - attackPoint
   const damage = diff < 0 ? Math.abs(diff) : 0
   return damage

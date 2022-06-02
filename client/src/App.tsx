@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
+import { EnemyType, CardBaseType } from './types/model/index'
+import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
+import { EnemyList } from './types/data/enemy'
+import { useAppSelector, useAppDispatch } from './redux/hooks'
+import { setPlayer, initialDeck, incrementStage } from './redux/slice/playerSlice'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
-import { PlayerType, EnemyType, CardBaseType } from './types/model/index'
-import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
-import { EnemyList } from './types/data/enemy'
 import { initializeDeck } from './battle/deck'
 import { createEnemyList } from './data/enemyList'
 
@@ -17,19 +19,9 @@ const App = (): JSX.Element => {
   const [enemies, setEnemies] = useState<EnemyType[]>([])
   const [fightEnemies, setFightEnemies] = useState<EnemyType[]>([])
   const [cards, setCards] = useState<CardBaseType[]>([])
-  const [player, setPlayer] = useState<PlayerType>({
-    name: "",
-    imageUrl: "",
-    hp: 0,
-    maxHp: 0,
-    attack: 0,
-    defense: 0,
-    energy: 0,
-    stage: 0,
-    deck: [],
-    nameplate: [],
-    cemetery: []
-  })
+
+  const player = useAppSelector((state) => state.player)
+  const dispatch = useAppDispatch()
 
   const gameStart = (): void => {
     setGameTitleDisable(true)
@@ -71,7 +63,7 @@ const App = (): JSX.Element => {
   }
 
   const victory = (): void => {
-    setPlayer(player => ({ ...player, stage: player.stage + 1 }))
+    dispatch(incrementStage())
     setBattleDisable(true)
     setRootSelectDisable(false)
   }
@@ -110,19 +102,7 @@ const App = (): JSX.Element => {
     await axiosClient.get('/v1/players')
     .then(res => {
       const resPlayer: ResPlayer = res.data
-      setPlayer({
-        name: resPlayer.name,
-        imageUrl: resPlayer.image_url,
-        hp: resPlayer.hp,
-        maxHp: resPlayer.hp,
-        attack: resPlayer.attack,
-        defense: resPlayer.defense,
-        energy: resPlayer.energy,
-        stage: 0,
-        deck: [],
-        nameplate: [],
-        cemetery: []
-      })
+      dispatch(setPlayer(resPlayer))
     })
     .catch(error => {
       console.log("プレイヤーの取得に失敗しました")
@@ -159,7 +139,8 @@ const App = (): JSX.Element => {
   }, [])
 
   useEffect((): void => {
-    player.deck = initializeDeck(cards)
+    const defaultDeck = initializeDeck(cards)
+    dispatch(initialDeck(defaultDeck))
   }, [cards])
 
   return (
@@ -176,7 +157,6 @@ const App = (): JSX.Element => {
       <Battle
         disable={battleDisable}
         enemies={fightEnemies}
-        player={player}
         victory={victory}
         lose={lose}
       />
