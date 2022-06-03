@@ -1,16 +1,20 @@
+import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
+import { disableGameTitle } from '../redux/slice/gameTitleSlice'
+import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 
-type Props = {
-  disable: boolean
-  onClick: () => void
-}
+const GameTitle = (): JSX.Element => {
+  const gameTitle = useAppSelector((state) => state.gameTitle)
+  const dispatch = useAppDispatch()
 
-const GameTitle = (props: Props): JSX.Element => {
-  const { disable, onClick } = props
+  const gameStart = (): void => {
+    dispatch(disableGameTitle())
+    dispatch(displayRootSelect())
+  }
 
   return (
-    <div style={{ display: disable ? 'none' : '' }}>
+    <div style={{ display: gameTitle ? 'none' : '' }}>
       <Grid
         container
         direction="column"
@@ -21,7 +25,7 @@ const GameTitle = (props: Props): JSX.Element => {
         <h1 style={{ marginBottom: 100 }}>End of the Tower</h1>
         <Button
           variant="contained"
-          onClick={onClick}
+          onClick={gameStart}
         >
           ゲームスタート
         </Button>
