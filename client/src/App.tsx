@@ -6,6 +6,7 @@ import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
 import { EnemyList } from './types/data/enemy'
 import { useAppSelector, useAppDispatch } from './redux/hooks'
 import { setPlayer, initialDeck, incrementStage } from './redux/slice/playerSlice'
+import { setEnemies } from './redux/slice/enemiesSlice'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
@@ -16,11 +17,11 @@ const App = (): JSX.Element => {
   const [gameTitleDisable, setGameTitleDisable] = useState(false)
   const [rootSelectDisable, setRootSelectDisable] = useState(true)
   const [battleDisable, setBattleDisable] = useState(true)
-  const [enemies, setEnemies] = useState<EnemyType[]>([])
   const [fightEnemies, setFightEnemies] = useState<EnemyType[]>([])
   const [cards, setCards] = useState<CardBaseType[]>([])
 
   const player = useAppSelector((state) => state.player)
+  const enemies = useAppSelector((state) => state.enemies)
   const dispatch = useAppDispatch()
 
   const gameStart = (): void => {
@@ -80,18 +81,7 @@ const App = (): JSX.Element => {
     await axiosClient.get('/v1/enemies')
     .then(res => {
       const resEnemies: ResEnemies[] = res.data
-      const newEnemies: EnemyType[] = resEnemies.map((enemy: ResEnemies) => {
-        return {
-          id: enemy.id,
-          name: enemy.name,
-          imageUrl: enemy.image_url,
-          hp: enemy.hp,
-          maxHp: enemy.hp,
-          attack: enemy.attack,
-          defense: enemy.defense
-        }
-      })
-      setEnemies(newEnemies)
+      dispatch(setEnemies(resEnemies))
     })
     .catch(error => {
       console.log("敵の取得に失敗しました")
