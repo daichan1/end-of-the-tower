@@ -1,15 +1,10 @@
+import { useAppSelector } from '../redux/hooks'
 import Container from '@mui/material/Container'
 import Circle from './root_select/circle'
 import Line from './root_select/line'
-import { Click, Position } from '../types/root_select/index'
+import { Position } from '../types/root_select/index'
 import playerImg from '../images/player.png'
 import '../styles/battle/style.scss'
-
-type Props = {
-  disable: boolean
-  playerStage: number
-  onClick: (rootNumber: number, playerStage: number) => void
-}
 
 const playerPosition: Position = [
   { left: 2, top: 90 }, // スタート
@@ -38,17 +33,13 @@ const linePosition: Position = [
   { left: 70, top: 200 },  // 5列目
 ]
 
-const Circles = (props: Click): JSX.Element => {
-  const { playerStage, onClick } = props
-
+const Circles = (): JSX.Element => {
   const circles = circlePosition.map((pos, index) =>
     <Circle
       left={pos.left}
       top={pos.top}
       key={index}
       rootNumber={index}
-      playerStage={playerStage}
-      onClick={onClick}
     />
   )
   return <div>{ circles }</div>
@@ -61,19 +52,20 @@ const Lines = (): JSX.Element => {
   return <div>{ lines }</div>
 }
 
-const RootSelect = (props: Props): JSX.Element => {
-  const { disable, playerStage, onClick } = props
+const RootSelect = (): JSX.Element => {
+  const player = useAppSelector((state) => state.player)
+  const rootSelect = useAppSelector((state) => state.rootSelect)
 
   return (
-    <div style={{ display: disable ? 'none' : '' }}>
+    <div style={{ display: rootSelect ? 'none' : '' }}>
       <Container fixed>
         <img
           src={playerImg}
           alt="プレイヤー"
           className='player-img'
-          style={{ position: "absolute", left: playerPosition[playerStage].left + '%', top: playerPosition[playerStage].top }}
+          style={{ position: "absolute", left: playerPosition[player.stage].left + '%', top: playerPosition[player.stage].top }}
         />
-        <Circles playerStage={playerStage} onClick={onClick} />
+        <Circles />
         <Lines />
       </Container>
     </div>

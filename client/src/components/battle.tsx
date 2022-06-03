@@ -14,6 +14,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType } from '../types/model/index'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import {
+  incrementStage,
   cardDraw,
   moveAllNameplateToCemetery,
   recoveryEnergy,
@@ -25,21 +26,18 @@ import {
   addDefense,
   recoveryDeck
 } from '../redux/slice/playerSlice'
+import { updateStatus } from '../redux/slice/fightEnemiesSlice'
+import { displayGameTitle } from '../redux/slice/gameTitleSlice'
+import { displayRootSelect } from '../redux/slice/rootSelectSlice'
+import { disableBattle } from '../redux/slice/battleSlice'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage } from '../common/battle'
 import { isRemainsEnergy } from '../battle/player'
-import { checkRemainingHp, isExistEnemy } from '../battle/enemy'
+import { isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
-
-type Props = {
-  disable: boolean
-  enemies: EnemyType[]
-  victory: () => void
-  lose: () => void
-}
 
 const ENERGY_MAX = 3
 
@@ -70,8 +68,7 @@ const CustomLinearProgress = styled(LinearProgress)({
   margin: "auto"
 })
 
-const Battle = (props: Props): JSX.Element => {
-  const { disable, enemies, victory, lose } = props
+const Battle = (): JSX.Element => {
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
@@ -88,6 +85,8 @@ const Battle = (props: Props): JSX.Element => {
   })
 
   const player = useAppSelector((state) => state.player)
+  const fightEnemies = useAppSelector((state) => state.fightEnemies)
+  const battle = useAppSelector((state) => state.battle)
   const dispatch = useAppDispatch()
 
   const handleOpen = (): void => setOpen(true)
@@ -108,8 +107,8 @@ const Battle = (props: Props): JSX.Element => {
 
   const displayEnemies = (): JSX.Element[] => {
     const maxGridSize = 6
-    const gridSize = maxGridSize / enemies.length
-    return enemies.map((enemy, index) =>
+    const gridSize = maxGridSize / fightEnemies.length
+    return fightEnemies.map((enemy, index) =>
       <Grid item xs={gridSize} className='enemy' key={index}>
         <img src={enemyImg} alt={enemy.name} className='enemy-img' />
         <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
@@ -140,12 +139,6 @@ const Battle = (props: Props): JSX.Element => {
     }
   }
 
-  const turnEnd = (): void => {
-    setIsPlayerTurn(false)
-    dispatch(moveAllNameplateToCemetery())
-    enemyTurn()
-  }
-
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
     handleOpen()
@@ -153,15 +146,11 @@ const Battle = (props: Props): JSX.Element => {
 
   const actionCard = (card: CardType): void => {
     if (isRemainsEnergy(player, card)) {
+      const enemies: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
       playerAction(enemies, card)
       checkRemainingHp(enemies)
-      if (!isExistEnemy(enemies)) {
-        setIsPlayerTurn(true)
-        setDrawButtonDisable(false)
-        dispatch(recoveryEnergy(ENERGY_MAX))
-        dispatch(returnCardToDeck())
-        victory()
-      }
+      if (!isExistEnemy(enemies)) { victory() }
+      dispatch(updateStatus(enemies))
     } else {
       console.log("エナジーが不足しています")
     }
@@ -169,16 +158,27 @@ const Battle = (props: Props): JSX.Element => {
   }
 
   const playerAction = (enemies: EnemyType[], card: CardType): void => {
-    // 敵のHPを減らす処理がまだないので、仮の処理を配置
-    if (card.actionName === "strike") { dispatch(addDefense(card.defense)) }
+    if (card.actionName === "strike") { enemies[0].hp -= card.attack }
     if (card.actionName === "protection") { dispatch(addDefense(card.defense)) }
     dispatch(subtractEnergy(card.cost))
     dispatch(moveUsedCardToCemetery(card))
   }
 
+  const checkRemainingHp = (enemies: EnemyType[]): void => {
+    enemies.forEach((enemy, index) => {
+      if (!isRemainsHp(enemy)) { enemies.splice(index, 1) }
+    })
+  }
+
+  const turnEnd = (): void => {
+    setIsPlayerTurn(false)
+    dispatch(moveAllNameplateToCemetery())
+    enemyTurn()
+  }
+
   const enemyTurn = async (): Promise<void> => {
     await sleep(2000)
-    enemies.forEach((enemy) => {
+    fightEnemies.forEach((enemy) => {
       const damage = calcDamage(enemy.attack, player.defense)
       dispatch(subtractHp(damage))
     })
@@ -193,8 +193,23 @@ const Battle = (props: Props): JSX.Element => {
     dispatch(resetPlayerStatus())
   }
 
+  const victory = (): void => {
+    setIsPlayerTurn(true)
+    setDrawButtonDisable(false)
+    dispatch(recoveryEnergy(ENERGY_MAX))
+    dispatch(returnCardToDeck())
+    dispatch(incrementStage())
+    dispatch(disableBattle())
+    dispatch(displayRootSelect())
+  }
+
+  const lose = (): void => {
+    dispatch(disableBattle())
+    dispatch(displayGameTitle())
+  }
+
   return (
-    <div style={{ display: disable ? 'none' : '' }}>
+    <div style={{ display: battle ? 'none' : '' }}>
       <CustomAppBar position='static'>
         <Toolbar>
           <CustomTypography variant="h6">プレイヤー</CustomTypography>
