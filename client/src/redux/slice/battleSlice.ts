@@ -7,7 +7,7 @@ export const battleSlice = createSlice({
   initialState,
   reducers: {
     disableBattle: (state) => true,
-    displayBattle: (state) => state = false
+    displayBattle: (state) => false
   }
 })
 
