@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import axiosRetry from 'axios-retry'
-import { EnemyType, CardBaseType } from './types/model/index'
-import { ResPlayer, ResEnemies, ResCards } from './types/api/response'
+import { EnemyType } from './types/model/index'
+import { ResPlayer, ResEnemies, ResCard } from './types/api/response'
 import { EnemyList } from './types/data/enemy'
 import { useAppSelector, useAppDispatch } from './redux/hooks'
 import { setPlayer, initialDeck, incrementStage } from './redux/slice/playerSlice'
 import { setEnemies } from './redux/slice/enemiesSlice'
+import { setCards } from './redux/slice/cardsSlice'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
@@ -18,10 +19,10 @@ const App = (): JSX.Element => {
   const [rootSelectDisable, setRootSelectDisable] = useState(true)
   const [battleDisable, setBattleDisable] = useState(true)
   const [fightEnemies, setFightEnemies] = useState<EnemyType[]>([])
-  const [cards, setCards] = useState<CardBaseType[]>([])
 
   const player = useAppSelector((state) => state.player)
   const enemies = useAppSelector((state) => state.enemies)
+  const cards = useAppSelector((state) => state.cards)
   const dispatch = useAppDispatch()
 
   const gameStart = (): void => {
@@ -102,20 +103,8 @@ const App = (): JSX.Element => {
   const getCards = async (): Promise<void> => {
     await axiosClient.get('/v1/cards')
     .then(res => {
-      const resCards: ResCards[] = res.data
-      const newCards: CardBaseType[] = resCards.map((card: ResCards) => {
-        return {
-          name: card.name,
-          description: card.description,
-          imageUrl: card.image_url,
-          cost: card.cost,
-          cardType: card.card_type,
-          attack: card.attack,
-          defense: card.defense,
-          actionName: card.action_name
-        }
-      })
-      setCards(newCards)
+      const resCards: ResCard[] = res.data
+      dispatch(setCards(resCards))
     })
     .catch(error => {
       console.log("カードの取得に失敗しました")

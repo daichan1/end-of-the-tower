@@ -17,7 +17,7 @@ export type ResEnemies = {
   defense: number
 }
 
-export type ResCards = {
+export type ResCard = {
   name: string
   description: string
   image_url: string

@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import playerReducer from './slice/playerSlice'
 import enemiesReducer from './slice/enemiesSlice'
+import cardsReducer from './slice/cardsSlice'
 
 export const store = configureStore({
   reducer: {
     player: playerReducer,
-    enemies: enemiesReducer
+    enemies: enemiesReducer,
+    cards: cardsReducer
   }
 })
 
