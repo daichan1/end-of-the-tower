@@ -14,7 +14,7 @@ import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { cardDraw, addDefense, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
-import { updateStatus } from '../redux/slice/fightEnemiesSlice'
+import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
@@ -142,7 +142,7 @@ const Battle = (): JSX.Element => {
       playerAction(enemies, card)
       checkRemainingHp(enemies)
       if (!isExistEnemy(enemies)) { victory() }
-      dispatch(updateStatus(enemies))
+      dispatch(updateEnemyStatus(enemies))
     } else {
       console.log("エナジーが不足しています")
     }
@@ -207,6 +207,7 @@ const Battle = (): JSX.Element => {
   const lose = (playerObj: PlayerType): void => {
     resetPlayerStatus(playerObj)
     dispatch(updatePlayerStatus(playerObj))
+    dispatch(updateEnemyStatus([]))
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
     dispatch(disableBattle())
