@@ -13,14 +13,14 @@ import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import { cardDraw, addDefense, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
+import { cardDraw, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
 import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
+import { sleep, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
 import {
   isRemainsEnergy, moveAllNameplateToCemetery, returnCardToDeck,
   recoveryEnergy, resetDefense, subtractEnergy, moveUsedCardToCemetery,
@@ -152,7 +152,7 @@ const Battle = (): JSX.Element => {
   const playerAction = (enemies: EnemyType[], card: CardType): void => {
     const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
     if (card.actionName === "strike") { enemies[0].hp -= card.attack }
-    if (card.actionName === "protection") { dispatch(addDefense(card.defense)) }
+    if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
     subtractEnergy(playerObj, card.cost)
     moveUsedCardToCemetery(playerObj, card)
     dispatch(updatePlayerStatus(playerObj))
@@ -174,7 +174,7 @@ const Battle = (): JSX.Element => {
   const enemyTurn = async (playerObj: PlayerType): Promise<void> => {
     await sleep(2000)
     fightEnemies.forEach((enemy) => {
-      const damage = calcDamage(enemy.attack, playerObj.defense)
+      const damage = calcDamage(playerObj, enemy.attack)
       subtractHp(playerObj, damage)
     })
     if (!isRemainsHp(playerObj)) {

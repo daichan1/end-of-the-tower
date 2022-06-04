@@ -1,13 +1,12 @@
 import { PlayerType, EnemyType, CardType } from '../types/model'
 
 export const playerAttack = (player: PlayerType, enemy: EnemyType, card: CardType): void => {
-  const playerAttackPoint = player.attack + card.attack
-  const damage = calcDamage(playerAttackPoint, enemy.defense)
+  const damage = calcDamage(enemy, player.attack)
   enemy.hp -= damage
 }
 
-export const addBlock = (player: PlayerType, card: CardType): void => {
-  player.defense += card.defense
+export const addBlock = (character: PlayerType | EnemyType, defense: number): void => {
+  character.defense += defense
 }
 
 export const sleep = (msec: number) => new Promise(resolve => setTimeout(resolve, msec))
@@ -26,12 +25,23 @@ export const isRemainsHp = (character: PlayerType | EnemyType): boolean => {
   return character.hp > 0 ? true : false
 }
 
-export const calcDamage = (attackPoint: number, defensePoint: number): number => {
-  const diff = defensePoint - attackPoint
-  const damage = diff < 0 ? Math.abs(diff) : 0
+export const calcDamage = (character: PlayerType | EnemyType, attack: number): number => {
+  let damage = 0
+  const diff = character.defense - attack
+  if (diff < 0) {
+    subtractDefense(character, 0)
+    damage = Math.abs(diff)
+  } else {
+    subtractDefense(character, diff)
+    damage = 0
+  }
   return damage
 }
 
 export const subtractHp = (character: PlayerType | EnemyType, damage: number): void => {
   character.hp -= damage
+}
+
+const subtractDefense = (character: PlayerType | EnemyType, defense: number): void => {
+  character.defense = defense
 }
