@@ -23,8 +23,8 @@ import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
   isRemainsEnergy, moveAllNameplateToCemetery, returnCardToDeck,
-  recoveryEnergy, resetPlayerStatus, subtractEnergy, moveUsedCardToCemetery,
-  incrementStage
+  recoveryEnergy, resetDefense, subtractEnergy, moveUsedCardToCemetery,
+  incrementStage, resetPlayerStatus
 } from '../battle/player'
 import { isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
@@ -177,15 +177,18 @@ const Battle = (): JSX.Element => {
       const damage = calcDamage(enemy.attack, playerObj.defense)
       subtractHp(playerObj, damage)
     })
-    if (!isRemainsHp(playerObj)) { lose() }
-    enemyTurnEnd(playerObj)
+    if (!isRemainsHp(playerObj)) {
+      lose(playerObj)
+    } else {
+      enemyTurnEnd(playerObj)
+    }
   }
 
   const enemyTurnEnd = (playerObj: PlayerType): void => {
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
     recoveryEnergy(playerObj, ENERGY_MAX)
-    resetPlayerStatus(playerObj)
+    resetDefense(playerObj)
     dispatch(updatePlayerStatus(playerObj))
   }
 
@@ -201,7 +204,11 @@ const Battle = (): JSX.Element => {
     dispatch(displayRootSelect())
   }
 
-  const lose = (): void => {
+  const lose = (playerObj: PlayerType): void => {
+    resetPlayerStatus(playerObj)
+    dispatch(updatePlayerStatus(playerObj))
+    setIsPlayerTurn(true)
+    setDrawButtonDisable(false)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
   }
