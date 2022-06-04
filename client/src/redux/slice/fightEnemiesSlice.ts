@@ -14,10 +14,10 @@ export const fightEnemiesSlice = createSlice({
         state.push(enemy)
       })
     },
-    updateStatus: (state, action: PayloadAction<EnemyType[]>) => action.payload
+    updateEnemyStatus: (state, action: PayloadAction<EnemyType[]>) => action.payload
   }
 })
 
-export const { setFightEnemies, updateStatus } = fightEnemiesSlice.actions
+export const { setFightEnemies, updateEnemyStatus } = fightEnemiesSlice.actions
 
 export default fightEnemiesSlice.reducer
