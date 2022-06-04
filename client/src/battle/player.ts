@@ -21,3 +21,40 @@ export const isRemainsEnergy = (player: PlayerType, card: CardType): boolean => 
   const diff = player.energy - card.cost
   return diff >= 0 ? true : false
 }
+
+export const moveAllNameplateToCemetery = (player: PlayerType): void => {
+  player.cemetery = player.cemetery.concat(player.nameplate)
+  player.nameplate = []
+}
+
+export const returnCardToDeck = (player: PlayerType): void => {
+  player.deck = player.deck.concat(player.nameplate)
+  player.deck = player.deck.concat(player.cemetery)
+  player.nameplate = []
+  player.cemetery = []
+}
+
+export const recoveryEnergy = (player: PlayerType, energy: number): void => {
+  player.energy = energy
+}
+
+export const resetPlayerStatus = (player: PlayerType): void => {
+  player.defense = 0
+}
+
+export const subtractEnergy = (player: PlayerType, cardCost: number): void => {
+  player.energy -= cardCost
+}
+
+export const moveUsedCardToCemetery = (player: PlayerType, card: CardType): void => {
+  player.nameplate.forEach((nameplate, index) => {
+    if (nameplate.id === card.id) {
+      player.cemetery.push(nameplate)
+      player.nameplate.splice(index, 1)
+    }
+  })
+}
+
+export const incrementStage = (player: PlayerType): void => {
+  player.stage += 1
+}

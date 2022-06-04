@@ -11,29 +11,21 @@ import Avatar from '@mui/material/Avatar'
 import Paper from '@mui/material/Paper'
 import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
-import { EnemyType, CardType } from '../types/model/index'
+import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import {
-  incrementStage,
-  cardDraw,
-  moveAllNameplateToCemetery,
-  recoveryEnergy,
-  subtractEnergy,
-  moveUsedCardToCemetery,
-  returnCardToDeck,
-  subtractHp,
-  resetPlayerStatus,
-  addDefense,
-  recoveryDeck
-} from '../redux/slice/playerSlice'
+import { cardDraw, addDefense, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
 import { updateStatus } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { sleep, isRemainsHp, calcDamage } from '../common/battle'
-import { isRemainsEnergy } from '../battle/player'
+import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
+import {
+  isRemainsEnergy, moveAllNameplateToCemetery, returnCardToDeck,
+  recoveryEnergy, resetPlayerStatus, subtractEnergy, moveUsedCardToCemetery,
+  incrementStage
+} from '../battle/player'
 import { isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
@@ -158,10 +150,12 @@ const Battle = (): JSX.Element => {
   }
 
   const playerAction = (enemies: EnemyType[], card: CardType): void => {
+    const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
     if (card.actionName === "strike") { enemies[0].hp -= card.attack }
     if (card.actionName === "protection") { dispatch(addDefense(card.defense)) }
-    dispatch(subtractEnergy(card.cost))
-    dispatch(moveUsedCardToCemetery(card))
+    subtractEnergy(playerObj, card.cost)
+    moveUsedCardToCemetery(playerObj, card)
+    dispatch(updatePlayerStatus(playerObj))
   }
 
   const checkRemainingHp = (enemies: EnemyType[]): void => {
@@ -171,34 +165,38 @@ const Battle = (): JSX.Element => {
   }
 
   const turnEnd = (): void => {
+    const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
     setIsPlayerTurn(false)
-    dispatch(moveAllNameplateToCemetery())
-    enemyTurn()
+    moveAllNameplateToCemetery(playerObj)
+    enemyTurn(playerObj)
   }
 
-  const enemyTurn = async (): Promise<void> => {
+  const enemyTurn = async (playerObj: PlayerType): Promise<void> => {
     await sleep(2000)
     fightEnemies.forEach((enemy) => {
-      const damage = calcDamage(enemy.attack, player.defense)
-      dispatch(subtractHp(damage))
+      const damage = calcDamage(enemy.attack, playerObj.defense)
+      subtractHp(playerObj, damage)
     })
-    if (!isRemainsHp(player)) { lose() }
-    enemyTurnEnd()
+    if (!isRemainsHp(playerObj)) { lose() }
+    enemyTurnEnd(playerObj)
   }
 
-  const enemyTurnEnd = (): void => {
+  const enemyTurnEnd = (playerObj: PlayerType): void => {
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
-    dispatch(recoveryEnergy(ENERGY_MAX))
-    dispatch(resetPlayerStatus())
+    recoveryEnergy(playerObj, ENERGY_MAX)
+    resetPlayerStatus(playerObj)
+    dispatch(updatePlayerStatus(playerObj))
   }
 
   const victory = (): void => {
+    const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
+    recoveryEnergy(playerObj, ENERGY_MAX)
+    incrementStage(playerObj)
+    returnCardToDeck(playerObj)
+    dispatch(updatePlayerStatus(playerObj))
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
-    dispatch(recoveryEnergy(ENERGY_MAX))
-    dispatch(returnCardToDeck())
-    dispatch(incrementStage())
     dispatch(disableBattle())
     dispatch(displayRootSelect())
   }

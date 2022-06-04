@@ -36,9 +36,6 @@ export const playerSlice = createSlice({
     initialDeck: (state, action: PayloadAction<CardType[]>) => {
       state.deck = action.payload
     },
-    incrementStage: (state) => {
-      state.stage += 1
-    },
     cardDraw: (state, action: PayloadAction<number>) => {
       state.deck.forEach((card, i) => {
         if (i < action.payload) {
@@ -47,61 +44,25 @@ export const playerSlice = createSlice({
       })
       state.deck.splice(0, action.payload)
     },
-    moveAllNameplateToCemetery: (state) => {
-      state.cemetery = state.cemetery.concat(state.nameplate)
-      state.nameplate = []
-    },
-    moveUsedCardToCemetery: (state, action: PayloadAction<CardType>) => {
-      state.nameplate.forEach((nameplate, index) => {
-        if (nameplate.id === action.payload.id) {
-          state.cemetery.push(nameplate)
-          state.nameplate.splice(index, 1)
-        }
-      })
-    },
-    returnCardToDeck: (state) => {
-      state.deck = state.deck.concat(state.nameplate)
-      state.deck = state.deck.concat(state.cemetery)
-      state.nameplate = []
-      state.cemetery = []
-    },
     recoveryDeck: (state) => {
       state.deck = state.deck.concat(state.cemetery)
       state.deck = deckShuffle(state.deck)
       state.cemetery = []
     },
-    recoveryEnergy: (state, action: PayloadAction<number>) => {
-      state.energy = action.payload
-    },
     addDefense: (state, action: PayloadAction<number>) => {
       state.defense += action.payload
     },
-    subtractEnergy: (state, action: PayloadAction<number>) => {
-      state.energy -= action.payload
-    },
-    subtractHp: (state, action: PayloadAction<number>) => {
-      state.hp -= action.payload
-    },
-    resetPlayerStatus: (state) => {
-      state.defense = 0
-    }
+    updatePlayerStatus: (state, action: PayloadAction<PlayerType>) => action.payload
   }
 })
 
 export const {
   setPlayer,
   initialDeck,
-  incrementStage,
   cardDraw,
-  moveAllNameplateToCemetery,
-  moveUsedCardToCemetery,
-  returnCardToDeck,
   recoveryDeck,
   addDefense,
-  recoveryEnergy,
-  subtractEnergy,
-  subtractHp,
-  resetPlayerStatus
+  updatePlayerStatus
 } = playerSlice.actions
 
 export default playerSlice.reducer
