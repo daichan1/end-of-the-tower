@@ -38,7 +38,7 @@ export const recoveryEnergy = (player: PlayerType, energy: number): void => {
   player.energy = energy
 }
 
-export const resetPlayerStatus = (player: PlayerType): void => {
+export const resetDefense = (player: PlayerType): void => {
   player.defense = 0
 }
 
@@ -57,4 +57,25 @@ export const moveUsedCardToCemetery = (player: PlayerType, card: CardType): void
 
 export const incrementStage = (player: PlayerType): void => {
   player.stage += 1
+}
+
+export const resetPlayerStatus = (player: PlayerType): void => {
+  resetAttack(player)
+  resetDefense(player)
+  resetStage(player)
+  recoveryEnergy(player, 3)
+  returnCardToDeck(player)
+  initialHp(player)
+}
+
+const resetStage = (player: PlayerType): void => {
+  player.stage = 0
+}
+
+const initialHp = (player: PlayerType): void => {
+  player.hp = player.maxHp
+}
+
+const resetAttack = (player: PlayerType): void => {
+  player.attack = 0
 }
