@@ -49,9 +49,6 @@ export const playerSlice = createSlice({
       state.deck = deckShuffle(state.deck)
       state.cemetery = []
     },
-    addDefense: (state, action: PayloadAction<number>) => {
-      state.defense += action.payload
-    },
     updatePlayerStatus: (state, action: PayloadAction<PlayerType>) => action.payload
   }
 })
@@ -61,7 +58,6 @@ export const {
   initialDeck,
   cardDraw,
   recoveryDeck,
-  addDefense,
   updatePlayerStatus
 } = playerSlice.actions
 

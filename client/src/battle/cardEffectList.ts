@@ -18,5 +18,5 @@ const strike = (player: PlayerType, enemy: EnemyType, card: CardType): void => {
 }
 
 const protection = (player: PlayerType, card: CardType): void => {
-  addBlock(player, card)
+  addBlock(player, card.defense)
 }
