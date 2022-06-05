@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { createTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import ShieldIcon from '@mui/icons-material/Shield'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -238,6 +239,10 @@ const Battle = (): JSX.Element => {
             <Typography variant="subtitle1" component="div">
               {player && player.hp}/{player.maxHp}
             </Typography>
+            <div>
+              <ShieldIcon />
+              <span>{player.defense}</span>
+            </div>
           </Grid>
           { displayEnemies() }
         </Grid>
