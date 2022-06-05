@@ -18,6 +18,10 @@
   }
 }
 
+.clear {
+  background-color: aqua;
+}
+
 @keyframes flash {
   0%, 100% {
     opacity: 1;
