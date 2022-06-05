@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper'
 import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
+import { EnemyDamaged } from '../types/battle/index'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { cardDraw, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
 import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
@@ -27,7 +28,7 @@ import {
   recoveryEnergy, resetDefense, subtractEnergy, moveUsedCardToCemetery,
   incrementStage, resetPlayerStatus
 } from '../battle/player'
-import { isExistEnemy } from '../battle/enemy'
+import { isExistEnemy, damaged, resetDamaged } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
@@ -65,6 +66,7 @@ const Battle = (): JSX.Element => {
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
+  const [displayDamage, setDisplayDamage] = useState<number>(-1)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
     name: "",
@@ -98,12 +100,21 @@ const Battle = (): JSX.Element => {
     setDrawButtonDisable(true)
   }
 
+  const DisplayDamage = (props: EnemyDamaged): JSX.Element => {
+    if (props.isDamaged) {
+      return <span className='damage'>{displayDamage < 0 ? "" : displayDamage}</span>
+    } else {
+      return <span className='damage'></span>
+    }
+  }
+
   const displayEnemies = (): JSX.Element[] => {
     const maxGridSize = 6
     const gridSize = maxGridSize / fightEnemies.length
     return fightEnemies.map((enemy, index) =>
       <Grid item xs={gridSize} className='enemy' key={index}>
         <img src={enemyImg} alt={enemy.name} className='enemy-img' />
+        <DisplayDamage isDamaged={enemy.isDamaged} />
         <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
         <Typography variant="subtitle1" component="div">
           {enemy.hp}/{enemy.maxHp}
@@ -138,6 +149,7 @@ const Battle = (): JSX.Element => {
 
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
+    setDisplayDamage(-1)
     handleOpen()
   }
 
@@ -156,7 +168,13 @@ const Battle = (): JSX.Element => {
 
   const playerAction = (enemies: EnemyType[], card: CardType): void => {
     const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
-    if (card.actionName === "strike") { enemies[0].hp -= card.attack }
+    if (card.actionName === "strike") {
+      const attack = playerObj.attack + card.attack
+      const damage = calcDamage(enemies[0], attack)
+      subtractHp(enemies[0], damage)
+      damaged(enemies[0])
+      setDisplayDamage(damage)
+    }
     if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
     subtractEnergy(playerObj, card.cost)
     moveUsedCardToCemetery(playerObj, card)
@@ -171,30 +189,34 @@ const Battle = (): JSX.Element => {
 
   const turnEnd = (): void => {
     const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
+    const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
     setIsPlayerTurn(false)
+    resetDamaged(enemiesObj)
+    setDisplayDamage(-1)
     moveAllNameplateToCemetery(playerObj)
-    enemyTurn(playerObj)
+    enemyTurn(playerObj, enemiesObj)
   }
 
-  const enemyTurn = async (playerObj: PlayerType): Promise<void> => {
+  const enemyTurn = async (playerObj: PlayerType, enemiesObj: EnemyType[]): Promise<void> => {
     await sleep(2000)
-    fightEnemies.forEach((enemy) => {
+    enemiesObj.forEach((enemy) => {
       const damage = calcDamage(playerObj, enemy.attack)
       subtractHp(playerObj, damage)
     })
     if (!isRemainsHp(playerObj)) {
       lose(playerObj)
     } else {
-      enemyTurnEnd(playerObj)
+      enemyTurnEnd(playerObj, enemiesObj)
     }
   }
 
-  const enemyTurnEnd = (playerObj: PlayerType): void => {
+  const enemyTurnEnd = (playerObj: PlayerType, enemiesObj: EnemyType[]): void => {
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
     recoveryEnergy(playerObj, ENERGY_MAX)
     resetDefense(playerObj)
     dispatch(updatePlayerStatus(playerObj))
+    dispatch(updateEnemyStatus(enemiesObj))
   }
 
   const victory = (): void => {
@@ -205,6 +227,7 @@ const Battle = (): JSX.Element => {
     dispatch(updatePlayerStatus(playerObj))
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
+    setDisplayDamage(-1)
     dispatch(disableBattle())
     dispatch(displayRootSelect())
   }
@@ -215,6 +238,7 @@ const Battle = (): JSX.Element => {
     dispatch(updateEnemyStatus([]))
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
+    setDisplayDamage(-1)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
   }

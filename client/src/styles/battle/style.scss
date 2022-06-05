@@ -114,3 +114,18 @@
 .turn-end {
   text-align: right;
 }
+
+.damage {
+  animation: once-flash 2s forwards;
+}
+
+@keyframes once-flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
