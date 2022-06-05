@@ -108,6 +108,10 @@ const Battle = (): JSX.Element => {
         <Typography variant="subtitle1" component="div">
           {enemy.hp}/{enemy.maxHp}
         </Typography>
+        <div>
+          <ShieldIcon />
+          <span>{enemy.defense}</span>
+        </div>
       </Grid>
     )
   }
