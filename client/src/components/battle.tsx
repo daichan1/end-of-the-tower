@@ -101,7 +101,8 @@ const Battle = (): JSX.Element => {
   }
 
   const DisplayDamage = (props: EnemyDamaged): JSX.Element => {
-    if (props.isDamaged) {
+    const { isDamaged } = props
+    if (isDamaged) {
       return <span className='damage'>{displayDamage < 0 ? "" : displayDamage}</span>
     } else {
       return <span className='damage'></span>
