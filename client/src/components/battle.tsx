@@ -67,8 +67,8 @@ const Battle = (): JSX.Element => {
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
-  const [displayDamage, setDisplayDamage] = useState<number>(-1)
   const [displayPlayerDamage, setDisplayPlayerDamage] = useState<number>(-1)
+  const [displayEnemyDamage, setDisplayEnemyDamage] = useState<number>(-1)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
     name: "",
@@ -102,10 +102,10 @@ const Battle = (): JSX.Element => {
     setDrawButtonDisable(true)
   }
 
-  const DisplayDamage = (props: EnemyDamaged): JSX.Element => {
+  const DisplayEnemyDamage = (props: EnemyDamaged): JSX.Element => {
     const { isDamaged } = props
     if (isDamaged) {
-      return <span className='damage'>{displayDamage < 0 ? "" : displayDamage}</span>
+      return <span className='damage'>{displayEnemyDamage < 0 ? "" : displayEnemyDamage}</span>
     } else {
       return <span className='damage'></span>
     }
@@ -117,7 +117,7 @@ const Battle = (): JSX.Element => {
     return fightEnemies.map((enemy, index) =>
       <Grid item xs={gridSize} className='enemy' key={index}>
         <img src={enemyImg} alt={enemy.name} className='enemy-img' />
-        <DisplayDamage isDamaged={enemy.isDamaged} />
+        <DisplayEnemyDamage isDamaged={enemy.isDamaged} />
         <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
         <Typography variant="subtitle1" component="div">
           {enemy.hp}/{enemy.maxHp}
@@ -152,7 +152,7 @@ const Battle = (): JSX.Element => {
 
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
-    setDisplayDamage(-1)
+    setDisplayEnemyDamage(-1)
     handleOpen()
   }
 
@@ -176,7 +176,7 @@ const Battle = (): JSX.Element => {
       const damage = calcDamage(enemies[0], attack)
       subtractHp(enemies[0], damage)
       damaged(enemies[0])
-      setDisplayDamage(damage)
+      setDisplayEnemyDamage(damage)
     }
     if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
     subtractEnergy(playerObj, card.cost)
@@ -195,7 +195,7 @@ const Battle = (): JSX.Element => {
     const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
     setIsPlayerTurn(false)
     resetDamaged(enemiesObj)
-    setDisplayDamage(-1)
+    setDisplayEnemyDamage(-1)
     moveAllNameplateToCemetery(playerObj)
     enemyTurn(playerObj, enemiesObj)
   }
@@ -233,7 +233,7 @@ const Battle = (): JSX.Element => {
     dispatch(updatePlayerStatus(playerObj))
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
-    setDisplayDamage(-1)
+    setDisplayEnemyDamage(-1)
     setDisplayPlayerDamage(-1)
     dispatch(disableBattle())
     dispatch(displayRootSelect())
@@ -245,7 +245,7 @@ const Battle = (): JSX.Element => {
     dispatch(updateEnemyStatus([]))
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
-    setDisplayDamage(-1)
+    setDisplayEnemyDamage(-1)
     setDisplayPlayerDamage(-1)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
