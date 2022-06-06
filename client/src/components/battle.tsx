@@ -27,7 +27,7 @@ import { sleep, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/
 import {
   isRemainsEnergy, moveAllNameplateToCemetery, returnCardToDeck,
   recoveryEnergy, resetDefense, subtractEnergy, moveUsedCardToCemetery,
-  incrementStage, resetPlayerStatus
+  incrementStage, initialPlayerStatus
 } from '../battle/player'
 import { isExistEnemy, damaged, resetDamaged } from '../battle/enemy'
 import playerImg from '../images/player.png'
@@ -240,13 +240,15 @@ const Battle = (): JSX.Element => {
   }
 
   const lose = (playerObj: PlayerType): void => {
-    resetPlayerStatus(playerObj)
+    // ステータスの初期化
+    initialPlayerStatus(playerObj)
     dispatch(updatePlayerStatus(playerObj))
     dispatch(updateEnemyStatus([]))
-    setIsPlayerTurn(true)
-    setDrawButtonDisable(false)
+    // 場面の初期化
     setDisplayEnemyDamage(-1)
     setDisplayPlayerDamage(-1)
+    setIsPlayerTurn(true)
+    setDrawButtonDisable(false)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
   }
