@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { createTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ShieldIcon from '@mui/icons-material/Shield'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
@@ -13,7 +14,7 @@ import Paper from '@mui/material/Paper'
 import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
-import { EnemyDamaged } from '../types/battle/index'
+import { EnemyDamaged, ChoiceEnemy } from '../types/battle/index'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { cardDraw, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
 import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
@@ -69,6 +70,7 @@ const Battle = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
   const [displayPlayerDamage, setDisplayPlayerDamage] = useState<number>(-1)
   const [displayEnemyDamage, setDisplayEnemyDamage] = useState<number>(-1)
+  const [choiceEnemyNumber, setChoiceEnemyNumber] = useState<number>(0)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
     name: "",
@@ -107,12 +109,27 @@ const Battle = (): JSX.Element => {
     }
   }
 
+  const DisplayChoiceEnemy = (props: ChoiceEnemy): JSX.Element => {
+    const { enemyNumber } = props
+    if (choiceEnemyNumber === enemyNumber) {
+      return <div><ArrowDownwardIcon /></div>
+    } else {
+      return <div></div>
+    }
+  }
+
+  const enemyImageClick = (num: number): void => {
+    setChoiceEnemyNumber(num)
+    setDisplayPlayerDamage(-1)
+  }
+
   const displayEnemies = (): JSX.Element[] => {
     const maxGridSize = 6
     const gridSize = maxGridSize / fightEnemies.length
     return fightEnemies.map((enemy, index) =>
       <Grid item xs={gridSize} className='enemy' key={index}>
-        <img src={enemyImg} alt={enemy.name} className='enemy-img' />
+        <DisplayChoiceEnemy enemyNumber={index} />
+        <img src={enemyImg} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
         <DisplayEnemyDamage isDamaged={enemy.isDamaged} />
         <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
         <Typography variant="subtitle1" component="div">
@@ -173,9 +190,9 @@ const Battle = (): JSX.Element => {
   const playerAction = (playerObj: PlayerType, enemies: EnemyType[], card: CardType): void => {
     if (card.actionName === "strike") {
       const attack = playerObj.attack + card.attack
-      const damage = calcDamage(enemies[0], attack)
-      subtractHp(enemies[0], damage)
-      damaged(enemies[0])
+      const damage = calcDamage(enemies[choiceEnemyNumber], attack)
+      subtractHp(enemies[choiceEnemyNumber], damage)
+      damaged(enemies[choiceEnemyNumber])
       setDisplayEnemyDamage(damage)
     }
     if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
