@@ -1,14 +1,12 @@
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import { cardEffect } from '../types/battle/cardEffect'
 import { cardEffectList } from './cardEffectList'
+import { isRemainsHp } from '../common/battle'
 
-export const playerAction = (player: PlayerType, enemies: EnemyType[], card: CardType): void => {
-  const cardEffectObj = searchCardEffect(card.actionName)
-  if (cardEffectObj === null) {
-    console.log("実行できるアクションが存在しません")
-    return
-  }
-  cardEffectObj.execution(player, enemies, card)
+export const checkRemainingHp = (enemies: EnemyType[]): void => {
+  enemies.forEach((enemy, index) => {
+    if (!isRemainsHp(enemy)) { enemies.splice(index, 1) }
+  })
 }
 
 export const searchCardEffect = (actionName: string): cardEffect | null => {
