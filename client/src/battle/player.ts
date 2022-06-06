@@ -59,23 +59,11 @@ export const incrementStage = (player: PlayerType): void => {
   player.stage += 1
 }
 
-export const resetPlayerStatus = (player: PlayerType): void => {
-  resetAttack(player)
+export const initialPlayerStatus = (player: PlayerType): void => {
+  player.attack = 0
   resetDefense(player)
-  resetStage(player)
+  player.stage = 0
+  player.hp = player.maxHp
   recoveryEnergy(player, 3)
   returnCardToDeck(player)
-  initialHp(player)
-}
-
-const resetStage = (player: PlayerType): void => {
-  player.stage = 0
-}
-
-const initialHp = (player: PlayerType): void => {
-  player.hp = player.maxHp
-}
-
-const resetAttack = (player: PlayerType): void => {
-  player.attack = 0
 }
