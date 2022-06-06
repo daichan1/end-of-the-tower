@@ -25,9 +25,9 @@ import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
 import { sleep, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
 import {
-  isRemainsEnergy, moveAllNameplateToCemetery, recoveryEnergy,
-  nextBattleUpdatePlayerStatus, resetDefense, subtractEnergy,
-  moveUsedCardToCemetery, initialPlayerStatus
+  checkRemainingHp, isRemainsEnergy, moveAllNameplateToCemetery,
+  recoveryEnergy, nextBattleUpdatePlayerStatus, resetDefense,
+  subtractEnergy, moveUsedCardToCemetery, initialPlayerStatus
 } from '../battle/player'
 import { isExistEnemy, damaged, resetDamaged } from '../battle/enemy'
 import playerImg from '../images/player.png'
@@ -158,19 +158,23 @@ const Battle = (): JSX.Element => {
 
   const actionCard = (card: CardType): void => {
     if (isRemainsEnergy(player, card)) {
+      const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
       const enemies: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
-      playerAction(enemies, card)
+      playerAction(playerObj, enemies, card)
       checkRemainingHp(enemies)
-      if (!isExistEnemy(enemies)) { victory() }
-      dispatch(updateEnemyStatus(enemies))
+      if (!isExistEnemy(enemies)) {
+        victory(playerObj)
+      } else {
+        dispatch(updatePlayerStatus(playerObj))
+        dispatch(updateEnemyStatus(enemies))
+      }
     } else {
       console.log("エナジーが不足しています")
     }
     handleClose()
   }
 
-  const playerAction = (enemies: EnemyType[], card: CardType): void => {
-    const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
+  const playerAction = (playerObj: PlayerType, enemies: EnemyType[], card: CardType): void => {
     if (card.actionName === "strike") {
       const attack = playerObj.attack + card.attack
       const damage = calcDamage(enemies[0], attack)
@@ -181,13 +185,6 @@ const Battle = (): JSX.Element => {
     if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
     subtractEnergy(playerObj, card.cost)
     moveUsedCardToCemetery(playerObj, card)
-    dispatch(updatePlayerStatus(playerObj))
-  }
-
-  const checkRemainingHp = (enemies: EnemyType[]): void => {
-    enemies.forEach((enemy, index) => {
-      if (!isRemainsHp(enemy)) { enemies.splice(index, 1) }
-    })
   }
 
   const turnEnd = (): void => {
@@ -225,11 +222,11 @@ const Battle = (): JSX.Element => {
     dispatch(updateEnemyStatus(enemiesObj))
   }
 
-  const victory = (): void => {
+  const victory = (playerObj: PlayerType): void => {
     // プレイヤーのステータスを更新
-    const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
     nextBattleUpdatePlayerStatus(playerObj)
     dispatch(updatePlayerStatus(playerObj))
+    dispatch(updateEnemyStatus([]))
     // 場面の更新
     setDisplayEnemyDamage(-1)
     setDisplayPlayerDamage(-1)
