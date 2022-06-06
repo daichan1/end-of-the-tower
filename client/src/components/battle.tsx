@@ -25,9 +25,9 @@ import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
 import { sleep, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
 import {
-  isRemainsEnergy, moveAllNameplateToCemetery, returnCardToDeck,
-  recoveryEnergy, resetDefense, subtractEnergy, moveUsedCardToCemetery,
-  incrementStage, initialPlayerStatus
+  isRemainsEnergy, moveAllNameplateToCemetery, recoveryEnergy,
+  nextBattleUpdatePlayerStatus, resetDefense, subtractEnergy,
+  moveUsedCardToCemetery, initialPlayerStatus
 } from '../battle/player'
 import { isExistEnemy, damaged, resetDamaged } from '../battle/enemy'
 import playerImg from '../images/player.png'
@@ -226,15 +226,15 @@ const Battle = (): JSX.Element => {
   }
 
   const victory = (): void => {
+    // プレイヤーのステータスを更新
     const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
-    recoveryEnergy(playerObj, ENERGY_MAX)
-    incrementStage(playerObj)
-    returnCardToDeck(playerObj)
+    nextBattleUpdatePlayerStatus(playerObj)
     dispatch(updatePlayerStatus(playerObj))
-    setIsPlayerTurn(true)
-    setDrawButtonDisable(false)
+    // 場面の更新
     setDisplayEnemyDamage(-1)
     setDisplayPlayerDamage(-1)
+    setIsPlayerTurn(true)
+    setDrawButtonDisable(false)
     dispatch(disableBattle())
     dispatch(displayRootSelect())
   }
