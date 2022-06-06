@@ -119,8 +119,11 @@ const Battle = (): JSX.Element => {
   }
 
   const enemyImageClick = (num: number): void => {
+    const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
+    enemiesObj.forEach(enemy => enemy.isDamaged = false)
     setChoiceEnemyNumber(num)
     setDisplayPlayerDamage(-1)
+    dispatch(updateEnemyStatus(enemiesObj))
   }
 
   const displayEnemies = (): JSX.Element[] => {
