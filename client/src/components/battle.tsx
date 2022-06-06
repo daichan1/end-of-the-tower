@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ShieldIcon from '@mui/icons-material/Shield'
@@ -22,6 +22,7 @@ import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
+import uuid from '../common/uuid'
 import { sleep, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
 import {
   isRemainsEnergy, moveAllNameplateToCemetery, returnCardToDeck,
@@ -67,6 +68,7 @@ const Battle = (): JSX.Element => {
   const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
   const [displayDamage, setDisplayDamage] = useState<number>(-1)
+  const [displayPlayerDamage, setDisplayPlayerDamage] = useState<number>(-1)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
     name: "",
@@ -200,10 +202,13 @@ const Battle = (): JSX.Element => {
 
   const enemyTurn = async (playerObj: PlayerType, enemiesObj: EnemyType[]): Promise<void> => {
     await sleep(2000)
+    let totalDamage = 0
     enemiesObj.forEach((enemy) => {
       const damage = calcDamage(playerObj, enemy.attack)
+      totalDamage += damage
       subtractHp(playerObj, damage)
     })
+    setDisplayPlayerDamage(totalDamage)
     if (!isRemainsHp(playerObj)) {
       lose(playerObj)
     } else {
@@ -229,6 +234,7 @@ const Battle = (): JSX.Element => {
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
     setDisplayDamage(-1)
+    setDisplayPlayerDamage(-1)
     dispatch(disableBattle())
     dispatch(displayRootSelect())
   }
@@ -240,9 +246,15 @@ const Battle = (): JSX.Element => {
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
     setDisplayDamage(-1)
+    setDisplayPlayerDamage(-1)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
   }
+
+  useEffect((): void => {
+    if (drawButtonDisable) { setDisplayPlayerDamage(-1) }
+    if (!isPlayerTurn) { setDisplayPlayerDamage(-1) }
+  }, [isPlayerTurn, drawButtonDisable])
 
   return (
     <div style={{ display: battle ? 'none' : '' }}>
@@ -264,6 +276,7 @@ const Battle = (): JSX.Element => {
         <Grid container className='character'>
           <Grid item xs={6} className='player'>
             <img src={playerImg} alt='プレイヤー' className='player-img' />
+            <span className='damage' key={uuid()}>{displayPlayerDamage < 0 ? "" : displayPlayerDamage}</span>
             <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp, player.maxHp, 0)}/>
             <Typography variant="subtitle1" component="div">
               {player && player.hp}/{player.maxHp}
