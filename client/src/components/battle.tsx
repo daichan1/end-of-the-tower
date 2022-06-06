@@ -23,7 +23,7 @@ import { disableBattle } from '../redux/slice/battleSlice'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
-import { sleep, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
+import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
 import {
   checkRemainingHp, isRemainsEnergy, moveAllNameplateToCemetery,
   recoveryEnergy, nextBattleUpdatePlayerStatus, resetDefense,
@@ -88,10 +88,6 @@ const Battle = (): JSX.Element => {
 
   const handleOpen = (): void => setOpen(true)
   const handleClose = (): void => setOpen(false)
-
-  const hpAdjustment = (value: number, maxHp: number, minHp: number): number => {
-    return ((value - minHp) * 100) / (maxHp - minHp)
-  }
 
   const onClickDraw = (): void => {
     const drawNum = 5

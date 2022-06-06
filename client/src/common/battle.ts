@@ -11,6 +11,10 @@ export const addBlock = (character: PlayerType | EnemyType, defense: number): vo
 
 export const sleep = (msec: number) => new Promise(resolve => setTimeout(resolve, msec))
 
+export const hpAdjustment = (value: number, maxHp: number, minHp: number): number => {
+  return ((value - minHp) * 100) / (maxHp - minHp)
+}
+
 export const deckShuffle = (deck: CardType[]): CardType[] => {
   for (let i = deck.length - 1; i > 0; i--) {
     const r = Math.floor(Math.random() * (i + 1))
