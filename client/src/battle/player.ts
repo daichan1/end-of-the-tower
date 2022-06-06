@@ -27,13 +27,6 @@ export const moveAllNameplateToCemetery = (player: PlayerType): void => {
   player.nameplate = []
 }
 
-export const returnCardToDeck = (player: PlayerType): void => {
-  player.deck = player.deck.concat(player.nameplate)
-  player.deck = player.deck.concat(player.cemetery)
-  player.nameplate = []
-  player.cemetery = []
-}
-
 export const recoveryEnergy = (player: PlayerType, energy: number): void => {
   player.energy = energy
 }
@@ -55,8 +48,10 @@ export const moveUsedCardToCemetery = (player: PlayerType, card: CardType): void
   })
 }
 
-export const incrementStage = (player: PlayerType): void => {
+export const nextBattleUpdatePlayerStatus = (player: PlayerType): void => {
   player.stage += 1
+  recoveryEnergy(player, 3)
+  returnCardToDeck(player)
 }
 
 export const initialPlayerStatus = (player: PlayerType): void => {
@@ -66,4 +61,11 @@ export const initialPlayerStatus = (player: PlayerType): void => {
   player.hp = player.maxHp
   recoveryEnergy(player, 3)
   returnCardToDeck(player)
+}
+
+const returnCardToDeck = (player: PlayerType): void => {
+  player.deck = player.deck.concat(player.nameplate)
+  player.deck = player.deck.concat(player.cemetery)
+  player.nameplate = []
+  player.cemetery = []
 }
