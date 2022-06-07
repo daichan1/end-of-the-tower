@@ -1,10 +1,5 @@
 import { PlayerType, EnemyType, CardType } from '../types/model'
 
-export const playerAttack = (player: PlayerType, enemy: EnemyType, card: CardType): void => {
-  const damage = calcDamage(enemy, player.attack)
-  enemy.hp -= damage
-}
-
 export const addBlock = (character: PlayerType | EnemyType, defense: number): void => {
   character.defense += defense
 }
