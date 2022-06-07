@@ -25,7 +25,7 @@ import { disableBattle } from '../redux/slice/battleSlice'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
-import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
+import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
   checkRemainingHp, isRemainsEnergy, moveAllNameplateToCemetery,
   recoveryEnergy, nextBattleUpdatePlayerStatus, resetDefense,
