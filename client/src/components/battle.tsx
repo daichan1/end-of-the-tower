@@ -193,22 +193,29 @@ const Battle = (): JSX.Element => {
   }
 
   const playerAction = (playerObj: PlayerType, enemies: EnemyType[], card: CardType): void => {
-    if (card.cardType === "アタック") {
-      const cardEffect = searchCardEffect(card.actionName)
-      if (cardEffect === null) {
-        console.log("実行できるカード効果が見つかりませんでした")
-      } else {
-        const props: CardEffectProps = {
-          type: "oneAttack",
-          player: playerObj,
-          enemy: enemies[choiceEnemyNumber],
-          card: card,
-          setDamage: setDisplayEnemyDamage
-        }
-        cardEffect.execution(props)
-      }
+    const cardEffect = searchCardEffect(card.actionName)
+    if (cardEffect === null) {
+      console.log("実行できるカード効果が見つかりませんでした")
+      return
     }
-    if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
+    if (card.cardType === "アタック") {
+      const props: CardEffectProps = {
+        type: "oneAttack",
+        player: playerObj,
+        enemy: enemies[choiceEnemyNumber],
+        card: card,
+        setDamage: setDisplayEnemyDamage
+      }
+      cardEffect.execution(props)
+    }
+    if (card.cardType === "スキル") {
+      const props: CardEffectProps = {
+        type: "guardSkill",
+        player: playerObj,
+        card: card
+      }
+      cardEffect.execution(props)
+    }
     subtractEnergy(playerObj, card.cost)
     moveUsedCardToCemetery(playerObj, card)
   }

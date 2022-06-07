@@ -8,6 +8,10 @@ export const cardEffectList: cardEffect[] = [
   {
     name: "strike",
     execution: (props: CardEffectProps): void => strike(props)
+  },
+  {
+    name: "protection",
+    execution: (props: CardEffectProps): void => protection(props)
   }
 ]
 
@@ -20,6 +24,9 @@ const strike = (props: CardEffectProps): void => {
   }
 }
 
-// const protection = (player: PlayerType, card: CardType): void => {
-//   addBlock(player, card.defense)
-// }
+const protection = (props: CardEffectProps): void => {
+  if (props.type === "guardSkill") {
+    const { player, card } = props
+    addBlock(player, card.defense)
+  }
+}
