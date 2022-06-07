@@ -73,6 +73,7 @@ const Battle = (): JSX.Element => {
   const [displayPlayerDamage, setDisplayPlayerDamage] = useState<number>(-1)
   const [displayEnemyDamage, setDisplayEnemyDamage] = useState<number>(-1)
   const [choiceEnemyNumber, setChoiceEnemyNumber] = useState<number>(0)
+  const [enemyActionCount, setEnemyActionCount] = useState<number>(0)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
     name: "",
@@ -177,14 +178,14 @@ const Battle = (): JSX.Element => {
   const actionCard = (card: CardType): void => {
     if (isRemainsEnergy(player, card)) {
       const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
-      const enemies: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
-      playerAction(playerObj, enemies, card)
-      checkRemainingHp(enemies)
-      if (!isExistEnemy(enemies)) {
+      const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
+      playerAction(playerObj, enemiesObj, card)
+      checkRemainingHp(enemiesObj)
+      if (!isExistEnemy(enemiesObj)) {
         victory(playerObj)
       } else {
         dispatch(updatePlayerStatus(playerObj))
-        dispatch(updateEnemyStatus(enemies))
+        dispatch(updateEnemyStatus(enemiesObj))
       }
     } else {
       console.log("エナジーが不足しています")
@@ -227,22 +228,22 @@ const Battle = (): JSX.Element => {
     resetDamaged(enemiesObj)
     setDisplayEnemyDamage(-1)
     moveAllNameplateToCemetery(playerObj)
-    enemyTurn(playerObj, enemiesObj)
+    enemyAction(playerObj, enemiesObj)
   }
 
-  const enemyTurn = async (playerObj: PlayerType, enemiesObj: EnemyType[]): Promise<void> => {
+  const enemyAction = async (playerObj: PlayerType, enemiesObj: EnemyType[]): Promise<void> => {
     await sleep(2000)
-    let totalDamage = 0
-    enemiesObj.forEach((enemy) => {
-      const damage = calcDamage(playerObj, enemy.attack)
-      totalDamage += damage
-      subtractHp(playerObj, damage)
-    })
-    setDisplayPlayerDamage(totalDamage)
+    const damage = calcDamage(playerObj, enemiesObj[enemyActionCount].attack)
+    subtractHp(playerObj, damage)
+    setDisplayPlayerDamage(damage)
     if (!isRemainsHp(playerObj)) {
       lose(playerObj)
-    } else {
+    } else if ((enemyActionCount + 1) === enemiesObj.length) {
       enemyTurnEnd(playerObj, enemiesObj)
+    } else {
+      setEnemyActionCount(prev => prev + 1)
+      dispatch(updatePlayerStatus(playerObj))
+      dispatch(updateEnemyStatus(enemiesObj))
     }
   }
 
@@ -251,6 +252,7 @@ const Battle = (): JSX.Element => {
     setDrawButtonDisable(false)
     recoveryEnergy(playerObj, ENERGY_MAX)
     resetDefense(playerObj)
+    setEnemyActionCount(0)
     dispatch(updatePlayerStatus(playerObj))
     dispatch(updateEnemyStatus(enemiesObj))
   }
@@ -265,6 +267,7 @@ const Battle = (): JSX.Element => {
     setDisplayPlayerDamage(-1)
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
+    setEnemyActionCount(0)
     dispatch(disableBattle())
     dispatch(displayRootSelect())
   }
@@ -279,6 +282,7 @@ const Battle = (): JSX.Element => {
     setDisplayPlayerDamage(-1)
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
+    setEnemyActionCount(0)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
   }
@@ -287,6 +291,14 @@ const Battle = (): JSX.Element => {
     if (drawButtonDisable) { setDisplayPlayerDamage(-1) }
     if (!isPlayerTurn) { setDisplayPlayerDamage(-1) }
   }, [isPlayerTurn, drawButtonDisable])
+
+  useEffect((): void => {
+    if (enemyActionCount >= 1) {
+      const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
+      const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
+      enemyAction(playerObj, enemiesObj)
+    }
+  }, [enemyActionCount])
 
   return (
     <div style={{ display: battle ? 'none' : '' }}>
