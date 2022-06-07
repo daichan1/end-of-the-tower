@@ -25,7 +25,7 @@ import { disableBattle } from '../redux/slice/battleSlice'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
-import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp, addBlock } from '../common/battle'
+import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
   checkRemainingHp, isRemainsEnergy, moveAllNameplateToCemetery,
   recoveryEnergy, nextBattleUpdatePlayerStatus, resetDefense,
@@ -193,22 +193,29 @@ const Battle = (): JSX.Element => {
   }
 
   const playerAction = (playerObj: PlayerType, enemies: EnemyType[], card: CardType): void => {
-    if (card.cardType === "アタック") {
-      const cardEffect = searchCardEffect(card.actionName)
-      if (cardEffect === null) {
-        console.log("実行できるカード効果が見つかりませんでした")
-      } else {
-        const props: CardEffectProps = {
-          type: "oneAttack",
-          player: playerObj,
-          enemy: enemies[choiceEnemyNumber],
-          card: card,
-          setDamage: setDisplayEnemyDamage
-        }
-        cardEffect.execution(props)
-      }
+    const cardEffect = searchCardEffect(card.actionName)
+    if (cardEffect === null) {
+      console.log("実行できるカード効果が見つかりませんでした")
+      return
     }
-    if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
+    if (card.cardType === "アタック") {
+      const props: CardEffectProps = {
+        type: "oneAttack",
+        player: playerObj,
+        enemy: enemies[choiceEnemyNumber],
+        card: card,
+        setDamage: setDisplayEnemyDamage
+      }
+      cardEffect.execution(props)
+    }
+    if (card.cardType === "スキル") {
+      const props: CardEffectProps = {
+        type: "guardSkill",
+        player: playerObj,
+        card: card
+      }
+      cardEffect.execution(props)
+    }
     subtractEnergy(playerObj, card.cost)
     moveUsedCardToCemetery(playerObj, card)
   }
