@@ -15,6 +15,7 @@ import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { EnemyDamaged, ChoiceEnemy } from '../types/battle/index'
+import { CardEffectProps } from '../types/battle/cardEffect'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { cardDraw, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
 import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
@@ -28,9 +29,10 @@ import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp, addBlock } fr
 import {
   checkRemainingHp, isRemainsEnergy, moveAllNameplateToCemetery,
   recoveryEnergy, nextBattleUpdatePlayerStatus, resetDefense,
-  subtractEnergy, moveUsedCardToCemetery, initialPlayerStatus
+  subtractEnergy, moveUsedCardToCemetery, initialPlayerStatus,
+  searchCardEffect
 } from '../battle/player'
-import { isExistEnemy, damaged, resetDamaged } from '../battle/enemy'
+import { isExistEnemy, resetDamaged } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
@@ -191,12 +193,20 @@ const Battle = (): JSX.Element => {
   }
 
   const playerAction = (playerObj: PlayerType, enemies: EnemyType[], card: CardType): void => {
-    if (card.actionName === "strike") {
-      const attack = playerObj.attack + card.attack
-      const damage = calcDamage(enemies[choiceEnemyNumber], attack)
-      subtractHp(enemies[choiceEnemyNumber], damage)
-      damaged(enemies[choiceEnemyNumber])
-      setDisplayEnemyDamage(damage)
+    if (card.cardType === "アタック") {
+      const cardEffect = searchCardEffect(card.actionName)
+      if (cardEffect === null) {
+        console.log("実行できるカード効果が見つかりませんでした")
+      } else {
+        const props: CardEffectProps = {
+          type: "oneAttack",
+          player: playerObj,
+          enemy: enemies[choiceEnemyNumber],
+          card: card,
+          setDamage: setDisplayEnemyDamage
+        }
+        cardEffect.execution(props)
+      }
     }
     if (card.actionName === "protection") { addBlock(playerObj, card.defense) }
     subtractEnergy(playerObj, card.cost)

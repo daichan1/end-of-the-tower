@@ -1,22 +1,25 @@
-import { PlayerType, EnemyType, CardType } from '../types/model'
+import { CardEffectProps } from '../types/battle/cardEffect'
 import { cardEffect } from '../types/battle/cardEffect'
-import { playerAttack, addBlock } from '../common/battle'
+import { addBlock } from '../common/battle'
+import { playerAttack } from '../battle/player'
+import { damaged } from './enemy'
 
 export const cardEffectList: cardEffect[] = [
   {
     name: "strike",
-    execution: (player: PlayerType, enemies: EnemyType[], card: CardType) => strike(player, enemies[0], card)
-  },
-  {
-    name: "protection",
-    execution: (player: PlayerType, enemies: EnemyType[], card: CardType) => protection(player, card)
+    execution: (props: CardEffectProps): void => strike(props)
   }
 ]
 
-const strike = (player: PlayerType, enemy: EnemyType, card: CardType): void => {
-  playerAttack(player, enemy, card)
+const strike = (props: CardEffectProps): void => {
+  if (props.type === "oneAttack") {
+    const { player, enemy, card, setDamage } = props
+    const damage = playerAttack(player, enemy, card)
+    damaged(enemy)
+    setDamage(damage)
+  }
 }
 
-const protection = (player: PlayerType, card: CardType): void => {
-  addBlock(player, card.defense)
-}
+// const protection = (player: PlayerType, card: CardType): void => {
+//   addBlock(player, card.defense)
+// }
