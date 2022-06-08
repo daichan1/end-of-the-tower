@@ -20,7 +20,8 @@ export const cardsSlice = createSlice({
           cardType: resCard.card_type,
           attack: resCard.attack,
           defense: resCard.defense,
-          actionName: resCard.action_name
+          actionName: resCard.action_name,
+          executionCount: resCard.execution_count
         }
         state.push(card)
       })

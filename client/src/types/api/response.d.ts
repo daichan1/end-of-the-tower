@@ -26,4 +26,5 @@ export type ResCard = {
   attack: number
   defense: number
   action_name: string
+  execution_count: number
 }
