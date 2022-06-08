@@ -83,7 +83,8 @@ const Battle = (): JSX.Element => {
     cardType: "",
     attack: 0,
     defense: 0,
-    actionName: ""
+    actionName: "",
+    executionCount: 1
   })
 
   const player = useAppSelector((state) => state.player)

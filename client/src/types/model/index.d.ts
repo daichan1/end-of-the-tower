@@ -32,6 +32,7 @@ export type CardBaseType = {
   attack: number
   defense: number
   actionName: string
+  executionCount: number
 }
 
 export type CardType = {
@@ -44,4 +45,5 @@ export type CardType = {
   attack: number
   defense: number
   actionName: string
+  executionCount: number
 }

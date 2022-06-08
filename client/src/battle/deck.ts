@@ -17,7 +17,8 @@ export const initializeDeck = (cardList: CardBaseType[]): CardType[] => {
         cardType: strike.cardType,
         attack: strike.attack,
         defense: strike.defense,
-        actionName: strike.actionName
+        actionName: strike.actionName,
+        executionCount: strike.executionCount
       })
       cardId += 1
     }
@@ -33,7 +34,8 @@ export const initializeDeck = (cardList: CardBaseType[]): CardType[] => {
         cardType: protection.cardType,
         attack: protection.attack,
         defense: protection.defense,
-        actionName: protection.actionName
+        actionName: protection.actionName,
+        executionCount: protection.executionCount
       })
       cardId += 1
     }
