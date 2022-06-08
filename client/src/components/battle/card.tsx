@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { styled } from '@mui/material/styles'
+import Avatar from '@mui/material/Avatar'
 import MuiCard from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardMedia from '@mui/material/CardMedia'
@@ -15,13 +16,14 @@ type Props = {
 }
 
 const NameplateMuiCard = styled(MuiCard)({
-  width: 100,
-  height: 150,
+  width: 125,
+  height: 175,
   marginRight: 5,
   "&:hover": {
     position: "relative",
     top: -8,
-    left: -8
+    left: -8,
+    zIndex: 1
   }
 })
 
@@ -38,6 +40,12 @@ const CustomCardHeader = styled(CardHeader)({
   color: "white",
   backgroundColor: "black",
   height: 30
+})
+
+const CardCost = styled(Avatar)({
+  width: 20,
+  height: 20,
+  backgroundColor: "#b71c1c"
 })
 
 const Card = (props: Props): JSX.Element => {
@@ -64,6 +72,8 @@ const Card = (props: Props): JSX.Element => {
       <CustomCardHeader
         disableTypography
         subheader={<Typography variant="body2">{card.name}</Typography>}
+        sx={{ padding: 1 }}
+        avatar={<CardCost>{card.cost}</CardCost>}
       />
       <CardMedia
         component="img"
