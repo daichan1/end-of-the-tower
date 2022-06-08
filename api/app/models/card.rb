@@ -8,5 +8,7 @@ class Card < ActiveRecord::Base
   validates :card_type, presence: true
   validates :attack, presence: true
   validates :defense, presence: true
+  validates :action_name, presence: true
+  validates :execution_count, presence: true
   validates :player_id, presence: true
 end
