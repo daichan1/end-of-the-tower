@@ -73,6 +73,7 @@ const Battle = (): JSX.Element => {
   const [displayPlayerDamage, setDisplayPlayerDamage] = useState<number>(-1)
   const [displayEnemyDamage, setDisplayEnemyDamage] = useState<number>(-1)
   const [choiceEnemyNumber, setChoiceEnemyNumber] = useState<number>(0)
+  const [playerActionCount, setPlayerActionCount] = useState<number>(0)
   const [enemyActionCount, setEnemyActionCount] = useState<number>(0)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
@@ -173,14 +174,21 @@ const Battle = (): JSX.Element => {
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
     setDisplayEnemyDamage(-1)
+    setPlayerActionCount(0)
     handleOpen()
   }
 
   const actionCard = (card: CardType): void => {
-    if (isRemainsEnergy(player, card)) {
+    if (isRemainsEnergy(player, card) || playerActionCount > 0) {
       const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
       const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
       playerAction(playerObj, enemiesObj, card)
+      if (playerActionCount === 0) {
+        subtractEnergy(playerObj, card.cost)
+        moveUsedCardToCemetery(playerObj, card)
+      }
+      // 連続攻撃のカードの場合に更新
+      if (card.executionCount > 1) { setPlayerActionCount(prev => prev + 1) }
       checkRemainingHp(enemiesObj)
       if (!isExistEnemy(enemiesObj)) {
         victory(playerObj)
@@ -218,8 +226,6 @@ const Battle = (): JSX.Element => {
       }
       cardEffect.execution(props)
     }
-    subtractEnergy(playerObj, card.cost)
-    moveUsedCardToCemetery(playerObj, card)
   }
 
   const turnEnd = (): void => {
@@ -228,6 +234,7 @@ const Battle = (): JSX.Element => {
     setIsPlayerTurn(false)
     resetDamaged(enemiesObj)
     setDisplayEnemyDamage(-1)
+    setPlayerActionCount(0)
     moveAllNameplateToCemetery(playerObj)
     enemyAction(playerObj, enemiesObj)
   }
@@ -268,6 +275,7 @@ const Battle = (): JSX.Element => {
     setDisplayPlayerDamage(-1)
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
+    setPlayerActionCount(0)
     setEnemyActionCount(0)
     dispatch(disableBattle())
     dispatch(displayRootSelect())
@@ -283,6 +291,7 @@ const Battle = (): JSX.Element => {
     setDisplayPlayerDamage(-1)
     setIsPlayerTurn(true)
     setDrawButtonDisable(false)
+    setPlayerActionCount(0)
     setEnemyActionCount(0)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
@@ -300,6 +309,16 @@ const Battle = (): JSX.Element => {
       enemyAction(playerObj, enemiesObj)
     }
   }, [enemyActionCount])
+
+  useEffect((): void => {
+    async function continueAction() {
+      if (playerActionCount > 0 && playerActionCount < confirmCard.executionCount) {
+        await sleep(2000)
+        actionCard(confirmCard)
+      }
+    }
+    continueAction()
+  }, [playerActionCount])
 
   return (
     <div style={{ display: battle ? 'none' : '' }}>
