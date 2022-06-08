@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_25_140859) do
+ActiveRecord::Schema.define(version: 2022_06_08_054105) do
 
   create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2022_05_25_140859) do
     t.integer "attack", null: false
     t.integer "defense", null: false
     t.string "action_name", null: false
+    t.integer "execution_count", default: 1, null: false
     t.bigint "player_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
