@@ -45,7 +45,7 @@ const CustomCardHeader = styled(CardHeader)({
 const CardCost = styled(Avatar)({
   width: 20,
   height: 20,
-  backgroundColor: "#b71c1c"
+  backgroundColor: "#42a5f5"
 })
 
 const Card = (props: Props): JSX.Element => {
