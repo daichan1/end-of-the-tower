@@ -1,19 +1,13 @@
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import { cardEffect } from '../types/battle/cardEffect'
 import { cardEffectList } from './cardEffectList'
-import { isRemainsHp, calcDamage, subtractHp } from '../common/battle'
+import { calcDamage, subtractHp } from '../common/battle'
 
 export const playerAttack = (player: PlayerType, enemy: EnemyType, card: CardType): number => {
   const attack = player.attack + card.attack
   const damage = calcDamage(enemy, attack)
   subtractHp(enemy, damage)
   return damage
-}
-
-export const checkRemainingHp = (enemies: EnemyType[]): void => {
-  enemies.forEach((enemy, index) => {
-    if (!isRemainsHp(enemy)) { enemies.splice(index, 1) }
-  })
 }
 
 export const searchCardEffect = (actionName: string): cardEffect | null => {

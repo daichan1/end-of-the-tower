@@ -27,10 +27,9 @@ import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
 import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
-  checkRemainingHp, isRemainsEnergy, moveAllNameplateToCemetery,
-  recoveryEnergy, nextBattleUpdatePlayerStatus, resetDefense,
-  subtractEnergy, moveUsedCardToCemetery, initialPlayerStatus,
-  searchCardEffect
+  isRemainsEnergy, moveAllNameplateToCemetery, recoveryEnergy,
+  nextBattleUpdatePlayerStatus, resetDefense, subtractEnergy,
+  moveUsedCardToCemetery, initialPlayerStatus, searchCardEffect
 } from '../battle/player'
 import { isExistEnemy, resetDamaged } from '../battle/enemy'
 import playerImg from '../images/player.png'
@@ -75,6 +74,7 @@ const Battle = (): JSX.Element => {
   const [choiceEnemyNumber, setChoiceEnemyNumber] = useState<number>(0)
   const [playerActionCount, setPlayerActionCount] = useState<number>(0)
   const [enemyActionCount, setEnemyActionCount] = useState<number>(0)
+  const [isEnemyDefeated, setIsEnemyDefeated] = useState<boolean>(false)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
     name: "",
@@ -189,7 +189,13 @@ const Battle = (): JSX.Element => {
       }
       // 連続攻撃のカードの場合に更新
       if (card.executionCount > 1) { setPlayerActionCount(prev => prev + 1) }
-      checkRemainingHp(enemiesObj)
+      // 敵のHPチェック
+      enemiesObj.forEach((enemy, index) => {
+        if (!isRemainsHp(enemy)) {
+          enemiesObj.splice(index, 1)
+          setIsEnemyDefeated(true)
+        }
+      })
       if (!isExistEnemy(enemiesObj)) {
         victory(playerObj)
       } else {
@@ -277,6 +283,7 @@ const Battle = (): JSX.Element => {
     setDrawButtonDisable(false)
     setPlayerActionCount(0)
     setEnemyActionCount(0)
+    setIsEnemyDefeated(false)
     dispatch(disableBattle())
     dispatch(displayRootSelect())
   }
@@ -313,8 +320,12 @@ const Battle = (): JSX.Element => {
   useEffect((): void => {
     async function continueAction() {
       if (playerActionCount > 0 && playerActionCount < confirmCard.executionCount) {
-        await sleep(2000)
-        actionCard(confirmCard)
+        if (isEnemyDefeated) {
+          setIsEnemyDefeated(false)
+        } else {
+          await sleep(1000)
+          actionCard(confirmCard)
+        }
       }
     }
     continueAction()
