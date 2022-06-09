@@ -194,6 +194,7 @@ const Battle = (): JSX.Element => {
         if (!isRemainsHp(enemy)) {
           enemiesObj.splice(index, 1)
           setIsEnemyDefeated(true)
+          setChoiceEnemyNumber(0)
         }
       })
       if (!isExistEnemy(enemiesObj)) {
