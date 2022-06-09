@@ -7,7 +7,7 @@ import { damaged } from './enemy'
 export const cardEffectList: cardEffect[] = [
   {
     name: "strike",
-    execution: (props: CardEffectProps): void => strike(props)
+    execution: (props: CardEffectProps): number => strike(props)
   },
   {
     name: "protection",
@@ -15,13 +15,14 @@ export const cardEffectList: cardEffect[] = [
   }
 ]
 
-const strike = (props: CardEffectProps): void => {
+const strike = (props: CardEffectProps): number => {
+  let damage = 0
   if (props.type === "oneAttack") {
-    const { player, enemy, card, setDamage } = props
-    const damage = playerAttack(player, enemy, card)
+    const { player, enemy, card } = props
+    damage = playerAttack(player, enemy, card)
     damaged(enemy)
-    setDamage(damage)
   }
+  return damage
 }
 
 const protection = (props: CardEffectProps): void => {
