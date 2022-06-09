@@ -19,11 +19,12 @@ import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import { enemyTurn, playerTurn } from '../redux/slice/turnSlice'
+import { setPlayerDamage, resetPlayerDamage } from '../redux/slice/playerDamageSlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
+import Player from './battle/player'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import uuid from '../common/uuid'
 import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
   isRemainsEnergy, recoveryEnergy, nextBattleUpdatePlayerStatus,
@@ -31,7 +32,6 @@ import {
   initialPlayerStatus, searchCardEffect
 } from '../battle/player'
 import { isExistEnemy } from '../battle/enemy'
-import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
 
@@ -45,7 +45,6 @@ const CustomLinearProgress = styled(LinearProgress)({
 const Battle = (): JSX.Element => {
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
-  const [displayPlayerDamage, setDisplayPlayerDamage] = useState<number>(-1)
   const [displayEnemyDamage, setDisplayEnemyDamage] = useState<number>(-1)
   const [choiceEnemyNumber, setChoiceEnemyNumber] = useState<number>(0)
   const [playerActionCount, setPlayerActionCount] = useState<number>(0)
@@ -104,7 +103,7 @@ const Battle = (): JSX.Element => {
     const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
     enemiesObj.forEach(enemy => enemy.isDamaged = false)
     setChoiceEnemyNumber(num)
-    setDisplayPlayerDamage(-1)
+    dispatch(resetPlayerDamage())
     dispatch(updateEnemyStatus(enemiesObj))
   }
 
@@ -218,7 +217,7 @@ const Battle = (): JSX.Element => {
     const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
     const damage = calcDamage(playerObj, enemiesObj[enemyActionCount].attack)
     subtractHp(playerObj, damage)
-    setDisplayPlayerDamage(damage)
+    dispatch(setPlayerDamage(damage))
     if (!isRemainsHp(playerObj)) {
       lose(playerObj)
     } else if ((enemyActionCount + 1) === enemiesObj.length) {
@@ -247,7 +246,7 @@ const Battle = (): JSX.Element => {
     dispatch(updateEnemyStatus([]))
     // 場面の更新
     setDisplayEnemyDamage(-1)
-    setDisplayPlayerDamage(-1)
+    dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     setDrawButtonDisable(false)
     setPlayerActionCount(0)
@@ -264,7 +263,7 @@ const Battle = (): JSX.Element => {
     dispatch(updateEnemyStatus([]))
     // 場面の初期化
     setDisplayEnemyDamage(-1)
-    setDisplayPlayerDamage(-1)
+    dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     setDrawButtonDisable(false)
     setPlayerActionCount(0)
@@ -274,7 +273,7 @@ const Battle = (): JSX.Element => {
   }
 
   useEffect((): void => {
-    if (drawButtonDisable) { setDisplayPlayerDamage(-1) }
+    if (drawButtonDisable) { dispatch(resetPlayerDamage()) }
   }, [drawButtonDisable])
 
   useEffect((): void => {
@@ -313,16 +312,7 @@ const Battle = (): JSX.Element => {
 
         <Grid container className='character'>
           <Grid item xs={6} className='player'>
-            <img src={playerImg} alt='プレイヤー' className='player-img' />
-            <span className='damage' key={uuid()}>{displayPlayerDamage < 0 ? "" : displayPlayerDamage}</span>
-            <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp, player.maxHp, 0)}/>
-            <Typography variant="subtitle1" component="div">
-              {player && player.hp}/{player.maxHp}
-            </Typography>
-            <div>
-              <ShieldIcon />
-              <span>{player.defense}</span>
-            </div>
+            <Player />
           </Grid>
           { displayEnemies() }
         </Grid>
