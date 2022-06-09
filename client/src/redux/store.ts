@@ -7,6 +7,7 @@ import gameTitleReducer from './slice/gameTitleSlice'
 import rootSelectReducer from './slice/rootSelectSlice'
 import battleReducer from './slice/battleSlice'
 import turnReducer from './slice/turnSlice'
+import playerDamageReducer from './slice/playerDamageSlice'
 
 export const store = configureStore({
   reducer: {
@@ -17,7 +18,8 @@ export const store = configureStore({
     gameTitle: gameTitleReducer,
     rootSelect: rootSelectReducer,
     battle: battleReducer,
-    turn: turnReducer
+    turn: turnReducer,
+    playerDamage: playerDamageReducer
   }
 })
 
