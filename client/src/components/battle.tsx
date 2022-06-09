@@ -71,6 +71,10 @@ const Battle = (): JSX.Element => {
     setDrawButtonDisable(true)
   }
 
+  const setDamage = (damage: number): void => {
+    dispatch(setEnemyDamage(damage))
+  }
+
   const displayEnemies = (): JSX.Element[] => {
     const maxGridSize = 6
     const gridSize = maxGridSize / fightEnemies.length
@@ -142,13 +146,10 @@ const Battle = (): JSX.Element => {
         type: "oneAttack",
         player: playerObj,
         enemy: enemies[choiceEnemyNumber],
-        card: card
+        card: card,
+        setDamage: setDamage
       }
-      // [TODO: 戻り値ある状態とない状態が混在しているので、仕組みの変更を検討する]
-      const damage = cardEffect.execution(props)
-      if (typeof damage === "number") {
-        dispatch(setEnemyDamage(damage))
-      }
+      cardEffect.execution(props)
     }
     if (card.cardType === "スキル") {
       const props: CardEffectProps = {
