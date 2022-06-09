@@ -18,6 +18,7 @@ import { resetDamaged, updateEnemyStatus } from '../redux/slice/fightEnemiesSlic
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
+import { enemyTurn, playerTurn } from '../redux/slice/turnSlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Card from '../components/battle/card'
@@ -33,7 +34,6 @@ import { isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
-import { enemyTurn, playerTurn } from 'redux/slice/turnSlice'
 
 const ENERGY_MAX = 3
 
