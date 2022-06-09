@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { createTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ShieldIcon from '@mui/icons-material/Shield'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
@@ -8,48 +7,35 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
-import Paper from '@mui/material/Paper'
 import Modal from '@mui/material/Modal'
 import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { EnemyDamaged, ChoiceEnemy } from '../types/battle/index'
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import { cardDraw, recoveryDeck, updatePlayerStatus } from '../redux/slice/playerSlice'
-import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
+import { cardDraw, recoveryDeck, moveAllNameplateToCemetery, updatePlayerStatus } from '../redux/slice/playerSlice'
+import { resetDamaged, updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import Header from './battle/header'
+import DisplayTurn from './battle/displayTurn'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
 import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
-  isRemainsEnergy, moveAllNameplateToCemetery, recoveryEnergy,
-  nextBattleUpdatePlayerStatus, resetDefense, subtractEnergy,
-  moveUsedCardToCemetery, initialPlayerStatus, searchCardEffect
+  isRemainsEnergy, recoveryEnergy, nextBattleUpdatePlayerStatus,
+  resetDefense, subtractEnergy, moveUsedCardToCemetery,
+  initialPlayerStatus, searchCardEffect
 } from '../battle/player'
-import { isExistEnemy, resetDamaged } from '../battle/enemy'
+import { isExistEnemy } from '../battle/enemy'
 import playerImg from '../images/player.png'
 import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
+import { enemyTurn, playerTurn } from 'redux/slice/turnSlice'
 
 const ENERGY_MAX = 3
-
-const theme = createTheme()
-
-const PlayerTurn = styled(Paper)({
-  backgroundColor: "#009688",
-  padding: `${theme.spacing(1)}`,
-  width: 160
-})
-
-const EnemyTurn = styled(Paper)({
-  backgroundColor: "#d50000",
-  padding: `${theme.spacing(1)}`,
-  width: 160
-})
 
 const CustomLinearProgress = styled(LinearProgress)({
   width: 100,
@@ -58,7 +44,6 @@ const CustomLinearProgress = styled(LinearProgress)({
 
 const Battle = (): JSX.Element => {
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
-  const [isPlayerTurn, setIsPlayerTurn] = useState<boolean>(true)
   const [open, setOpen] = useState<boolean>(false)
   const [displayPlayerDamage, setDisplayPlayerDamage] = useState<number>(-1)
   const [displayEnemyDamage, setDisplayEnemyDamage] = useState<number>(-1)
@@ -82,6 +67,7 @@ const Battle = (): JSX.Element => {
   const player = useAppSelector((state) => state.player)
   const fightEnemies = useAppSelector((state) => state.fightEnemies)
   const battle = useAppSelector((state) => state.battle)
+  const turn = useAppSelector((state) => state.turn)
   const dispatch = useAppDispatch()
 
   const handleOpen = (): void => setOpen(true)
@@ -154,14 +140,6 @@ const Battle = (): JSX.Element => {
     )
   }
 
-  const DisplayTurn = (): JSX.Element => {
-    if (isPlayerTurn) {
-      return <PlayerTurn elevation={1} >プレイヤーのターン</PlayerTurn>
-    } else {
-      return <EnemyTurn elevation={1} >敵のターン</EnemyTurn>
-    }
-  }
-
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
     setDisplayEnemyDamage(-1)
@@ -227,18 +205,17 @@ const Battle = (): JSX.Element => {
   }
 
   const turnEnd = (): void => {
-    const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
-    const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
-    setIsPlayerTurn(false)
-    resetDamaged(enemiesObj)
     setDisplayEnemyDamage(-1)
     setPlayerActionCount(0)
-    moveAllNameplateToCemetery(playerObj)
-    enemyAction(playerObj, enemiesObj)
+    dispatch(enemyTurn())
+    dispatch(resetDamaged())
+    dispatch(moveAllNameplateToCemetery())
   }
 
-  const enemyAction = async (playerObj: PlayerType, enemiesObj: EnemyType[]): Promise<void> => {
+  const enemyAction = async (): Promise<void> => {
     await sleep(2000)
+    const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
+    const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
     const damage = calcDamage(playerObj, enemiesObj[enemyActionCount].attack)
     subtractHp(playerObj, damage)
     setDisplayPlayerDamage(damage)
@@ -254,7 +231,7 @@ const Battle = (): JSX.Element => {
   }
 
   const enemyTurnEnd = (playerObj: PlayerType, enemiesObj: EnemyType[]): void => {
-    setIsPlayerTurn(true)
+    dispatch(playerTurn())
     setDrawButtonDisable(false)
     recoveryEnergy(playerObj, ENERGY_MAX)
     resetDefense(playerObj)
@@ -271,7 +248,7 @@ const Battle = (): JSX.Element => {
     // 場面の更新
     setDisplayEnemyDamage(-1)
     setDisplayPlayerDamage(-1)
-    setIsPlayerTurn(true)
+    dispatch(playerTurn())
     setDrawButtonDisable(false)
     setPlayerActionCount(0)
     setEnemyActionCount(0)
@@ -288,7 +265,7 @@ const Battle = (): JSX.Element => {
     // 場面の初期化
     setDisplayEnemyDamage(-1)
     setDisplayPlayerDamage(-1)
-    setIsPlayerTurn(true)
+    dispatch(playerTurn())
     setDrawButtonDisable(false)
     setPlayerActionCount(0)
     setEnemyActionCount(0)
@@ -298,15 +275,14 @@ const Battle = (): JSX.Element => {
 
   useEffect((): void => {
     if (drawButtonDisable) { setDisplayPlayerDamage(-1) }
-    if (!isPlayerTurn) { setDisplayPlayerDamage(-1) }
-  }, [isPlayerTurn, drawButtonDisable])
+  }, [drawButtonDisable])
 
   useEffect((): void => {
-    if (enemyActionCount >= 1) {
-      const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
-      const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
-      enemyAction(playerObj, enemiesObj)
-    }
+    if (!turn) { enemyAction() }
+  }, [turn])
+
+  useEffect((): void => {
+    if (enemyActionCount >= 1) { enemyAction() }
   }, [enemyActionCount])
 
   useEffect((): void => {
@@ -331,7 +307,7 @@ const Battle = (): JSX.Element => {
 
         <Grid container justifyContent="center" className='turn'>
           <Grid item>
-            <DisplayTurn/>
+            <DisplayTurn />
           </Grid>
         </Grid>
 
@@ -375,7 +351,7 @@ const Battle = (): JSX.Element => {
               color="inherit"
               size="small"
               onClick={turnEnd}
-              disabled={ isPlayerTurn ? false : true }
+              disabled={ turn ? false : true }
             >
               ターン終了
             </Button>

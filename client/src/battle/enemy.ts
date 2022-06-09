@@ -7,7 +7,3 @@ export const isExistEnemy = (enemies: EnemyType[]): boolean => {
 export const damaged = (enemy: EnemyType): void => {
   enemy.isDamaged = true
 }
-
-export const resetDamaged = (enemies: EnemyType[]): void => {
-  enemies.forEach(enemy => enemy.isDamaged = false)
-}

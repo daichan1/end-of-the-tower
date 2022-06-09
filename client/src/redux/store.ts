@@ -6,6 +6,7 @@ import fightEnemiesReducer from './slice/fightEnemiesSlice'
 import gameTitleReducer from './slice/gameTitleSlice'
 import rootSelectReducer from './slice/rootSelectSlice'
 import battleReducer from './slice/battleSlice'
+import turnReducer from './slice/turnSlice'
 
 export const store = configureStore({
   reducer: {
@@ -15,7 +16,8 @@ export const store = configureStore({
     fightEnemies: fightEnemiesReducer,
     gameTitle: gameTitleReducer,
     rootSelect: rootSelectReducer,
-    battle: battleReducer
+    battle: battleReducer,
+    turn: turnReducer
   }
 })
 

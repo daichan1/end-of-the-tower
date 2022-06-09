@@ -49,6 +49,10 @@ export const playerSlice = createSlice({
       state.deck = deckShuffle(state.deck)
       state.cemetery = []
     },
+    moveAllNameplateToCemetery: (state) => {
+      state.cemetery = state.cemetery.concat(state.nameplate)
+      state.nameplate = []
+    },
     updatePlayerStatus: (state, action: PayloadAction<PlayerType>) => action.payload
   }
 })
@@ -58,6 +62,7 @@ export const {
   initialDeck,
   cardDraw,
   recoveryDeck,
+  moveAllNameplateToCemetery,
   updatePlayerStatus
 } = playerSlice.actions
 
