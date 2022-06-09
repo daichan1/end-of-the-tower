@@ -3,8 +3,6 @@ import { createTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import ShieldIcon from '@mui/icons-material/Shield'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
@@ -22,6 +20,7 @@ import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
+import Header from './battle/header'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import uuid from '../common/uuid'
@@ -40,10 +39,6 @@ const ENERGY_MAX = 3
 
 const theme = createTheme()
 
-const CustomAppBar = styled(AppBar)({
-  backgroundColor: "black"
-})
-
 const PlayerTurn = styled(Paper)({
   backgroundColor: "#009688",
   padding: `${theme.spacing(1)}`,
@@ -54,10 +49,6 @@ const EnemyTurn = styled(Paper)({
   backgroundColor: "#d50000",
   padding: `${theme.spacing(1)}`,
   width: 160
-})
-
-const CustomTypography = styled(Typography)({
-  marginRight: `${theme.spacing(3)}`
 })
 
 const CustomLinearProgress = styled(LinearProgress)({
@@ -334,12 +325,7 @@ const Battle = (): JSX.Element => {
 
   return (
     <div style={{ display: battle ? 'none' : '' }}>
-      <CustomAppBar position='static'>
-        <Toolbar>
-          <CustomTypography variant="h6">プレイヤー</CustomTypography>
-          <Typography variant="h6">{player && player.name}</Typography>
-        </Toolbar>
-      </CustomAppBar>
+      <Header />
 
       <Container fixed>
 
