@@ -5,7 +5,6 @@ type OneAttack = {
   player: PlayerType
   enemy: EnemyType
   card: CardType
-  setDamage: (damage: number) => void
 }
 
 type GuardSkill = {
@@ -18,5 +17,5 @@ export type CardEffectProps = OneAttack | GuardSkill
 
 export type cardEffect = {
   name: string
-  execution: (props: CardEffectProps) => void
+  execution: (props: CardEffectProps) => void | number
 }

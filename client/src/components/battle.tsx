@@ -1,16 +1,10 @@
 import { useState, useEffect } from 'react'
-import { styled } from '@mui/material/styles'
-import ShieldIcon from '@mui/icons-material/Shield'
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
-import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import Modal from '@mui/material/Modal'
-import LinearProgress from '@mui/material/LinearProgress'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
-import { EnemyDamaged, ChoiceEnemy } from '../types/battle/index'
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { cardDraw, recoveryDeck, moveAllNameplateToCemetery, updatePlayerStatus } from '../redux/slice/playerSlice'
@@ -20,33 +14,28 @@ import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import { enemyTurn, playerTurn } from '../redux/slice/turnSlice'
 import { setPlayerDamage, resetPlayerDamage } from '../redux/slice/playerDamageSlice'
+import { setEnemyDamage, resetEnemyDamage } from '../redux/slice/enemyDamageSlice'
+import { resetChoiceEnemyNumber } from '../redux/slice/choiceEnemySlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Player from './battle/player'
+import Enemy from './battle/enemy'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
-import { sleep, hpAdjustment, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
+import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
   isRemainsEnergy, recoveryEnergy, nextBattleUpdatePlayerStatus,
   resetDefense, subtractEnergy, moveUsedCardToCemetery,
   initialPlayerStatus, searchCardEffect
 } from '../battle/player'
 import { isExistEnemy } from '../battle/enemy'
-import enemyImg from '../images/enemy.png'
 import '../styles/battle/style.scss'
 
 const ENERGY_MAX = 3
 
-const CustomLinearProgress = styled(LinearProgress)({
-  width: 100,
-  margin: "auto"
-})
-
 const Battle = (): JSX.Element => {
   const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
-  const [displayEnemyDamage, setDisplayEnemyDamage] = useState<number>(-1)
-  const [choiceEnemyNumber, setChoiceEnemyNumber] = useState<number>(0)
   const [playerActionCount, setPlayerActionCount] = useState<number>(0)
   const [enemyActionCount, setEnemyActionCount] = useState<number>(0)
   const [isEnemyDefeated, setIsEnemyDefeated] = useState<boolean>(false)
@@ -67,6 +56,7 @@ const Battle = (): JSX.Element => {
   const fightEnemies = useAppSelector((state) => state.fightEnemies)
   const battle = useAppSelector((state) => state.battle)
   const turn = useAppSelector((state) => state.turn)
+  const choiceEnemyNumber = useAppSelector((state) => state.choiceEnemy)
   const dispatch = useAppDispatch()
 
   const handleOpen = (): void => setOpen(true)
@@ -81,48 +71,12 @@ const Battle = (): JSX.Element => {
     setDrawButtonDisable(true)
   }
 
-  const DisplayEnemyDamage = (props: EnemyDamaged): JSX.Element => {
-    const { isDamaged } = props
-    if (isDamaged) {
-      return <span className='damage'>{displayEnemyDamage < 0 ? "" : displayEnemyDamage}</span>
-    } else {
-      return <span className='damage'></span>
-    }
-  }
-
-  const DisplayChoiceEnemy = (props: ChoiceEnemy): JSX.Element => {
-    const { enemyNumber } = props
-    if (choiceEnemyNumber === enemyNumber) {
-      return <div><ArrowDownwardIcon /></div>
-    } else {
-      return <div></div>
-    }
-  }
-
-  const enemyImageClick = (num: number): void => {
-    const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
-    enemiesObj.forEach(enemy => enemy.isDamaged = false)
-    setChoiceEnemyNumber(num)
-    dispatch(resetPlayerDamage())
-    dispatch(updateEnemyStatus(enemiesObj))
-  }
-
   const displayEnemies = (): JSX.Element[] => {
     const maxGridSize = 6
     const gridSize = maxGridSize / fightEnemies.length
     return fightEnemies.map((enemy, index) =>
       <Grid item xs={gridSize} className='enemy' key={index}>
-        <DisplayChoiceEnemy enemyNumber={index} />
-        <img src={enemyImg} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
-        <DisplayEnemyDamage isDamaged={enemy.isDamaged} />
-        <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
-        <Typography variant="subtitle1" component="div">
-          {enemy.hp}/{enemy.maxHp}
-        </Typography>
-        <div>
-          <ShieldIcon />
-          <span>{enemy.defense}</span>
-        </div>
+        <Enemy enemy={enemy} index={index} />
       </Grid>
     )
   }
@@ -141,7 +95,7 @@ const Battle = (): JSX.Element => {
 
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
-    setDisplayEnemyDamage(-1)
+    dispatch(resetEnemyDamage())
     setPlayerActionCount(0)
     handleOpen()
   }
@@ -162,7 +116,7 @@ const Battle = (): JSX.Element => {
         if (!isRemainsHp(enemy)) {
           enemiesObj.splice(index, 1)
           setIsEnemyDefeated(true)
-          setChoiceEnemyNumber(0)
+          dispatch(resetChoiceEnemyNumber())
         }
       })
       if (!isExistEnemy(enemiesObj)) {
@@ -188,10 +142,13 @@ const Battle = (): JSX.Element => {
         type: "oneAttack",
         player: playerObj,
         enemy: enemies[choiceEnemyNumber],
-        card: card,
-        setDamage: setDisplayEnemyDamage
+        card: card
       }
-      cardEffect.execution(props)
+      // [TODO: 戻り値ある状態とない状態が混在しているので、仕組みの変更を検討する]
+      const damage = cardEffect.execution(props)
+      if (typeof damage === "number") {
+        dispatch(setEnemyDamage(damage))
+      }
     }
     if (card.cardType === "スキル") {
       const props: CardEffectProps = {
@@ -204,7 +161,7 @@ const Battle = (): JSX.Element => {
   }
 
   const turnEnd = (): void => {
-    setDisplayEnemyDamage(-1)
+    dispatch(resetEnemyDamage())
     setPlayerActionCount(0)
     dispatch(enemyTurn())
     dispatch(resetDamaged())
@@ -245,7 +202,7 @@ const Battle = (): JSX.Element => {
     dispatch(updatePlayerStatus(playerObj))
     dispatch(updateEnemyStatus([]))
     // 場面の更新
-    setDisplayEnemyDamage(-1)
+    dispatch(resetEnemyDamage())
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     setDrawButtonDisable(false)
@@ -262,7 +219,7 @@ const Battle = (): JSX.Element => {
     dispatch(updatePlayerStatus(playerObj))
     dispatch(updateEnemyStatus([]))
     // 場面の初期化
-    setDisplayEnemyDamage(-1)
+    dispatch(resetEnemyDamage())
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     setDrawButtonDisable(false)
