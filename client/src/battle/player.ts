@@ -21,11 +21,6 @@ export const isRemainsEnergy = (player: PlayerType, card: CardType): boolean => 
   return diff >= 0 ? true : false
 }
 
-export const moveAllNameplateToCemetery = (player: PlayerType): void => {
-  player.cemetery = player.cemetery.concat(player.nameplate)
-  player.nameplate = []
-}
-
 export const recoveryEnergy = (player: PlayerType, energy: number): void => {
   player.energy = energy
 }
