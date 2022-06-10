@@ -1,28 +1,29 @@
 import { useState, useEffect } from 'react'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
 import Modal from '@mui/material/Modal'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import { moveAllNameplateToCemetery, updatePlayerStatus } from '../redux/slice/playerSlice'
-import { resetDamaged, updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
+import { updatePlayerStatus } from '../redux/slice/playerSlice'
+import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
-import { enemyTurn, playerTurn } from '../redux/slice/turnSlice'
+import { playerTurn } from '../redux/slice/turnSlice'
 import { setPlayerDamage, resetPlayerDamage } from '../redux/slice/playerDamageSlice'
 import { setEnemyDamage, resetEnemyDamage } from '../redux/slice/enemyDamageSlice'
 import { resetChoiceEnemyNumber } from '../redux/slice/choiceEnemySlice'
 import { drawButtonNotDisabled } from '../redux/slice/drawButtonSlice'
+import { incrementPlayerActionCount, resetPlayerActionCount } from '../redux/slice/playerActionCountSlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Player from './battle/player'
 import Enemy from './battle/enemy'
 import Energy from './battle/energy'
 import DrawButton from './battle/drawButton'
+import TurnEndButton from './battle/turnEndButton'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
@@ -38,7 +39,6 @@ const ENERGY_MAX = 3
 
 const Battle = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
-  const [playerActionCount, setPlayerActionCount] = useState<number>(0)
   const [enemyActionCount, setEnemyActionCount] = useState<number>(0)
   const [isEnemyDefeated, setIsEnemyDefeated] = useState<boolean>(false)
   const [confirmCard, setConfirmCard] = useState<CardType>({
@@ -60,6 +60,7 @@ const Battle = (): JSX.Element => {
   const turn = useAppSelector((state) => state.turn)
   const choiceEnemyNumber = useAppSelector((state) => state.choiceEnemy)
   const drawButton = useAppSelector((state) => state.drawButton)
+  const playerActionCount = useAppSelector((state) => state.playerActionCount)
   const dispatch = useAppDispatch()
 
   const handleOpen = (): void => setOpen(true)
@@ -94,7 +95,7 @@ const Battle = (): JSX.Element => {
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
     dispatch(resetEnemyDamage())
-    setPlayerActionCount(0)
+    dispatch(resetPlayerActionCount())
     handleOpen()
   }
 
@@ -108,7 +109,7 @@ const Battle = (): JSX.Element => {
         moveUsedCardToCemetery(playerObj, card)
       }
       // 連続攻撃のカードの場合に更新
-      if (card.executionCount > 1) { setPlayerActionCount(prev => prev + 1) }
+      if (card.executionCount > 1) { dispatch(incrementPlayerActionCount()) }
       // 敵のHPチェック
       enemiesObj.forEach((enemy, index) => {
         if (!isRemainsHp(enemy)) {
@@ -155,14 +156,6 @@ const Battle = (): JSX.Element => {
     }
   }
 
-  const turnEnd = (): void => {
-    dispatch(resetEnemyDamage())
-    setPlayerActionCount(0)
-    dispatch(enemyTurn())
-    dispatch(resetDamaged())
-    dispatch(moveAllNameplateToCemetery())
-  }
-
   const enemyAction = async (): Promise<void> => {
     await sleep(2000)
     const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
@@ -201,7 +194,7 @@ const Battle = (): JSX.Element => {
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     dispatch(drawButtonNotDisabled())
-    setPlayerActionCount(0)
+    dispatch(resetPlayerActionCount())
     setEnemyActionCount(0)
     setIsEnemyDefeated(false)
     dispatch(disableBattle())
@@ -218,7 +211,7 @@ const Battle = (): JSX.Element => {
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     dispatch(drawButtonNotDisabled())
-    setPlayerActionCount(0)
+    dispatch(resetPlayerActionCount())
     setEnemyActionCount(0)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
@@ -280,15 +273,7 @@ const Battle = (): JSX.Element => {
             <DrawButton />
           </Grid>
           <Grid item xs={6} className='turn-end'>
-            <Button
-              variant="contained"
-              color="inherit"
-              size="small"
-              onClick={turnEnd}
-              disabled={ turn ? false : true }
-            >
-              ターン終了
-            </Button>
+            <TurnEndButton />
           </Grid>
         </Grid>
 
