@@ -7,7 +7,7 @@ import Modal from '@mui/material/Modal'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import { cardDraw, recoveryDeck, moveAllNameplateToCemetery, updatePlayerStatus } from '../redux/slice/playerSlice'
+import { moveAllNameplateToCemetery, updatePlayerStatus } from '../redux/slice/playerSlice'
 import { resetDamaged, updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
@@ -16,11 +16,13 @@ import { enemyTurn, playerTurn } from '../redux/slice/turnSlice'
 import { setPlayerDamage, resetPlayerDamage } from '../redux/slice/playerDamageSlice'
 import { setEnemyDamage, resetEnemyDamage } from '../redux/slice/enemyDamageSlice'
 import { resetChoiceEnemyNumber } from '../redux/slice/choiceEnemySlice'
+import { drawButtonNotDisabled } from '../redux/slice/drawButtonSlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Player from './battle/player'
 import Enemy from './battle/enemy'
 import Energy from './battle/energy'
+import DrawButton from './battle/drawButton'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
@@ -35,7 +37,6 @@ import '../styles/battle/style.scss'
 const ENERGY_MAX = 3
 
 const Battle = (): JSX.Element => {
-  const [drawButtonDisable, setDrawButtonDisable] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
   const [playerActionCount, setPlayerActionCount] = useState<number>(0)
   const [enemyActionCount, setEnemyActionCount] = useState<number>(0)
@@ -58,19 +59,11 @@ const Battle = (): JSX.Element => {
   const battle = useAppSelector((state) => state.battle)
   const turn = useAppSelector((state) => state.turn)
   const choiceEnemyNumber = useAppSelector((state) => state.choiceEnemy)
+  const drawButton = useAppSelector((state) => state.drawButton)
   const dispatch = useAppDispatch()
 
   const handleOpen = (): void => setOpen(true)
   const handleClose = (): void => setOpen(false)
-
-  const onClickDraw = (): void => {
-    const drawNum = 5
-    if (player.deck.length < drawNum) {
-      dispatch(recoveryDeck())
-    }
-    dispatch(cardDraw(drawNum))
-    setDrawButtonDisable(true)
-  }
 
   const setDamage = (damage: number): void => {
     dispatch(setEnemyDamage(damage))
@@ -190,7 +183,7 @@ const Battle = (): JSX.Element => {
 
   const enemyTurnEnd = (playerObj: PlayerType, enemiesObj: EnemyType[]): void => {
     dispatch(playerTurn())
-    setDrawButtonDisable(false)
+    dispatch(drawButtonNotDisabled())
     recoveryEnergy(playerObj, ENERGY_MAX)
     resetDefense(playerObj)
     setEnemyActionCount(0)
@@ -207,7 +200,7 @@ const Battle = (): JSX.Element => {
     dispatch(resetEnemyDamage())
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
-    setDrawButtonDisable(false)
+    dispatch(drawButtonNotDisabled())
     setPlayerActionCount(0)
     setEnemyActionCount(0)
     setIsEnemyDefeated(false)
@@ -224,7 +217,7 @@ const Battle = (): JSX.Element => {
     dispatch(resetEnemyDamage())
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
-    setDrawButtonDisable(false)
+    dispatch(drawButtonNotDisabled())
     setPlayerActionCount(0)
     setEnemyActionCount(0)
     dispatch(disableBattle())
@@ -232,8 +225,8 @@ const Battle = (): JSX.Element => {
   }
 
   useEffect((): void => {
-    if (drawButtonDisable) { dispatch(resetPlayerDamage()) }
-  }, [drawButtonDisable])
+    if (drawButton) { dispatch(resetPlayerDamage()) }
+  }, [drawButton])
 
   useEffect((): void => {
     if (!turn) { enemyAction() }
@@ -284,15 +277,7 @@ const Battle = (): JSX.Element => {
 
         <Grid container className='draw-button'>
           <Grid item xs={6}>
-            <Button
-              variant="contained"
-              color="success"
-              size="small"
-              onClick={onClickDraw}
-              disabled={ drawButtonDisable ? true : false }
-            >
-              ドロー
-            </Button>
+            <DrawButton />
           </Grid>
           <Grid item xs={6} className='turn-end'>
             <Button
