@@ -11,6 +11,7 @@ import playerDamageReducer from './slice/playerDamageSlice'
 import enemyDamageReducer from './slice/enemyDamageSlice'
 import choiceEnemyReducer from './slice/choiceEnemySlice'
 import drawButtonReducer from './slice/drawButtonSlice'
+import playerActionCountReducer from './slice/playerActionCountSlice'
 
 export const store = configureStore({
   reducer: {
@@ -25,7 +26,8 @@ export const store = configureStore({
     playerDamage: playerDamageReducer,
     enemyDamage: enemyDamageReducer,
     choiceEnemy: choiceEnemyReducer,
-    drawButton: drawButtonReducer
+    drawButton: drawButtonReducer,
+    playerActionCount: playerActionCountReducer
   }
 })
 
