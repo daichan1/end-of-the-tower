@@ -5,7 +5,7 @@ const initialState = 0
 
 // State, Action, Reducersの管理
 export const choiceEnemySlice = createSlice({
-  name: 'player',
+  name: 'choiceEnemy',
   initialState,
   reducers: {
     setChoiceEnemyNumber: (state, action: PayloadAction<number>) => action.payload,

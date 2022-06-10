@@ -5,7 +5,7 @@ const initialState = false
 
 // State, Action, Reducersの管理
 export const drawButtonSlice = createSlice({
-  name: 'player',
+  name: 'drawButton',
   initialState,
   reducers: {
     drawButtonDisabled: (state) => true,
