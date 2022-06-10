@@ -5,7 +5,7 @@ const initialState = true
 
 // State, Action, Reducersの管理
 export const turnSlice = createSlice({
-  name: "cards",
+  name: "turn",
   initialState,
   reducers: {
     playerTurn: (state) => true,

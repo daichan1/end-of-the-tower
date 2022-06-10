@@ -5,7 +5,7 @@ const initialState = -1
 
 // State, Action, Reducersの管理
 export const enemyDamageSlice = createSlice({
-  name: 'player',
+  name: 'enemyDamage',
   initialState,
   reducers: {
     setEnemyDamage: (state, action: PayloadAction<number>) => action.payload,
