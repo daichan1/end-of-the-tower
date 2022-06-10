@@ -20,6 +20,7 @@ import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Player from './battle/player'
 import Enemy from './battle/enemy'
+import Energy from './battle/energy'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
@@ -277,7 +278,7 @@ const Battle = (): JSX.Element => {
 
         <Grid container className='energy'>
           <Grid item xs={12}>
-            {player && player.energy}/{ENERGY_MAX}
+            <Energy />
           </Grid>
         </Grid>
 
