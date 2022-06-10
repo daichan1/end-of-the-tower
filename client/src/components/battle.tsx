@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
-import Avatar from '@mui/material/Avatar'
 import Modal from '@mui/material/Modal'
 import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { CardEffectProps } from '../types/battle/cardEffect'
@@ -25,6 +24,7 @@ import Energy from './battle/energy'
 import DrawButton from './battle/drawButton'
 import TurnEndButton from './battle/turnEndButton'
 import Deck from './battle/deck'
+import Cemetery from './battle/cemetery'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
@@ -281,9 +281,7 @@ const Battle = (): JSX.Element => {
         <Grid container className='card-list'>
           <Deck />
           { displayNameplate() }
-          <div className='cemetery'>
-            <Avatar className='cemetery-count'>{player.cemetery.length}</Avatar>
-          </div>
+          <Cemetery />
         </Grid>
 
       </Container>
