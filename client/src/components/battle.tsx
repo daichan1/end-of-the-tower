@@ -24,6 +24,7 @@ import Enemy from './battle/enemy'
 import Energy from './battle/energy'
 import DrawButton from './battle/drawButton'
 import TurnEndButton from './battle/turnEndButton'
+import Deck from './battle/deck'
 import Card from '../components/battle/card'
 import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
@@ -278,9 +279,7 @@ const Battle = (): JSX.Element => {
         </Grid>
 
         <Grid container className='card-list'>
-          <div className='deck'>
-            <Avatar className='deck-count'>{player.deck.length}</Avatar>
-          </div>
+          <Deck />
           { displayNameplate() }
           <div className='cemetery'>
             <Avatar className='cemetery-count'>{player.cemetery.length}</Avatar>
