@@ -1,6 +1,5 @@
 import { useState } from 'react'
-import axios from 'axios'
-import axiosRetry from 'axios-retry'
+import axiosClient from '../api/axios'
 import { styled } from '@mui/material/styles'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import MuiCard from '@mui/material/Card'
@@ -50,9 +49,6 @@ const GameTitle = (): JSX.Element => {
   const handleClose = (): void => setOpen(false)
 
   const playerSelect = (): void => handleOpen()
-
-  const axiosClient = axios.create({ baseURL: process.env.REACT_APP_API_URL_BROWSER })
-  axiosRetry(axiosClient, { retries: 3 })
 
   const gameStart = (): void => {
     getPlayer()
