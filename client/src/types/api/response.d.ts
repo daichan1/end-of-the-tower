@@ -28,3 +28,8 @@ export type ResCard = {
   action_name: string
   execution_count: number
 }
+
+export type ResPlayerCards = {
+  player: ResPlayer
+  cards: ResCard[]
+}
