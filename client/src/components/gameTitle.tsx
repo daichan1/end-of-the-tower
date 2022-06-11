@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import axios from 'axios'
+import axiosRetry from 'axios-retry'
 import { styled } from '@mui/material/styles'
 import { useAppDispatch, useAppSelector } from '../redux/hooks'
 import MuiCard from '@mui/material/Card'
@@ -7,8 +9,11 @@ import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
+import { ResPlayer } from '../types/api/response'
+import { setPlayer, initialDeck } from '../redux/slice/playerSlice'
 import { disableGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
+import { initializeDeck } from '../battle/deck'
 import playerImg from '../images/player.png'
 import '../styles/battle/style.scss'
 import '../styles/gameTitle/style.scss'
@@ -37,6 +42,7 @@ const ModalMuiCardContent = styled(CardContent)({
 const GameTitle = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
 
+  const cards = useAppSelector((state) => state.cards)
   const gameTitle = useAppSelector((state) => state.gameTitle)
   const dispatch = useAppDispatch()
 
@@ -45,10 +51,27 @@ const GameTitle = (): JSX.Element => {
 
   const playerSelect = (): void => handleOpen()
 
+  const axiosClient = axios.create({ baseURL: process.env.REACT_APP_API_URL_BROWSER })
+  axiosRetry(axiosClient, { retries: 3 })
+
   const gameStart = (): void => {
+    getPlayer()
     dispatch(disableGameTitle())
     dispatch(displayRootSelect())
     handleClose()
+  }
+
+  const getPlayer = async (): Promise<void> => {
+    await axiosClient.get('/v1/players')
+    .then(res => {
+      const resPlayer: ResPlayer = res.data
+      const defaultDeck = initializeDeck(cards)
+      dispatch(setPlayer(resPlayer))
+      dispatch(initialDeck(defaultDeck))
+    })
+    .catch(error => {
+      console.log("プレイヤーの取得に失敗しました")
+    })
   }
 
   return (
