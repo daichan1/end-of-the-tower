@@ -68,6 +68,8 @@ namespace :create_record do
           card_type: data['card_type'],
           attack: data['attack'],
           defense: data['defense'],
+          action_name: data['action_name'],
+          execution_count: data['execution_count'],
           player_id: data['player_id']
         )
         card.save!
