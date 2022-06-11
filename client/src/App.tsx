@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
-import axios from 'axios'
-import axiosRetry from 'axios-retry'
+import axiosClient from './api/axios'
 import { ResEnemies, ResCard } from './types/api/response'
 import { useAppDispatch } from './redux/hooks'
 import { setEnemies } from './redux/slice/enemiesSlice'
@@ -11,9 +10,6 @@ import Battle from './components/battle'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
-
-  const axiosClient = axios.create({ baseURL: process.env.REACT_APP_API_URL_BROWSER })
-  axiosRetry(axiosClient, { retries: 3 })
 
   const getEnemies = async (): Promise<void> => {
     await axiosClient.get('/v1/enemies')
