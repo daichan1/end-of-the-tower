@@ -50,15 +50,19 @@ const GameTitle = (): JSX.Element => {
 
   const playerSelect = (): void => handleOpen()
 
-  const gameStart = (): void => {
-    getPlayer()
+  const gameStart = (playerId: number): void => {
+    getPlayer(playerId)
     dispatch(disableGameTitle())
     dispatch(displayRootSelect())
     handleClose()
   }
 
-  const getPlayer = async (): Promise<void> => {
-    await axiosClient.get('/v1/players')
+  const getPlayer = async (playerId: number): Promise<void> => {
+    await axiosClient.get('/v1/players', {
+      params: {
+        id: playerId
+      }
+    })
     .then(res => {
       const resPlayer: ResPlayer = res.data
       const defaultDeck = initializeDeck(cards)
@@ -104,7 +108,7 @@ const GameTitle = (): JSX.Element => {
                   </div>
                   <Button
                     variant="contained"
-                    onClick={gameStart}
+                    onClick={() => gameStart(2)}
                   >
                     アタッカー
                   </Button>
