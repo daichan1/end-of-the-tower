@@ -6,6 +6,11 @@ class Api::V1::PlayersController < ApplicationController
 
   def show
     player = Player.find(params[:id])
-    render json: player
+    cards = Card.where(player_id: player.id)
+    result = {
+      player: player,
+      cards: cards
+    }
+    render json: result
   end
 end

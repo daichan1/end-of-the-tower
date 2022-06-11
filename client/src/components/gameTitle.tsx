@@ -8,11 +8,12 @@ import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
-import { ResPlayer } from '../types/api/response'
+import { ResPlayerCards } from '../types/api/response'
 import { setPlayer, initialDeck } from '../redux/slice/playerSlice'
 import { disableGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
-import { initializeDeck } from '../battle/deck'
+import { initializeAllPlayerCards, initializeAttackerCards } from '../battle/deck'
+import { deckShuffle } from '../common/battle'
 import playerImg from '../images/player.png'
 import '../styles/battle/style.scss'
 import '../styles/gameTitle/style.scss'
@@ -58,15 +59,14 @@ const GameTitle = (): JSX.Element => {
   }
 
   const getPlayer = async (playerId: number): Promise<void> => {
-    await axiosClient.get('/v1/players', {
-      params: {
-        id: playerId
-      }
-    })
+    await axiosClient.get(`/v1/players/${playerId}`)
     .then(res => {
-      const resPlayer: ResPlayer = res.data
-      const defaultDeck = initializeDeck(cards)
-      dispatch(setPlayer(resPlayer))
+      const resPlayerCards: ResPlayerCards = res.data
+      const allPlayerCards = initializeAllPlayerCards(cards)
+      const attackerCards = initializeAttackerCards(resPlayerCards.cards)
+      let defaultDeck = allPlayerCards.concat(attackerCards)
+      defaultDeck = deckShuffle(defaultDeck)
+      dispatch(setPlayer(resPlayerCards.player))
       dispatch(initialDeck(defaultDeck))
     })
     .catch(error => {
