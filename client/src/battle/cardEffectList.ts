@@ -12,6 +12,14 @@ export const cardEffectList: cardEffect[] = [
   {
     name: "protection",
     execution: (props: CardEffectProps): void => protection(props)
+  },
+  {
+    name: "scorpion",
+    execution: (props: CardEffectProps): void => scorpion(props)
+  },
+  {
+    name: "moleclaw",
+    execution: (props: CardEffectProps): void => moleclaw(props)
   }
 ]
 
@@ -28,5 +36,23 @@ const protection = (props: CardEffectProps): void => {
   if (props.type === "guardSkill") {
     const { player, card } = props
     addBlock(player, card.defense)
+  }
+}
+
+const scorpion = (props: CardEffectProps): void => {
+  if (props.type === "oneAttack") {
+    const { player, enemy, card, setDamage } = props
+    const damage = playerAttack(player, enemy, card)
+    damaged(enemy)
+    setDamage(damage)
+  }
+}
+
+const moleclaw = (props: CardEffectProps): void => {
+  if (props.type === "oneAttack") {
+    const { player, enemy, card, setDamage } = props
+    const damage = playerAttack(player, enemy, card)
+    damaged(enemy)
+    setDamage(damage)
   }
 }
