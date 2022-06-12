@@ -1,8 +1,7 @@
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { cardEffect } from '../types/battle/cardEffect'
-import { addBlock } from '../common/battle'
-import { playerAttack } from '../battle/player'
-import { damaged } from './enemy'
+import { strike, scorpion, moleclaw } from './cardEffect/attack'
+import { protection } from './cardEffect/skill'
 
 export const cardEffectList: cardEffect[] = [
   {
@@ -22,37 +21,3 @@ export const cardEffectList: cardEffect[] = [
     execution: (props: CardEffectProps): void => moleclaw(props)
   }
 ]
-
-const strike = (props: CardEffectProps): void => {
-  if (props.type === "oneAttack") {
-    const { player, enemy, card, setDamage } = props
-    const damage = playerAttack(player, enemy, card)
-    damaged(enemy)
-    setDamage(damage)
-  }
-}
-
-const protection = (props: CardEffectProps): void => {
-  if (props.type === "guardSkill") {
-    const { player, card } = props
-    addBlock(player, card.defense)
-  }
-}
-
-const scorpion = (props: CardEffectProps): void => {
-  if (props.type === "oneAttack") {
-    const { player, enemy, card, setDamage } = props
-    const damage = playerAttack(player, enemy, card)
-    damaged(enemy)
-    setDamage(damage)
-  }
-}
-
-const moleclaw = (props: CardEffectProps): void => {
-  if (props.type === "oneAttack") {
-    const { player, enemy, card, setDamage } = props
-    const damage = playerAttack(player, enemy, card)
-    damaged(enemy)
-    setDamage(damage)
-  }
-}
