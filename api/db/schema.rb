@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_13_061446) do
+ActiveRecord::Schema.define(version: 2022_06_13_063431) do
 
   create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -30,8 +30,10 @@ ActiveRecord::Schema.define(version: 2022_06_13_061446) do
 
   create_table "effect_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
+    t.bigint "card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["card_id"], name: "index_effect_types_on_card_id"
   end
 
   create_table "enemies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -56,4 +58,5 @@ ActiveRecord::Schema.define(version: 2022_06_13_061446) do
   end
 
   add_foreign_key "cards", "players"
+  add_foreign_key "effect_types", "cards"
 end
