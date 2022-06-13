@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 2022_06_13_075005) do
     t.string "card_type", null: false
     t.integer "attack", null: false
     t.integer "defense", null: false
+    t.string "action_name", null: false
+    t.integer "execution_count", default: 1, null: false
     t.bigint "player_id", null: false
     t.bigint "effect_type_id"
     t.datetime "created_at", null: false
