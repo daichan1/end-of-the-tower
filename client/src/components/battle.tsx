@@ -52,7 +52,8 @@ const Battle = (): JSX.Element => {
     attack: 0,
     defense: 0,
     actionName: "",
-    executionCount: 1
+    executionCount: 1,
+    effectType: ""
   })
 
   const player = useAppSelector((state) => state.player)
