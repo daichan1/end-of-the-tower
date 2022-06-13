@@ -45,7 +45,7 @@ export const initializeAllPlayerCards = (cardList: CardBaseType[]): CardType[] =
 
 export const initializeAttackerCards = (attackerCards: ResCard[]): CardType[] => {
   const resultCards: CardType[] = []
-  let cardId = 8
+  let cardId = 9
   const scorpion: ResCard | undefined = attackerCards.find((card: ResCard) => card.name === "スコーピオン")
   const moleclaw: ResCard | undefined = attackerCards.find((card: ResCard) => card.name === "モールクロー")
   if (scorpion !== undefined) {
