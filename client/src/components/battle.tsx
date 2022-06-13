@@ -138,7 +138,7 @@ const Battle = (): JSX.Element => {
       console.log("実行できるカード効果が見つかりませんでした")
       return
     }
-    if (card.cardType === "アタック") {
+    if (card.effectType === "oneAttack") {
       const props: CardEffectProps = {
         type: "oneAttack",
         player: playerObj,
@@ -148,9 +148,9 @@ const Battle = (): JSX.Element => {
       }
       cardEffect.execution(props)
     }
-    if (card.cardType === "スキル") {
+    if (card.effectType === "guard") {
       const props: CardEffectProps = {
-        type: "guardSkill",
+        type: "guard",
         player: playerObj,
         card: card
       }
