@@ -1,4 +1,5 @@
 class Card < ActiveRecord::Base
+  has_many :effect_types
   belongs_to :player
 
   validates :name, presence: true
