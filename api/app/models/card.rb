@@ -1,6 +1,6 @@
 class Card < ActiveRecord::Base
-  has_many :effect_types
   belongs_to :player
+  belongs_to :effect_type
 
   validates :name, presence: true
   validates :description, presence: true
@@ -12,4 +12,5 @@ class Card < ActiveRecord::Base
   validates :action_name, presence: true
   validates :execution_count, presence: true
   validates :player_id, presence: true
+  validates :effect_type_id, presence: true
 end
