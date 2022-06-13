@@ -37,6 +37,15 @@ export const calcDamage = (character: PlayerType | EnemyType, attack: number): n
   return damage
 }
 
+export const calcBlockDamage = (character: PlayerType | EnemyType, attack: number): void => {
+  const diff = character.defense - attack
+  if (diff < 0) {
+    subtractDefense(character, 0)
+  } else {
+    subtractDefense(character, diff)
+  }
+}
+
 export const subtractHp = (character: PlayerType | EnemyType, damage: number): void => {
   character.hp -= damage
 }
