@@ -1,6 +1,5 @@
 class EffectType < ActiveRecord::Base
-  belongs_to :card
+  has_many :cards
 
   validates :name, presence: true
-  validates :card_id, presence: true
 end

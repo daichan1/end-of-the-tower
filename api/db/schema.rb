@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_06_13_063431) do
+ActiveRecord::Schema.define(version: 2022_06_13_075005) do
 
   create_table "cards", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -20,20 +20,18 @@ ActiveRecord::Schema.define(version: 2022_06_13_063431) do
     t.string "card_type", null: false
     t.integer "attack", null: false
     t.integer "defense", null: false
-    t.string "action_name", null: false
-    t.integer "execution_count", default: 1, null: false
     t.bigint "player_id", null: false
+    t.bigint "effect_type_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["effect_type_id"], name: "index_cards_on_effect_type_id"
     t.index ["player_id"], name: "index_cards_on_player_id"
   end
 
   create_table "effect_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
-    t.bigint "card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["card_id"], name: "index_effect_types_on_card_id"
   end
 
   create_table "enemies", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
@@ -57,6 +55,6 @@ ActiveRecord::Schema.define(version: 2022_06_13_063431) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "cards", "effect_types"
   add_foreign_key "cards", "players"
-  add_foreign_key "effect_types", "cards"
 end
