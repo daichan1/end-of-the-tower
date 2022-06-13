@@ -16,13 +16,13 @@ type AllAttack = {
   setDamage: (damage: number) => void
 }
 
-type GuardSkill = {
-  type: "guardSkill"
+type Guard = {
+  type: "guard"
   player: PlayerType
   card: CardType
 }
 
-export type CardEffectProps = OneAttack | AllAttack | GuardSkill
+export type CardEffectProps = OneAttack | AllAttack | Guard
 
 export type cardEffect = {
   name: string

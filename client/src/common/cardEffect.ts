@@ -23,8 +23,8 @@ export const allAttack = (props: CardEffectProps): void => {
   }
 }
 
-export const guardSkill = (props: CardEffectProps): void => {
-  if (props.type === "guardSkill") {
+export const guard = (props: CardEffectProps): void => {
+  if (props.type === "guard") {
     const { player, card } = props
     addBlock(player, card.defense)
   }
