@@ -27,6 +27,7 @@ export type ResCard = {
   defense: number
   action_name: string
   execution_count: number
+  effect_type: string
 }
 
 export type ResPlayerCards = {

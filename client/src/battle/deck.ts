@@ -18,7 +18,8 @@ export const initializeAllPlayerCards = (cardList: CardBaseType[]): CardType[] =
         attack: strike.attack,
         defense: strike.defense,
         actionName: strike.actionName,
-        executionCount: strike.executionCount
+        executionCount: strike.executionCount,
+        effectType: strike.effectType
       })
       cardId += 1
     }
@@ -35,7 +36,8 @@ export const initializeAllPlayerCards = (cardList: CardBaseType[]): CardType[] =
         attack: protection.attack,
         defense: protection.defense,
         actionName: protection.actionName,
-        executionCount: protection.executionCount
+        executionCount: protection.executionCount,
+        effectType: protection.effectType
       })
       cardId += 1
     }
@@ -59,7 +61,8 @@ export const initializeAttackerCards = (attackerCards: ResCard[]): CardType[] =>
       attack: scorpion.attack,
       defense: scorpion.defense,
       actionName: scorpion.action_name,
-      executionCount: scorpion.execution_count
+      executionCount: scorpion.execution_count,
+      effectType: scorpion.effect_type
     })
     cardId += 1
   }
@@ -74,7 +77,8 @@ export const initializeAttackerCards = (attackerCards: ResCard[]): CardType[] =>
       attack: moleclaw.attack,
       defense: moleclaw.defense,
       actionName: moleclaw.action_name,
-      executionCount: moleclaw.execution_count
+      executionCount: moleclaw.execution_count,
+      effectType: moleclaw.effect_type
     })
   }
   return resultCards
