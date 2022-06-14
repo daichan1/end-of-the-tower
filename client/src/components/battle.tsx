@@ -99,7 +99,7 @@ const Battle = (): JSX.Element => {
   const actionCard = (card: CardType): void => {
     if (isRemainsEnergy(player, card) || playerActionCount > 0) {
       const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
-      const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
+      let enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
       playerAction(playerObj, enemiesObj, card)
       if (playerActionCount === 0) {
         subtractEnergy(playerObj, card.cost)
@@ -108,9 +108,9 @@ const Battle = (): JSX.Element => {
       // 連続攻撃のカードの場合に更新
       if (card.executionCount > 1) { dispatch(incrementPlayerActionCount()) }
       // 敵のHPチェック
-      enemiesObj.forEach((enemy, index) => {
+      enemiesObj.forEach(enemy => {
         if (!isRemainsHp(enemy)) {
-          enemiesObj.splice(index, 1)
+          enemiesObj = enemiesObj.filter(enemy => enemy.hp > 0)
           setIsEnemyDefeated(true)
           dispatch(resetChoiceEnemyNumber())
         }
