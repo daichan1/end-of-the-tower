@@ -6,13 +6,12 @@ import { EnemyType, CardType, PlayerType } from '../types/model/index'
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { updatePlayerStatus } from '../redux/slice/playerSlice'
-import { updateEnemyStatus } from '../redux/slice/fightEnemiesSlice'
+import { updateEnemyStatus, resetDamage } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import { playerTurn } from '../redux/slice/turnSlice'
 import { setPlayerDamage, resetPlayerDamage } from '../redux/slice/playerDamageSlice'
-import { setEnemyDamage, resetEnemyDamage } from '../redux/slice/enemyDamageSlice'
 import { resetChoiceEnemyNumber } from '../redux/slice/choiceEnemySlice'
 import { drawButtonNotDisabled } from '../redux/slice/drawButtonSlice'
 import { incrementPlayerActionCount, resetPlayerActionCount } from '../redux/slice/playerActionCountSlice'
@@ -68,10 +67,6 @@ const Battle = (): JSX.Element => {
   const handleOpen = (): void => setOpen(true)
   const handleClose = (): void => setOpen(false)
 
-  const setDamage = (damage: number): void => {
-    dispatch(setEnemyDamage(damage))
-  }
-
   const displayEnemies = (): JSX.Element[] => {
     const maxGridSize = 6
     const gridSize = maxGridSize / fightEnemies.length
@@ -96,7 +91,7 @@ const Battle = (): JSX.Element => {
 
   const selectCard = (card: CardType): void => {
     setConfirmCard(card)
-    dispatch(resetEnemyDamage())
+    dispatch(resetDamage())
     dispatch(resetPlayerActionCount())
     handleOpen()
   }
@@ -143,8 +138,16 @@ const Battle = (): JSX.Element => {
         type: "oneAttack",
         player: playerObj,
         enemy: enemies[choiceEnemyNumber],
-        card: card,
-        setDamage: setDamage
+        card: card
+      }
+      cardEffect.execution(props)
+    }
+    if (card.effectType === "allAttack") {
+      const props: CardEffectProps = {
+        type: "allAttack",
+        player: playerObj,
+        enemies: enemies,
+        card: card
       }
       cardEffect.execution(props)
     }
@@ -192,7 +195,6 @@ const Battle = (): JSX.Element => {
     dispatch(updatePlayerStatus(playerObj))
     dispatch(updateEnemyStatus([]))
     // 場面の更新
-    dispatch(resetEnemyDamage())
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     dispatch(drawButtonNotDisabled())
@@ -209,7 +211,6 @@ const Battle = (): JSX.Element => {
     dispatch(updatePlayerStatus(playerObj))
     dispatch(updateEnemyStatus([]))
     // 場面の初期化
-    dispatch(resetEnemyDamage())
     dispatch(resetPlayerDamage())
     dispatch(playerTurn())
     dispatch(drawButtonNotDisabled())
@@ -232,17 +233,18 @@ const Battle = (): JSX.Element => {
   }, [enemyActionCount])
 
   useEffect((): void => {
+    // 連続攻撃2回目以降のアクション
     async function continueAction() {
-      if (playerActionCount > 0 && playerActionCount < confirmCard.executionCount) {
-        if (isEnemyDefeated) {
-          setIsEnemyDefeated(false)
-        } else {
-          await sleep(1000)
-          actionCard(confirmCard)
-        }
+      if (isEnemyDefeated) {
+        setIsEnemyDefeated(false)
+      } else {
+        await sleep(1000)
+        actionCard(confirmCard)
       }
     }
-    continueAction()
+    if (playerActionCount > 0 && playerActionCount < confirmCard.executionCount) {
+      continueAction()
+    }
   }, [playerActionCount])
 
   return (

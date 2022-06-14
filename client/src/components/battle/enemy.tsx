@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 import LinearProgress from '@mui/material/LinearProgress'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { EnemyType } from '../../types/model/index'
-import { EnemyDamaged, ChoiceEnemy } from '../../types/battle/index'
+import { ChoiceEnemy, DisplayEnemy } from '../../types/battle/index'
 import { updateEnemyStatus } from '../../redux/slice/fightEnemiesSlice'
 import { resetPlayerDamage } from '../../redux/slice/playerDamageSlice'
 import { setChoiceEnemyNumber } from '../../redux/slice/choiceEnemySlice'
@@ -22,17 +22,16 @@ const CustomLinearProgress = styled(LinearProgress)({
   margin: "auto"
 })
 
-const Enemies = (props: Props): JSX.Element => {
+const Enemy = (props: Props): JSX.Element => {
   const { enemy, index } = props
   const fightEnemies = useAppSelector((state) => state.fightEnemies)
-  const enemyDamage = useAppSelector((state) => state.enemyDamage)
   const choiceEnemyNumber = useAppSelector((state) => state.choiceEnemy)
   const dispatch = useAppDispatch()
 
-  const DisplayEnemyDamage = (props: EnemyDamaged): JSX.Element => {
-    const { isDamaged } = props
-    if (isDamaged) {
-      return <span className='damage'>{enemyDamage < 0 ? "" : enemyDamage}</span>
+  const DisplayEnemyDamage = (props: DisplayEnemy): JSX.Element => {
+    const { enemy } = props
+    if (enemy.isDamaged) {
+      return <span className='damage'>{enemy.damage < 0 ? "" : enemy.damage}</span>
     } else {
       return <span className='damage'></span>
     }
@@ -59,7 +58,7 @@ const Enemies = (props: Props): JSX.Element => {
     <div>
       <DisplayChoiceEnemy enemyNumber={index} />
       <img src={enemyImg} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
-      <DisplayEnemyDamage isDamaged={enemy.isDamaged} />
+      <DisplayEnemyDamage enemy={enemy} />
       <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
       <Typography variant="subtitle1" component="div">
         {enemy.hp}/{enemy.maxHp}
@@ -72,4 +71,4 @@ const Enemies = (props: Props): JSX.Element => {
   )
 }
 
-export default Enemies
+export default Enemy

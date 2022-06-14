@@ -1,5 +1,7 @@
-export type EnemyDamaged = {
-  isDamaged: boolean
+import { EnemyType } from '../model/index'
+
+export type DisplayEnemy = {
+  enemy: EnemyType
 }
 
 export type ChoiceEnemy = {

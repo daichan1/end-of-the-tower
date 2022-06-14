@@ -8,7 +8,6 @@ import rootSelectReducer from './slice/rootSelectSlice'
 import battleReducer from './slice/battleSlice'
 import turnReducer from './slice/turnSlice'
 import playerDamageReducer from './slice/playerDamageSlice'
-import enemyDamageReducer from './slice/enemyDamageSlice'
 import choiceEnemyReducer from './slice/choiceEnemySlice'
 import drawButtonReducer from './slice/drawButtonSlice'
 import playerActionCountReducer from './slice/playerActionCountSlice'
@@ -24,7 +23,6 @@ export const store = configureStore({
     battle: battleReducer,
     turn: turnReducer,
     playerDamage: playerDamageReducer,
-    enemyDamage: enemyDamageReducer,
     choiceEnemy: choiceEnemyReducer,
     drawButton: drawButtonReducer,
     playerActionCount: playerActionCountReducer
