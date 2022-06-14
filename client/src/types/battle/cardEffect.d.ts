@@ -5,7 +5,6 @@ type OneAttack = {
   player: PlayerType
   enemy: EnemyType
   card: CardType
-  setDamage: (damage: number) => void
 }
 
 type AllAttack = {
@@ -13,7 +12,6 @@ type AllAttack = {
   player: PlayerType
   enemies: EnemyType[]
   card: CardType
-  setDamage: (damage: number) => void
 }
 
 type Guard = {

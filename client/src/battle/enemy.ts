@@ -7,3 +7,7 @@ export const isExistEnemy = (enemies: EnemyType[]): boolean => {
 export const damaged = (enemy: EnemyType): void => {
   enemy.isDamaged = true
 }
+
+export const setDamage = (enemy: EnemyType, damage: number): void => {
+  enemy.damage = damage
+}
