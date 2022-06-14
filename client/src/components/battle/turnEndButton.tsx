@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { moveAllNameplateToCemetery } from '../../redux/slice/playerSlice'
-import { resetDamage, resetDamaged } from '../../redux/slice/fightEnemiesSlice'
+import { resetDamage } from '../../redux/slice/fightEnemiesSlice'
 import { enemyTurn } from '../../redux/slice/turnSlice'
 import { resetPlayerActionCount } from '../../redux/slice/playerActionCountSlice'
 import { resetPlayerDamage } from '../../redux/slice/playerDamageSlice'
@@ -15,7 +15,6 @@ const TurnEndButton = (): JSX.Element => {
     dispatch(resetPlayerActionCount())
     dispatch(enemyTurn())
     dispatch(resetDamage())
-    dispatch(resetDamaged())
     dispatch(moveAllNameplateToCemetery())
   }
 

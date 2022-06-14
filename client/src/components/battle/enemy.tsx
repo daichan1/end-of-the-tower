@@ -5,10 +5,11 @@ import Typography from '@mui/material/Typography'
 import LinearProgress from '@mui/material/LinearProgress'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { EnemyType } from '../../types/model/index'
-import { ChoiceEnemy, DisplayEnemy } from '../../types/battle/index'
-import { updateEnemyStatus } from '../../redux/slice/fightEnemiesSlice'
+import { ChoiceEnemy } from '../../types/battle/index'
+import { resetDamage } from '../../redux/slice/fightEnemiesSlice'
 import { resetPlayerDamage } from '../../redux/slice/playerDamageSlice'
 import { setChoiceEnemyNumber } from '../../redux/slice/choiceEnemySlice'
+import uuid from '../../common/uuid'
 import { hpAdjustment } from '../../common/battle'
 import enemyImg from '../../images/enemy.png'
 
@@ -24,18 +25,8 @@ const CustomLinearProgress = styled(LinearProgress)({
 
 const Enemy = (props: Props): JSX.Element => {
   const { enemy, index } = props
-  const fightEnemies = useAppSelector((state) => state.fightEnemies)
   const choiceEnemyNumber = useAppSelector((state) => state.choiceEnemy)
   const dispatch = useAppDispatch()
-
-  const DisplayEnemyDamage = (props: DisplayEnemy): JSX.Element => {
-    const { enemy } = props
-    if (enemy.isDamaged) {
-      return <span className='damage'>{enemy.damage < 0 ? "" : enemy.damage}</span>
-    } else {
-      return <span className='damage'></span>
-    }
-  }
 
   const DisplayChoiceEnemy = (props: ChoiceEnemy): JSX.Element => {
     const { enemyNumber } = props
@@ -47,18 +38,16 @@ const Enemy = (props: Props): JSX.Element => {
   }
 
   const enemyImageClick = (num: number): void => {
-    const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
-    enemiesObj.forEach(enemy => enemy.isDamaged = false)
     dispatch(setChoiceEnemyNumber(num))
+    dispatch(resetDamage())
     dispatch(resetPlayerDamage())
-    dispatch(updateEnemyStatus(enemiesObj))
   }
 
   return (
     <div>
       <DisplayChoiceEnemy enemyNumber={index} />
       <img src={enemyImg} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
-      <DisplayEnemyDamage enemy={enemy} />
+      <span className='damage' key={uuid()}>{enemy.damage < 0 ? "" : enemy.damage}</span>
       <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
       <Typography variant="subtitle1" component="div">
         {enemy.hp}/{enemy.maxHp}
