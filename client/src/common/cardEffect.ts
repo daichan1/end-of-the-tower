@@ -1,13 +1,12 @@
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { addBlock } from './battle'
 import { playerAttack, playerBlockAttack } from '../battle/player'
-import { damaged, setDamage } from '../battle/enemy'
+import { setDamage } from '../battle/enemy'
 
 export const oneAttack = (props: CardEffectProps): void => {
   if (props.type === "oneAttack") {
     const { player, enemy, card } = props
     const damage = playerAttack(player, enemy, card)
-    damaged(enemy)
     setDamage(enemy, damage)
   }
 }
@@ -17,7 +16,6 @@ export const allAttack = (props: CardEffectProps): void => {
     const { player, enemies, card } = props
     enemies.forEach(enemy => {
       const damage = playerAttack(player, enemy, card)
-      damaged(enemy)
       setDamage(enemy, damage)
     })
   }
@@ -34,7 +32,6 @@ export const oneAttackAndGuard = (props: CardEffectProps): void => {
   if (props.type === "oneAttack") {
     const { player, enemy, card } = props
     const damage = playerAttack(player, enemy, card)
-    damaged(enemy)
     setDamage(enemy, damage)
     addBlock(player, card.defense)
   }
@@ -45,7 +42,6 @@ export const oneAttackAndBlockAttack = (props: CardEffectProps): void => {
     const { player, enemy, card } = props
     playerBlockAttack(enemy, card)
     const damage = playerAttack(player, enemy, card)
-    damaged(enemy)
     setDamage(enemy, damage)
   }
 }
