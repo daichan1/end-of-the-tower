@@ -7,6 +7,7 @@ import { setCards } from './redux/slice/cardsSlice'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
+import Reward from './components/reward'
 
 const App = (): JSX.Element => {
   const dispatch = useAppDispatch()
@@ -43,6 +44,7 @@ const App = (): JSX.Element => {
       <GameTitle />
       <RootSelect />
       <Battle />
+      <Reward />
     </div>
   )
 }

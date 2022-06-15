@@ -1,7 +1,7 @@
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { setFightEnemies } from '../../redux/slice/fightEnemiesSlice'
 import { disableRootSelect } from '../../redux/slice/rootSelectSlice'
-import { displayBattle } from 'redux/slice/battleSlice'
+import { displayBattle } from '../../redux/slice/battleSlice'
 import { EnemyList } from '../../types/data/enemy'
 import { createEnemyList } from '../../data/enemyList'
 import '../../styles/root_select/style.scss'

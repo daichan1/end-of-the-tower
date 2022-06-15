@@ -8,13 +8,13 @@ import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import { updatePlayerStatus } from '../redux/slice/playerSlice'
 import { updateEnemyStatus, resetDamage } from '../redux/slice/fightEnemiesSlice'
 import { displayGameTitle } from '../redux/slice/gameTitleSlice'
-import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableBattle } from '../redux/slice/battleSlice'
 import { playerTurn } from '../redux/slice/turnSlice'
 import { setPlayerDamage, resetPlayerDamage } from '../redux/slice/playerDamageSlice'
 import { resetChoiceEnemyNumber } from '../redux/slice/choiceEnemySlice'
 import { drawButtonNotDisabled } from '../redux/slice/drawButtonSlice'
 import { incrementPlayerActionCount, resetPlayerActionCount } from '../redux/slice/playerActionCountSlice'
+import { displayReward, setDisplayRewardCards } from '../redux/slice/rewardSlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Player from './battle/player'
@@ -33,6 +33,7 @@ import {
   initialPlayerStatus, searchCardEffect
 } from '../battle/player'
 import { isExistEnemy } from '../battle/enemy'
+import { getDisplayRewardCards } from '../common/reward'
 import '../styles/battle/style.scss'
 
 const ENERGY_MAX = 3
@@ -62,6 +63,7 @@ const Battle = (): JSX.Element => {
   const choiceEnemyNumber = useAppSelector((state) => state.choiceEnemy)
   const drawButton = useAppSelector((state) => state.drawButton)
   const playerActionCount = useAppSelector((state) => state.playerActionCount)
+  const reward = useAppSelector((state) => state.reward)
   const dispatch = useAppDispatch()
 
   const handleOpen = (): void => setOpen(true)
@@ -202,8 +204,11 @@ const Battle = (): JSX.Element => {
     dispatch(resetChoiceEnemyNumber())
     setEnemyActionCount(0)
     setIsEnemyDefeated(false)
+    // 報酬のカードを設定
+    const rewardDisplayCards = getDisplayRewardCards(reward.cards)
+    dispatch(setDisplayRewardCards(rewardDisplayCards))
     dispatch(disableBattle())
-    dispatch(displayRootSelect())
+    dispatch(displayReward())
   }
 
   const lose = (playerObj: PlayerType): void => {

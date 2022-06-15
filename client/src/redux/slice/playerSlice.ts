@@ -36,6 +36,9 @@ export const playerSlice = createSlice({
     initialDeck: (state, action: PayloadAction<CardType[]>) => {
       state.deck = action.payload
     },
+    addCard: (state, action: PayloadAction<CardType>) => {
+      state.deck = state.deck.concat(action.payload)
+    },
     cardDraw: (state, action: PayloadAction<number>) => {
       state.deck.forEach((card, i) => {
         if (i < action.payload) {
@@ -60,6 +63,7 @@ export const playerSlice = createSlice({
 export const {
   setPlayer,
   initialDeck,
+  addCard,
   cardDraw,
   recoveryDeck,
   moveAllNameplateToCemetery,
