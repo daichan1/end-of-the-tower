@@ -84,10 +84,12 @@ export const initializeAttackerCards = (attackerCards: ResCard[]): CardType[] =>
   return resultCards
 }
 
-export const resCardToCardBase = (resCards: ResCard[]): CardBaseType[] => {
-  const resultCards: CardBaseType[] = []
+export const resCardToCard = (resCards: ResCard[]): CardType[] => {
+  const resultCards: CardType[] = []
   resCards.forEach(card => {
     resultCards.push({
+      // 型の統一を行うまでこのまま
+      id: 0,
       name: card.name,
       description: card.description,
       imageUrl: card.image_url,

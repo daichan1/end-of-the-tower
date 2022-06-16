@@ -25,7 +25,6 @@ import TurnEndButton from './battle/turnEndButton'
 import Deck from './battle/deck'
 import Cemetery from './battle/cemetery'
 import Card from '../components/battle/card'
-import ModalCard from '../components/battle/modalCard'
 import { sleep, isRemainsHp, calcDamage, subtractHp } from '../common/battle'
 import {
   isRemainsEnergy, recoveryEnergy, nextBattleUpdatePlayerStatus,
@@ -83,8 +82,10 @@ const Battle = (): JSX.Element => {
     return player.nameplate.map((card, index) =>
       <Grid item xs={1} key={index}>
         <Card
+          width={125}
+          height={175}
+          cssClass="nameplate"
           card={card}
-          isModal={false}
           clickCard={selectCard}
         />
       </Grid>
@@ -302,7 +303,10 @@ const Battle = (): JSX.Element => {
         aria-labelledby="modal-modal-title"
       >
         <div id='modal-modal-title'>
-          <ModalCard
+          <Card
+            width={150}
+            height={200}
+            cssClass="select-card"
             card={confirmCard}
             clickCard={actionCard}
           />

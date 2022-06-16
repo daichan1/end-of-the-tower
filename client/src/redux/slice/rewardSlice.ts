@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CardBaseType } from '../../types/model'
+import { CardType } from '../../types/model'
 
 type Reward = {
   disabled: boolean
-  displayCards: CardBaseType[]
-  cards: CardBaseType[]
+  displayCards: CardType[]
+  cards: CardType[]
 }
 
 const initialState: Reward = {
@@ -23,10 +23,10 @@ export const rewardSlice = createSlice({
     displayReward: (state) => {
       state.disabled = false
     },
-    setDisplayRewardCards: (state, action: PayloadAction<CardBaseType[]>) => {
+    setDisplayRewardCards: (state, action: PayloadAction<CardType[]>) => {
       state.displayCards = action.payload
     },
-    setRewardCards: (state, action: PayloadAction<CardBaseType[]>) => {
+    setRewardCards: (state, action: PayloadAction<CardType[]>) => {
       state.cards = action.payload
     }
   }
