@@ -10,10 +10,13 @@ const DrawButton = (): JSX.Element => {
 
   const onClickDraw = (): void => {
     const drawNum = 5
+    let nowNameplateLength = 0
     if (player.deck.length < drawNum) {
+      nowNameplateLength = player.deck.length
+      dispatch(cardDraw(player.deck.length))
       dispatch(recoveryDeck())
     }
-    dispatch(cardDraw(drawNum))
+    dispatch(cardDraw(drawNum - nowNameplateLength))
     dispatch(drawButtonDisabled())
   }
 
