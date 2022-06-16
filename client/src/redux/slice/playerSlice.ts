@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { PlayerType, CardType } from '../../types/model/index'
 import { ResPlayer } from '../../types/api/response'
-import { deckShuffle } from '../../common/battle'
+import { cardsShuffle } from '../../common/battle'
 
 // Stateの初期値
 const initialState: PlayerType = {
@@ -38,7 +38,7 @@ export const playerSlice = createSlice({
     },
     addCard: (state, action: PayloadAction<CardType>) => {
       state.deck = state.deck.concat(action.payload)
-      state.deck = deckShuffle(state.deck)
+      state.deck = cardsShuffle(state.deck)
     },
     cardDraw: (state, action: PayloadAction<number>) => {
       state.deck.forEach((card, i) => {
@@ -50,7 +50,7 @@ export const playerSlice = createSlice({
     },
     recoveryDeck: (state) => {
       state.deck = state.deck.concat(state.cemetery)
-      state.deck = deckShuffle(state.deck)
+      state.deck = cardsShuffle(state.deck)
       state.cemetery = []
     },
     moveAllNameplateToCemetery: (state) => {

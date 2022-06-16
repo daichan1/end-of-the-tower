@@ -14,7 +14,7 @@ import { disableGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { setRewardCards } from '../redux/slice/rewardSlice'
 import { initializeAllPlayerCards, initializeAttackerCards, resCardToCard } from '../battle/deck'
-import { deckShuffle } from '../common/battle'
+import { cardsShuffle } from '../common/battle'
 import playerImg from '../images/player.png'
 import '../styles/battle/style.scss'
 import '../styles/gameTitle/style.scss'
@@ -67,7 +67,7 @@ const GameTitle = (): JSX.Element => {
       const defaultAttackerCards = initializeAttackerCards(resPlayerCards.cards)
       const attackerCards = resCardToCard(resPlayerCards.cards)
       let defaultDeck = allPlayerCards.concat(defaultAttackerCards)
-      defaultDeck = deckShuffle(defaultDeck)
+      defaultDeck = cardsShuffle(defaultDeck)
       dispatch(setRewardCards(attackerCards))
       dispatch(setPlayer(resPlayerCards.player))
       dispatch(initialDeck(defaultDeck))
