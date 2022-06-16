@@ -44,8 +44,8 @@ const Reward = (): JSX.Element => {
     return reward.displayCards.map((card, index) =>
       <Grid item xs={4} key={index}>
         <Card
-          width={125}
-          height={175}
+          width={150}
+          height={200}
           cssClass="reward-card"
           card={card}
           clickCard={selectCard}
@@ -77,8 +77,8 @@ const Reward = (): JSX.Element => {
   const ModalRewardCard = (): JSX.Element => {
     return (
       <Card
-          width={125}
-          height={175}
+          width={200}
+          height={250}
           cssClass="modal-reward-card"
           card={rewardCard}
           clickCard={addRewardCard}
