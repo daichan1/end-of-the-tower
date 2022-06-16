@@ -10,14 +10,14 @@ export const hpAdjustment = (value: number, maxHp: number, minHp: number): numbe
   return ((value - minHp) * 100) / (maxHp - minHp)
 }
 
-export const deckShuffle = (deck: CardType[]): CardType[] => {
-  for (let i = deck.length - 1; i > 0; i--) {
+export const cardsShuffle = (cards: CardType[]): CardType[] => {
+  for (let i = cards.length - 1; i > 0; i--) {
     const r = Math.floor(Math.random() * (i + 1))
-    const tmp = deck[i]
-    deck[i] = deck[r]
-    deck[r] = tmp
+    const tmp = cards[i]
+    cards[i] = cards[r]
+    cards[r] = tmp
   }
-  return deck
+  return cards
 }
 
 export const isRemainsHp = (character: PlayerType | EnemyType): boolean => {
