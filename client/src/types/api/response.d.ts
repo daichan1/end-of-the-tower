@@ -18,6 +18,7 @@ export type ResEnemies = {
 }
 
 export type ResCard = {
+  id: number
   name: string
   description: string
   image_url: string

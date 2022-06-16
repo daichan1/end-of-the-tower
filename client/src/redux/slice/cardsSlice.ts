@@ -13,7 +13,7 @@ export const cardsSlice = createSlice({
     setCards: (state, action: PayloadAction<ResCard[]>) => {
       action.payload.forEach((resCard) => {
         const card: CardType = {
-          id: 0,
+          id: resCard.id,
           name: resCard.name,
           description: resCard.description,
           imageUrl: resCard.image_url,
