@@ -38,6 +38,7 @@ export const playerSlice = createSlice({
     },
     addCard: (state, action: PayloadAction<CardType>) => {
       state.deck = state.deck.concat(action.payload)
+      state.deck = deckShuffle(state.deck)
     },
     cardDraw: (state, action: PayloadAction<number>) => {
       state.deck.forEach((card, i) => {
