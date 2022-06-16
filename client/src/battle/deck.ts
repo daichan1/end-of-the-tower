@@ -88,8 +88,7 @@ export const resCardToCard = (resCards: ResCard[]): CardType[] => {
   const resultCards: CardType[] = []
   resCards.forEach(card => {
     resultCards.push({
-      // 型の統一を行うまでこのまま
-      id: 0,
+      id: card.id,
       name: card.name,
       description: card.description,
       imageUrl: card.image_url,
