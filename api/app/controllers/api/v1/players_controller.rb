@@ -10,6 +10,7 @@ class Api::V1::PlayersController < ApplicationController
     effect_types = EffectType.all
     card_result = cards.map { |card|
       {
+        id: card.id,
         name: card.name,
         description: card.description,
         image_url: card.image_url,

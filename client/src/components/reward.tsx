@@ -1,44 +1,21 @@
 import { useState } from 'react'
-import { styled } from '@mui/material/styles'
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 import Container from '@mui/material/Container'
-import Avatar from '@mui/material/Avatar'
 import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
-import MuiCard from '@mui/material/Card'
-import CardHeader from '@mui/material/CardHeader'
-import CardMedia from '@mui/material/CardMedia'
-import CardContent from '@mui/material/CardContent'
-import { CardType, CardBaseType } from '../types/model'
+import { CardType } from '../types/model'
+import Card from '../components/battle/card'
 import { addCard } from '../redux/slice/playerSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableReward } from '../redux/slice/rewardSlice'
-import playerImg from '../images/player.png'
 import '../styles/reward/style.scss'
-
-const CustomMuiCard = styled(MuiCard)({
-  width: 125,
-  height: 175,
-  margin: "0 auto"
-})
-
-const CustomCardHeader = styled(CardHeader)({
-  color: "white",
-  backgroundColor: "black",
-  height: 30
-})
-
-const CardCost = styled(Avatar)({
-  width: 20,
-  height: 20,
-  backgroundColor: "#42a5f5"
-})
 
 const Reward = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
-  const [rewardCard, setRewardCard] = useState<CardBaseType>({
+  const [rewardCard, setRewardCard] = useState<CardType>({
+    id: 0,
     name: "",
     description: "",
     imageUrl: "",
@@ -58,7 +35,7 @@ const Reward = (): JSX.Element => {
   const handleOpen = (): void => setOpen(true)
   const handleClose = (): void => setOpen(false)
 
-  const selectCard = (card: CardBaseType): void => {
+  const selectCard = (card: CardType): void => {
     setRewardCard(card)
     handleOpen()
   }
@@ -66,25 +43,13 @@ const Reward = (): JSX.Element => {
   const displayRewardCards = (): JSX.Element[] => {
     return reward.displayCards.map((card, index) =>
       <Grid item xs={4} key={index}>
-        <CustomMuiCard onClick={() => selectCard(card)}>
-          <CustomCardHeader
-            disableTypography
-            subheader={<Typography variant="body2">{card.name}</Typography>}
-            sx={{ padding: 1 }}
-            avatar={<CardCost>{card.cost}</CardCost>}
-          />
-          <CardMedia
-            component="img"
-            height="55"
-            image={playerImg}
-            alt="カード"
-          />
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              {card.description}
-            </Typography>
-          </CardContent>
-        </CustomMuiCard>
+        <Card
+          width={125}
+          height={175}
+          cssClass="reward-card"
+          card={card}
+          clickCard={selectCard}
+        />
       </Grid>
     )
   }
@@ -111,25 +76,13 @@ const Reward = (): JSX.Element => {
 
   const ModalRewardCard = (): JSX.Element => {
     return (
-      <CustomMuiCard onClick={() => addRewardCard()} className="modal-reward-card">
-        <CustomCardHeader
-          disableTypography
-          subheader={<Typography variant="body2">{rewardCard.name}</Typography>}
-          sx={{ padding: 1 }}
-          avatar={<CardCost>{rewardCard.cost}</CardCost>}
+      <Card
+          width={125}
+          height={175}
+          cssClass="modal-reward-card"
+          card={rewardCard}
+          clickCard={addRewardCard}
         />
-        <CardMedia
-          component="img"
-          height="55"
-          image={playerImg}
-          alt="カード"
-        />
-        <CardContent>
-          <Typography variant="body2" color="text.secondary">
-            {rewardCard.description}
-          </Typography>
-        </CardContent>
-      </CustomMuiCard>
     )
   }
 
