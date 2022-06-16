@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { CardBaseType } from '../../types/model/index'
+import { CardType } from '../../types/model/index'
 import { ResCard } from '../../types/api/response'
 
 // Stateの初期値
-const initialState: CardBaseType[] = []
+const initialState: CardType[] = []
 
 // State, Action, Reducersの管理
 export const cardsSlice = createSlice({
@@ -12,7 +12,8 @@ export const cardsSlice = createSlice({
   reducers: {
     setCards: (state, action: PayloadAction<ResCard[]>) => {
       action.payload.forEach((resCard) => {
-        const card: CardBaseType = {
+        const card: CardType = {
+          id: 0,
           name: resCard.name,
           description: resCard.description,
           imageUrl: resCard.image_url,

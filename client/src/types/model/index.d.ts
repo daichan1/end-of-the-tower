@@ -23,19 +23,6 @@ export type PlayerType = {
   cemetery: CardType[]
 }
 
-export type CardBaseType = {
-  name: string
-  description: string
-  imageUrl: string
-  cost: number
-  cardType: string
-  attack: number
-  defense: number
-  actionName: string
-  executionCount: number
-  effectType: string
-}
-
 export type CardType = {
   id: number
   name: string
