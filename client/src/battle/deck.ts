@@ -1,11 +1,11 @@
-import { CardBaseType, CardType } from '../types/model/index'
+import { CardType } from '../types/model/index'
 import { ResCard } from '../types/api/response'
 
-export const initializeAllPlayerCards = (cardList: CardBaseType[]): CardType[] => {
+export const initializeAllPlayerCards = (cardList: CardType[]): CardType[] => {
   const defaultDeck: CardType[] = []
   let cardId = 1
-  const strike: CardBaseType | undefined = cardList.find((card: CardBaseType) => card.name === "ストライク")
-  const protection: CardBaseType | undefined = cardList.find((card: CardBaseType) => card.name === "ぼうぎょ")
+  const strike: CardType | undefined = cardList.find((card: CardType) => card.name === "ストライク")
+  const protection: CardType | undefined = cardList.find((card: CardType) => card.name === "ぼうぎょ")
   if (strike !== undefined) {
     for (let i = 0; i < 4; i++) {
       defaultDeck.push({
