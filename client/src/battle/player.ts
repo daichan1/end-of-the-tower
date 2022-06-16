@@ -48,6 +48,8 @@ export const moveUsedCardToCemetery = (player: PlayerType, card: CardType): void
 
 export const nextBattleUpdatePlayerStatus = (player: PlayerType): void => {
   player.stage += 1
+  player.attack = 0
+  resetDefense(player)
   recoveryEnergy(player, 3)
   returnCardToDeck(player)
 }
