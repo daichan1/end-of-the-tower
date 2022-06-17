@@ -1,6 +1,7 @@
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { cardEffect } from '../types/battle/cardEffect'
 import { strike, scorpion, moleclaw, mantis, sword, raygust, thruster } from './cardEffect/attack'
+import { asteroid, meteora, viper, hound, grenade } from './cardEffect/shooter/attack'
 import { protection } from './cardEffect/skill'
 
 export const cardEffectList: cardEffect[] = [
@@ -35,5 +36,25 @@ export const cardEffectList: cardEffect[] = [
   {
     name: "thruster",
     execution: (props: CardEffectProps): void => thruster(props)
+  },
+  {
+    name: "asteroid",
+    execution: (props: CardEffectProps): void => asteroid(props)
+  },
+  {
+    name: "meteora",
+    execution: (props: CardEffectProps): void => meteora(props)
+  },
+  {
+    name: "viper",
+    execution: (props: CardEffectProps): void => viper(props)
+  },
+  {
+    name: "hound",
+    execution: (props: CardEffectProps): void => hound(props)
+  },
+  {
+    name: "grenade",
+    execution: (props: CardEffectProps): void => grenade(props)
   }
 ]

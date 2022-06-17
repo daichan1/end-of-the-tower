@@ -1,12 +1,20 @@
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { addBlock } from './battle'
-import { playerAttack, playerBlockAttack } from '../battle/player'
+import { playerAttack, randomPlayerAttack, playerBlockAttack } from '../battle/player'
 import { setDamage } from '../battle/enemy'
 
 export const oneAttack = (props: CardEffectProps): void => {
   if (props.type === "oneAttack") {
     const { player, enemy, card } = props
     const damage = playerAttack(player, enemy, card)
+    setDamage(enemy, damage)
+  }
+}
+
+export const randomOneAttack = (props: CardEffectProps): void => {
+  if (props.type === "oneAttack") {
+    const { player, enemy, card } = props
+    const damage = randomPlayerAttack(player, enemy, card)
     setDamage(enemy, damage)
   }
 }
