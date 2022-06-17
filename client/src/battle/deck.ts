@@ -56,6 +56,9 @@ export const initializePlayerUniqueCards = (player: ResPlayer, playerUniqueCards
   } else if (player.name === "シューター") {
     firstUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "アステロイド")
     secondUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "グレネード")
+  } else if (player.name === "スナイパー") {
+    firstUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "イーグレッド")
+    secondUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "ライトニング")
   }
 
   if (firstUniqueCard !== undefined) {

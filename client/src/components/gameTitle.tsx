@@ -126,6 +126,17 @@ const GameTitle = (): JSX.Element => {
                     シューター
                   </Button>
                 </Grid>
+                <Grid item xs={4} className='player'>
+                  <div>
+                    <img src={playerImg} alt="スナイパー" className='player-img' />
+                  </div>
+                  <Button
+                    variant="contained"
+                    onClick={() => gameStart(4)}
+                  >
+                    スナイパー
+                  </Button>
+                </Grid>
               </Grid>
             </ModalMuiCardContent>
           </ModalMuiCard>
