@@ -4,6 +4,7 @@ import { strike } from './all/attack'
 import { protection } from './all/skill'
 import { scorpion, moleclaw, mantis, sword, raygust, thruster } from './attacker/attack'
 import { asteroid, meteora, viper, hound, grenade } from './shooter/attack'
+import { eagred, lightning, ibis } from './sniper/attack'
 
 export const cardEffectList: cardEffect[] = [
   {
@@ -57,5 +58,17 @@ export const cardEffectList: cardEffect[] = [
   {
     name: "grenade",
     execution: (props: CardEffectProps): void => grenade(props)
+  },
+  {
+    name: "eagred",
+    execution: (props: CardEffectProps): void => eagred(props)
+  },
+  {
+    name: "lightning",
+    execution: (props: CardEffectProps): void => lightning(props)
+  },
+  {
+    name: "ibis",
+    execution: (props: CardEffectProps): void => ibis(props)
   }
 ]
