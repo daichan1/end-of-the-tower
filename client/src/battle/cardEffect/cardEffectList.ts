@@ -1,8 +1,9 @@
-import { CardEffectProps } from '../types/battle/cardEffect'
-import { cardEffect } from '../types/battle/cardEffect'
-import { strike, scorpion, moleclaw, mantis, sword, raygust, thruster } from './cardEffect/attack'
-import { asteroid, meteora, viper, hound, grenade } from './cardEffect/shooter/attack'
-import { protection } from './cardEffect/skill'
+import { CardEffectProps } from '../../types/battle/cardEffect'
+import { cardEffect } from '../../types/battle/cardEffect'
+import { strike } from './all/attack'
+import { protection } from './all/skill'
+import { scorpion, moleclaw, mantis, sword, raygust, thruster } from './attacker/attack'
+import { asteroid, meteora, viper, hound, grenade } from './shooter/attack'
 
 export const cardEffectList: cardEffect[] = [
   {

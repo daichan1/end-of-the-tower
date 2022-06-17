@@ -1,6 +1,6 @@
 import { PlayerType, EnemyType, CardType } from '../types/model/index'
 import { cardEffect } from '../types/battle/cardEffect'
-import { cardEffectList } from './cardEffectList'
+import { cardEffectList } from './cardEffect/cardEffectList'
 import { calcDamage, subtractHp, calcBlockDamage } from '../common/battle'
 
 export const playerAttack = (player: PlayerType, enemy: EnemyType, card: CardType): number => {
