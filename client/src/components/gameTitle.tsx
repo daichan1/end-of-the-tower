@@ -13,10 +13,9 @@ import { setPlayer, initialDeck } from '../redux/slice/playerSlice'
 import { disableGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { setRewardCards } from '../redux/slice/rewardSlice'
-import { initializeAllPlayerCards, initializeAttackerCards, resCardToCard } from '../battle/deck'
+import { initializeAllPlayerCards, initializePlayerUniqueCards, resCardToCard } from '../battle/deck'
 import { cardsShuffle } from '../common/battle'
 import playerImg from '../images/player.png'
-import '../styles/battle/style.scss'
 import '../styles/gameTitle/style.scss'
 
 const ModalMuiCard = styled(MuiCard)({
@@ -62,14 +61,14 @@ const GameTitle = (): JSX.Element => {
   const getPlayer = async (playerId: number): Promise<void> => {
     await axiosClient.get(`/v1/players/${playerId}`)
     .then(res => {
-      const resPlayerCards: ResPlayerCards = res.data
+      const resData: ResPlayerCards = res.data
       const allPlayerCards = initializeAllPlayerCards(cards)
-      const defaultAttackerCards = initializeAttackerCards(resPlayerCards.cards)
-      const attackerCards = resCardToCard(resPlayerCards.cards)
-      let defaultDeck = allPlayerCards.concat(defaultAttackerCards)
+      const defaultPlayerUniqueCards = initializePlayerUniqueCards(resData.player ,resData.cards)
+      const playerUniqueCards = resCardToCard(resData.cards)
+      let defaultDeck = allPlayerCards.concat(defaultPlayerUniqueCards)
       defaultDeck = cardsShuffle(defaultDeck)
-      dispatch(setRewardCards(attackerCards))
-      dispatch(setPlayer(resPlayerCards.player))
+      dispatch(setRewardCards(playerUniqueCards))
+      dispatch(setPlayer(resData.player))
       dispatch(initialDeck(defaultDeck))
     })
     .catch(error => {
@@ -105,8 +104,8 @@ const GameTitle = (): JSX.Element => {
             <ModalMuiCardHeader title="キャラクターを選択してください" />
             <ModalMuiCardContent>
               <Grid container justifyContent="center">
-                <Grid item>
-                  <div className='attacker'>
+                <Grid item xs={4} className='player'>
+                  <div>
                     <img src={playerImg} alt="アタッカー" className='player-img' />
                   </div>
                   <Button
@@ -114,6 +113,17 @@ const GameTitle = (): JSX.Element => {
                     onClick={() => gameStart(2)}
                   >
                     アタッカー
+                  </Button>
+                </Grid>
+                <Grid item xs={4} className='player'>
+                  <div>
+                    <img src={playerImg} alt="シューター" className='player-img' />
+                  </div>
+                  <Button
+                    variant="contained"
+                    onClick={() => gameStart(3)}
+                  >
+                    シューター
                   </Button>
                 </Grid>
               </Grid>

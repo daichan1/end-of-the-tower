@@ -1,5 +1,5 @@
 import { CardType } from '../types/model/index'
-import { ResCard } from '../types/api/response'
+import { ResCard, ResPlayer } from '../types/api/response'
 
 export const initializeAllPlayerCards = (cardList: CardType[]): CardType[] => {
   const defaultDeck: CardType[] = []
@@ -45,40 +45,48 @@ export const initializeAllPlayerCards = (cardList: CardType[]): CardType[] => {
   return defaultDeck
 }
 
-export const initializeAttackerCards = (attackerCards: ResCard[]): CardType[] => {
+export const initializePlayerUniqueCards = (player: ResPlayer, playerUniqueCards: ResCard[]): CardType[] => {
   const resultCards: CardType[] = []
+  let firstUniqueCard: ResCard | undefined = undefined
+  let secondUniqueCard: ResCard | undefined = undefined
   let cardId = 9
-  const scorpion: ResCard | undefined = attackerCards.find((card: ResCard) => card.name === "スコーピオン")
-  const moleclaw: ResCard | undefined = attackerCards.find((card: ResCard) => card.name === "モールクロー")
-  if (scorpion !== undefined) {
+  if (player.name === "アタッカー") {
+    firstUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "スコーピオン")
+    secondUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "モールクロー")
+  } else if (player.name === "シューター") {
+    firstUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "アステロイド")
+    secondUniqueCard = playerUniqueCards.find((card: ResCard) => card.name === "グレネード")
+  }
+
+  if (firstUniqueCard !== undefined) {
     resultCards.push({
       id: cardId,
-      name: scorpion.name,
-      description: scorpion.description,
-      imageUrl: scorpion.image_url,
-      cost: scorpion.cost,
-      cardType: scorpion.card_type,
-      attack: scorpion.attack,
-      defense: scorpion.defense,
-      actionName: scorpion.action_name,
-      executionCount: scorpion.execution_count,
-      effectType: scorpion.effect_type
+      name: firstUniqueCard.name,
+      description: firstUniqueCard.description,
+      imageUrl: firstUniqueCard.image_url,
+      cost: firstUniqueCard.cost,
+      cardType: firstUniqueCard.card_type,
+      attack: firstUniqueCard.attack,
+      defense: firstUniqueCard.defense,
+      actionName: firstUniqueCard.action_name,
+      executionCount: firstUniqueCard.execution_count,
+      effectType: firstUniqueCard.effect_type
     })
     cardId += 1
   }
-  if (moleclaw !== undefined) {
+  if (secondUniqueCard !== undefined) {
     resultCards.push({
       id: cardId,
-      name: moleclaw.name,
-      description: moleclaw.description,
-      imageUrl: moleclaw.image_url,
-      cost: moleclaw.cost,
-      cardType: moleclaw.card_type,
-      attack: moleclaw.attack,
-      defense: moleclaw.defense,
-      actionName: moleclaw.action_name,
-      executionCount: moleclaw.execution_count,
-      effectType: moleclaw.effect_type
+      name: secondUniqueCard.name,
+      description: secondUniqueCard.description,
+      imageUrl: secondUniqueCard.image_url,
+      cost: secondUniqueCard.cost,
+      cardType: secondUniqueCard.card_type,
+      attack: secondUniqueCard.attack,
+      defense: secondUniqueCard.defense,
+      actionName: secondUniqueCard.action_name,
+      executionCount: secondUniqueCard.execution_count,
+      effectType: secondUniqueCard.effect_type
     })
   }
   return resultCards
