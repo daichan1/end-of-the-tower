@@ -1,9 +1,5 @@
-import { CardEffectProps } from '../../types/battle/cardEffect'
-import { oneAttack, allAttack, oneAttackAndGuard, oneAttackAndBlockAttack } from '../../common/cardEffect'
-
-export const strike = (props: CardEffectProps): void => {
-  oneAttack(props)
-}
+import { CardEffectProps } from '../../../types/battle/cardEffect'
+import { oneAttack, allAttack, oneAttackAndGuard, oneAttackAndBlockAttack } from '../../../common/cardEffect'
 
 export const scorpion = (props: CardEffectProps): void => {
   oneAttack(props)
