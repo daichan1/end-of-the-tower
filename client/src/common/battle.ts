@@ -1,9 +1,5 @@
 import { PlayerType, EnemyType, CardType } from '../types/model'
 
-export const addBlock = (character: PlayerType | EnemyType, defense: number): void => {
-  character.defense += defense
-}
-
 export const sleep = (msec: number) => new Promise(resolve => setTimeout(resolve, msec))
 
 export const hpAdjustment = (value: number, maxHp: number, minHp: number): number => {
