@@ -1,6 +1,11 @@
 import { CardEffectProps } from '../../../types/battle/cardEffect'
-import { oneAttack } from '../../../common/cardEffect'
+import { playerAttack } from '../../../battle/player'
+import { setDamage } from '../../../battle/enemy'
 
 export const strike = (props: CardEffectProps): void => {
-  oneAttack(props)
+  if (props.type === "oneAttack") {
+    const { player, enemy, card } = props
+    const damage = playerAttack(player, enemy, card)
+    setDamage(enemy, damage)
+  }
 }

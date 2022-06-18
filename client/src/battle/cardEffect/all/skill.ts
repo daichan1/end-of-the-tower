@@ -1,9 +1,11 @@
 import { CardEffectProps } from '../../../types/battle/cardEffect'
-import { guard, cardDraw } from '../../../common/cardEffect'
-import { addBlock } from '../../../common/battle'
+import { cardDraw, addBlock } from '../../../common/cardEffect'
 
 export const protection = (props: CardEffectProps): void => {
-  guard(props)
+  if (props.type === "guard") {
+    const { player, card } = props
+    addBlock(player, card.defense)
+  }
 }
 
 export const escudo = (props: CardEffectProps): void => {

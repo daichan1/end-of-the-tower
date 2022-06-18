@@ -1,22 +1,45 @@
 import { CardEffectProps } from '../../../types/battle/cardEffect'
-import { oneAttack, randomOneAttack, allAttack } from '../../../common/cardEffect'
+import { playerAttack, randomPlayerAttack } from '../../../battle/player'
+import { setDamage } from '../../../battle/enemy'
 
 export const asteroid = (props: CardEffectProps): void => {
-  randomOneAttack(props)
+  if (props.type === "oneAttack") {
+    const { player, enemy, card } = props
+    const damage = randomPlayerAttack(player, enemy, card)
+    setDamage(enemy, damage)
+  }
 }
 
 export const meteora = (props: CardEffectProps): void => {
-  oneAttack(props)
+  if (props.type === "oneAttack") {
+    const { player, enemy, card } = props
+    const damage = playerAttack(player, enemy, card)
+    setDamage(enemy, damage)
+  }
 }
 
 export const viper = (props: CardEffectProps): void => {
-  randomOneAttack(props)
+  if (props.type === "oneAttack") {
+    const { player, enemy, card } = props
+    const damage = randomPlayerAttack(player, enemy, card)
+    setDamage(enemy, damage)
+  }
 }
 
 export const hound = (props: CardEffectProps): void => {
-  oneAttack(props)
+  if (props.type === "oneAttack") {
+    const { player, enemy, card } = props
+    const damage = playerAttack(player, enemy, card)
+    setDamage(enemy, damage)
+  }
 }
 
 export const grenade = (props: CardEffectProps): void => {
-  allAttack(props)
+  if (props.type === "allAttack") {
+    const { player, enemies, card } = props
+    enemies.forEach(enemy => {
+      const damage = playerAttack(player, enemy, card)
+      setDamage(enemy, damage)
+    })
+  }
 }
