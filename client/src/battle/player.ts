@@ -1,26 +1,6 @@
-import { PlayerType, EnemyType, CardType } from '../types/model/index'
+import { PlayerType, CardType } from '../types/model/index'
 import { cardEffect } from '../types/battle/cardEffect'
 import { cardEffectList } from './cardEffect/cardEffectList'
-import { calcDamage, subtractHp, calcBlockDamage } from '../common/battle'
-
-export const playerAttack = (player: PlayerType, enemy: EnemyType, card: CardType): number => {
-  const attack = player.attack + card.attack
-  const damage = calcDamage(enemy, attack)
-  subtractHp(enemy, damage)
-  return damage
-}
-
-export const randomPlayerAttack = (player: PlayerType, enemy: EnemyType, card: CardType): number => {
-  const max = Number(card.description.split('~')[1].substring(0, 1)) + 1
-  const attack = player.attack + Math.floor(Math.random() * (max - card.attack) + card.attack)
-  const damage = calcDamage(enemy, attack)
-  subtractHp(enemy, damage)
-  return damage
-}
-
-export const playerBlockAttack = (enemy: EnemyType, card: CardType): void => {
-  calcBlockDamage(enemy, card.attack)
-}
 
 export const searchCardEffect = (actionName: string): cardEffect | null => {
   const cardEffectObj = cardEffectList.find(item => item.name === actionName)
