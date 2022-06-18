@@ -94,23 +94,3 @@ export const initializePlayerUniqueCards = (player: ResPlayer, playerUniqueCards
   }
   return resultCards
 }
-
-export const resCardToCard = (resCards: ResCard[]): CardType[] => {
-  const resultCards: CardType[] = []
-  resCards.forEach(card => {
-    resultCards.push({
-      id: card.id,
-      name: card.name,
-      description: card.description,
-      imageUrl: card.image_url,
-      cost: card.cost,
-      cardType: card.card_type,
-      attack: card.attack,
-      defense: card.defense,
-      actionName: card.action_name,
-      executionCount: card.execution_count,
-      effectType: card.effect_type
-    })
-  })
-  return resultCards
-}

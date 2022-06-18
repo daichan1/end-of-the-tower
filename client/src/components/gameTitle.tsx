@@ -13,7 +13,8 @@ import { setPlayer, initialDeck } from '../redux/slice/playerSlice'
 import { disableGameTitle } from '../redux/slice/gameTitleSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { setRewardCards } from '../redux/slice/rewardSlice'
-import { initializeAllPlayerCards, initializePlayerUniqueCards, resCardToCard } from '../battle/deck'
+import { resCardToCard, getAllPlayerRewardCards } from '../common/reward'
+import { initializeAllPlayerCards, initializePlayerUniqueCards } from '../battle/deck'
 import { cardsShuffle } from '../common/battle'
 import playerImg from '../images/player.png'
 import '../styles/gameTitle/style.scss'
@@ -62,12 +63,14 @@ const GameTitle = (): JSX.Element => {
     await axiosClient.get(`/v1/players/${playerId}`)
     .then(res => {
       const resData: ResPlayerCards = res.data
-      const allPlayerCards = initializeAllPlayerCards(cards)
+      const defaultAllPlayerCards = initializeAllPlayerCards(cards)
       const defaultPlayerUniqueCards = initializePlayerUniqueCards(resData.player ,resData.cards)
+      const allPlayerRewardCards = getAllPlayerRewardCards(cards)
       const playerUniqueCards = resCardToCard(resData.cards)
-      let defaultDeck = allPlayerCards.concat(defaultPlayerUniqueCards)
+      let defaultDeck = defaultAllPlayerCards.concat(defaultPlayerUniqueCards)
       defaultDeck = cardsShuffle(defaultDeck)
-      dispatch(setRewardCards(playerUniqueCards))
+      const rewardCards = allPlayerRewardCards.concat(playerUniqueCards)
+      dispatch(setRewardCards(rewardCards))
       dispatch(setPlayer(resData.player))
       dispatch(initialDeck(defaultDeck))
     })
