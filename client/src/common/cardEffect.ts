@@ -1,3 +1,4 @@
+import { PlayerType } from '../types/model'
 import { CardEffectProps } from '../types/battle/cardEffect'
 import { addBlock } from './battle'
 import { playerAttack, randomPlayerAttack, playerBlockAttack } from '../battle/player'
@@ -52,4 +53,11 @@ export const oneAttackAndBlockAttack = (props: CardEffectProps): void => {
     const damage = playerAttack(player, enemy, card)
     setDamage(enemy, damage)
   }
+}
+
+export const cardDraw = (player: PlayerType, num: number): void => {
+  player.deck.forEach((card, i) => {
+    if (i < num) { player.nameplate.push(card) }
+  })
+  player.deck.splice(0, num)
 }
