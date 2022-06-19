@@ -42,7 +42,9 @@ namespace :create_record do
           image_url: data['image_url'],
           hp: data['hp'],
           attack: data['attack'],
-          defense: data['defense']
+          defense: data['defense'],
+          floor_number: data['floor_number'],
+          is_boss: data['is_boss']
         )
         enemy.save!
       end
