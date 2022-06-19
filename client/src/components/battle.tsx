@@ -15,6 +15,7 @@ import { resetChoiceEnemyNumber } from '../redux/slice/choiceEnemySlice'
 import { drawButtonNotDisabled } from '../redux/slice/drawButtonSlice'
 import { incrementPlayerActionCount, resetPlayerActionCount } from '../redux/slice/playerActionCountSlice'
 import { displayReward, setDisplayRewardCards } from '../redux/slice/rewardSlice'
+import { enemyDefeated, notEnemyDefeated } from '../redux/slice/enemyDefeatedSlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Player from './battle/player'
@@ -40,7 +41,6 @@ const ENERGY_MAX = 3
 const Battle = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
   const [enemyActionCount, setEnemyActionCount] = useState<number>(0)
-  const [isEnemyDefeated, setIsEnemyDefeated] = useState<boolean>(false)
   const [confirmCard, setConfirmCard] = useState<CardType>({
     id: 0,
     name: "",
@@ -63,6 +63,7 @@ const Battle = (): JSX.Element => {
   const drawButton = useAppSelector((state) => state.drawButton)
   const playerActionCount = useAppSelector((state) => state.playerActionCount)
   const reward = useAppSelector((state) => state.reward)
+  const isEnemyDefeated = useAppSelector((state) => state.enemyDefeated)
   const dispatch = useAppDispatch()
 
   const handleOpen = (): void => setOpen(true)
@@ -96,6 +97,7 @@ const Battle = (): JSX.Element => {
     setConfirmCard(card)
     dispatch(resetDamage())
     dispatch(resetPlayerActionCount())
+    dispatch(notEnemyDefeated())
     handleOpen()
   }
 
@@ -114,7 +116,7 @@ const Battle = (): JSX.Element => {
       enemiesObj.forEach(enemy => {
         if (!isRemainsHp(enemy)) {
           enemiesObj = enemiesObj.filter(enemy => enemy.hp > 0)
-          setIsEnemyDefeated(true)
+          dispatch(enemyDefeated())
           dispatch(resetChoiceEnemyNumber())
         }
       })
@@ -204,7 +206,6 @@ const Battle = (): JSX.Element => {
     dispatch(resetPlayerActionCount())
     dispatch(resetChoiceEnemyNumber())
     setEnemyActionCount(0)
-    setIsEnemyDefeated(false)
     // 報酬のカードを設定
     const rewardDisplayCards = getDisplayRewardCards(reward.cards)
     dispatch(setDisplayRewardCards(rewardDisplayCards))
@@ -244,7 +245,7 @@ const Battle = (): JSX.Element => {
     // 連続攻撃2回目以降のアクション
     async function continueAction() {
       if (isEnemyDefeated) {
-        setIsEnemyDefeated(false)
+        dispatch(notEnemyDefeated())
       } else {
         await sleep(500)
         actionCard(confirmCard)
