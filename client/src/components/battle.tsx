@@ -165,7 +165,7 @@ const Battle = (): JSX.Element => {
   }
 
   const enemyAction = async (): Promise<void> => {
-    await sleep(2000)
+    await sleep(1000)
     const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
     const enemiesObj: EnemyType[] = JSON.parse(JSON.stringify(fightEnemies))
     const damage = calcDamage(playerObj, enemiesObj[enemyActionCount].attack)
@@ -246,7 +246,7 @@ const Battle = (): JSX.Element => {
       if (isEnemyDefeated) {
         setIsEnemyDefeated(false)
       } else {
-        await sleep(1000)
+        await sleep(500)
         actionCard(confirmCard)
       }
     }
