@@ -4,4 +4,6 @@ class Enemy < ActiveRecord::Base
   validates :hp, presence: true
   validates :attack, presence: true
   validates :defense, presence: true
+  validates :floor_number, presence: true
+  validates :is_boss, presence: true
 end
