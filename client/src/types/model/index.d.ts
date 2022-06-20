@@ -7,6 +7,8 @@ export type EnemyType = {
   attack: number
   defense: number
   damage: number
+  floorNumber: number
+  isBoss: boolean
 }
 
 export type PlayerType = {

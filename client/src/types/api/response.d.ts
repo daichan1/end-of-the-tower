@@ -15,6 +15,8 @@ export type ResEnemies = {
   hp: number
   attack: number
   defense: number
+  floor_number: number
+  is_boss: boolean
 }
 
 export type ResCard = {
