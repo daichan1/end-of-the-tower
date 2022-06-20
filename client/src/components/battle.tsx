@@ -16,6 +16,7 @@ import { drawButtonNotDisabled } from '../redux/slice/drawButtonSlice'
 import { incrementPlayerActionCount, resetPlayerActionCount } from '../redux/slice/playerActionCountSlice'
 import { displayReward, setDisplayRewardCards } from '../redux/slice/rewardSlice'
 import { enemyDefeated, notEnemyDefeated } from '../redux/slice/enemyDefeatedSlice'
+import { resetFloor } from '../redux/slice/floorSlice'
 import Header from './battle/header'
 import DisplayTurn from './battle/displayTurn'
 import Player from './battle/player'
@@ -224,6 +225,7 @@ const Battle = (): JSX.Element => {
     dispatch(drawButtonNotDisabled())
     dispatch(resetPlayerActionCount())
     dispatch(resetChoiceEnemyNumber())
+    dispatch(resetFloor())
     setEnemyActionCount(0)
     dispatch(disableBattle())
     dispatch(displayGameTitle())
