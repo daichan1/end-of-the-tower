@@ -8,9 +8,7 @@ export const floorSlice = createSlice({
   name: "floor",
   initialState,
   reducers: {
-    incrementFloor: (state) => {
-      state = state + 1
-    },
+    incrementFloor: (state) => state + 1,
     resetFloor: (state) => 1
   }
 })

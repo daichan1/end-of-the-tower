@@ -5,11 +5,12 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
-import { CardType } from '../types/model'
+import { PlayerType ,CardType } from '../types/model'
 import Card from '../components/battle/card'
-import { addCard } from '../redux/slice/playerSlice'
+import { addCard, updatePlayerStatus } from '../redux/slice/playerSlice'
 import { displayRootSelect } from '../redux/slice/rootSelectSlice'
 import { disableReward } from '../redux/slice/rewardSlice'
+import { incrementFloor } from '../redux/slice/floorSlice'
 import '../styles/reward/style.scss'
 
 const Reward = (): JSX.Element => {
@@ -69,6 +70,14 @@ const Reward = (): JSX.Element => {
       effectType: rewardCard.effectType
     }
     dispatch(addCard(card))
+    // ボスを倒したら次の階へ
+    if (player.stage > 5) {
+      const playerObj: PlayerType = JSON.parse(JSON.stringify(player))
+      playerObj.hp = playerObj.maxHp
+      playerObj.stage = 0
+      dispatch(updatePlayerStatus(playerObj))
+      dispatch(incrementFloor())
+    }
     dispatch(disableReward())
     dispatch(displayRootSelect())
     handleClose()
