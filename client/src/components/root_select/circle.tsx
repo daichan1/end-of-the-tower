@@ -2,8 +2,6 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import { setFightEnemies } from '../../redux/slice/fightEnemiesSlice'
 import { disableRootSelect } from '../../redux/slice/rootSelectSlice'
 import { displayBattle } from '../../redux/slice/battleSlice'
-import { EnemyList } from '../../types/data/enemy'
-import { createEnemyList } from '../../data/enemyList'
 import '../../styles/root_select/style.scss'
 
 type Props = {
@@ -15,7 +13,7 @@ type Props = {
 const Circle = (props: Props): JSX.Element => {
   const { left, top, rootNumber } = props
   const player = useAppSelector((state) => state.player)
-  const enemies = useAppSelector((state) => state.enemies)
+  const enemyList = useAppSelector((state) => state.enemyList)
   const dispatch = useAppDispatch()
 
   const battleStart = (): void => {
@@ -28,25 +26,24 @@ const Circle = (props: Props): JSX.Element => {
   }
 
   const decisionFightEnemies = (): void => {
-    const enemyList: EnemyList = createEnemyList(enemies)
     switch (rootNumber) {
       case 0:
-        dispatch(setFightEnemies(enemyList.slime))
+        dispatch(setFightEnemies(enemyList.stage1))
         break
       case 1:
-        dispatch(setFightEnemies(enemyList.gargoyle))
+        dispatch(setFightEnemies(enemyList.stage2))
         break
       case 2:
-        dispatch(setFightEnemies(enemyList.slimeAndGargoyle))
+        dispatch(setFightEnemies(enemyList.stage3))
         break
       case 3:
-        dispatch(setFightEnemies(enemyList.slimeAndGargoyle))
+        dispatch(setFightEnemies(enemyList.stage4))
         break
       case 4:
-        dispatch(setFightEnemies(enemyList.slimeAndGargoyle))
+        dispatch(setFightEnemies(enemyList.stage5))
         break
       case 5:
-        dispatch(setFightEnemies(enemyList.slimeAndGargoyle))
+        dispatch(setFightEnemies(enemyList.stage6))
         break
     }
   }

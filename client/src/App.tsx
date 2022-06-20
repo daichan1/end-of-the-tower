@@ -1,15 +1,18 @@
 import { useEffect } from 'react'
 import axiosClient from './api/axios'
 import { ResEnemies, ResCard } from './types/api/response'
-import { useAppDispatch } from './redux/hooks'
+import { useAppDispatch, useAppSelector } from './redux/hooks'
 import { setEnemies } from './redux/slice/enemiesSlice'
 import { setCards } from './redux/slice/cardsSlice'
+import { setEnemyList } from './redux/slice/enemyListSlice'
 import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
 import Reward from './components/reward'
+import { createEnemyList } from './data/enemyList'
 
 const App = (): JSX.Element => {
+  const enemies = useAppSelector((state) => state.enemies)
   const dispatch = useAppDispatch()
 
   const getEnemies = async (): Promise<void> => {
@@ -38,6 +41,11 @@ const App = (): JSX.Element => {
     getEnemies()
     getCards()
   }, [])
+
+  useEffect((): void => {
+    // 今後フロアが切り替わったらリストを更新するようにする
+    dispatch(setEnemyList(createEnemyList(enemies)))
+  }, [enemies])
 
   return (
     <div>

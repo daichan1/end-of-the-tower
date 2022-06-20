@@ -20,7 +20,9 @@ export const enemiesSlice = createSlice({
           maxHp: resEnemy.hp,
           attack: resEnemy.attack,
           defense: resEnemy.defense,
-          damage: -1
+          damage: -1,
+          floorNumber: resEnemy.floor_number,
+          isBoss: resEnemy.is_boss
         }
         state.push(enemy)
       })
