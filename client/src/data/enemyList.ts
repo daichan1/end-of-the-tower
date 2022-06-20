@@ -1,8 +1,16 @@
 import { EnemyType } from '../types/model/index'
 import { EnemyList, EnemyPattern } from '../types/data/enemy'
 
-export const createEnemyList = (enemies: EnemyType[]): EnemyList => {
-  const enemyPattern = floorOneEnemyPattern(enemies)
+export const createEnemyList = (enemies: EnemyType[], floorNumber: number): EnemyList => {
+  let enemyPattern: EnemyPattern = {
+    pattern1: [],
+    pattern2: [],
+    pattern3: [],
+    pattern4: [],
+    pattern5: [],
+    pattern6: [],
+    pattern7: []
+  }
   const enemyList: EnemyList = {
     stage1: [],
     stage2: [],
@@ -10,6 +18,15 @@ export const createEnemyList = (enemies: EnemyType[]): EnemyList => {
     stage4: [],
     stage5: [],
     stage6: []
+  }
+
+  switch (floorNumber) {
+    case 1:
+      enemyPattern = floorOneEnemyPattern(enemies)
+      break
+    case 2:
+      enemyPattern = floorTwoEnemyPattern(enemies)
+      break
   }
   enemyList.stage1 = enemyList.stage1.concat(enemyPattern.pattern1)
   enemyList.stage2 = enemyList.stage2.concat(enemyPattern.pattern2)
@@ -37,6 +54,26 @@ const floorOneEnemyPattern = (enemies: EnemyType[]): EnemyPattern => {
   enemyPattern.pattern5 = enemyPattern.pattern5.concat(searchEnemy(enemies, ["ガーゴイル", "グレムリン"]))
   enemyPattern.pattern6 = enemyPattern.pattern6.concat(searchEnemy(enemies, ["キメラ"]))
   enemyPattern.pattern7 = enemyPattern.pattern7.concat(searchEnemy(enemies, ["ボススライム"]))
+  return enemyPattern
+}
+
+const floorTwoEnemyPattern = (enemies: EnemyType[]): EnemyPattern => {
+  const enemyPattern: EnemyPattern = {
+    pattern1: [],
+    pattern2: [],
+    pattern3: [],
+    pattern4: [],
+    pattern5: [],
+    pattern6: [],
+    pattern7: []
+  }
+  enemyPattern.pattern1 = enemyPattern.pattern1.concat(searchEnemy(enemies, ["蛮族", "ウルフ"]))
+  enemyPattern.pattern2 = enemyPattern.pattern2.concat(searchEnemy(enemies, ["蛮族", "ゴーレム"]))
+  enemyPattern.pattern3 = enemyPattern.pattern3.concat(searchEnemy(enemies, ["蛮族", "蛮族"]))
+  enemyPattern.pattern4 = enemyPattern.pattern4.concat(searchEnemy(enemies, ["空のよろい"]))
+  enemyPattern.pattern5 = enemyPattern.pattern5.concat(searchEnemy(enemies, ["蛮族", "ウルフ", "ゴーレム"]))
+  enemyPattern.pattern6 = enemyPattern.pattern6.concat(searchEnemy(enemies, ["ガーディアン"]))
+  enemyPattern.pattern7 = enemyPattern.pattern7.concat(searchEnemy(enemies, ["ドラゴン"]))
   return enemyPattern
 }
 

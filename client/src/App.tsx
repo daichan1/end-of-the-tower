@@ -13,6 +13,7 @@ import { createEnemyList } from './data/enemyList'
 
 const App = (): JSX.Element => {
   const enemies = useAppSelector((state) => state.enemies)
+  const floor = useAppSelector((state) => state.floor)
   const dispatch = useAppDispatch()
 
   const getEnemies = async (): Promise<void> => {
@@ -43,9 +44,8 @@ const App = (): JSX.Element => {
   }, [])
 
   useEffect((): void => {
-    // 今後フロアが切り替わったらリストを更新するようにする
-    dispatch(setEnemyList(createEnemyList(enemies)))
-  }, [enemies])
+    dispatch(setEnemyList(createEnemyList(enemies, floor)))
+  }, [enemies, floor])
 
   return (
     <div>

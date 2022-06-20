@@ -14,6 +14,7 @@ import playerActionCountReducer from './slice/playerActionCountSlice'
 import rewardReducer from './slice/rewardSlice'
 import enemyDefeatedReducer from './slice/enemyDefeatedSlice'
 import enemyListReducer from './slice/enemyListSlice'
+import floorReducer from './slice/floorSlice'
 
 export const store = configureStore({
   reducer: {
@@ -31,7 +32,8 @@ export const store = configureStore({
     playerActionCount: playerActionCountReducer,
     reward: rewardReducer,
     enemyDefeated: enemyDefeatedReducer,
-    enemyList: enemyListReducer
+    enemyList: enemyListReducer,
+    floor: floorReducer
   }
 })
 
