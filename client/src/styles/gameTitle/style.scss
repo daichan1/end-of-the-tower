@@ -1,3 +1,14 @@
+.game-title {
+  min-height: 100vh;
+  background-image: url('../../images/gameTitle.png');
+  background-size: cover;
+}
+
+.title {
+  margin-bottom: 100px;
+  color: white;
+}
+
 .player {
   text-align: center;
 }
