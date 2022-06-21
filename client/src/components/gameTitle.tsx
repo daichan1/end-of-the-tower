@@ -80,7 +80,7 @@ const GameTitle = (): JSX.Element => {
   }
 
   return (
-    <div style={{ display: gameTitle ? 'none' : '' }}>
+    <div style={{ display: gameTitle ? 'none' : '' }} className='game-title'>
       <Grid
         container
         direction="column"
@@ -88,7 +88,7 @@ const GameTitle = (): JSX.Element => {
         alignItems="center"
         style={{ height: 600 }}
       >
-        <h1 style={{ marginBottom: 100 }}>End of the Tower</h1>
+        <h1 className='title'>End of the Tower</h1>
         <Button
           variant="contained"
           onClick={playerSelect}
