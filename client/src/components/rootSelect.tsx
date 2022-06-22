@@ -7,30 +7,30 @@ import playerImg from '../images/player.png'
 import '../styles/battle/style.scss'
 
 const playerPosition: Position = [
-  { left: 2, top: 90 }, // スタート
-  { left: 10, top: 90 }, // ステージ1
-  { left: 25, top: 90 }, // ステージ2
-  { left: 40, top: 90 }, // ステージ3
-  { left: 55, top: 90 }, // ステージ4
-  { left: 70, top: 90 }, // ステージ5
-  { left: 85, top: 90 }  // ステージ6
+  { left: 2, top: 400 }, // スタート
+  { left: 10, top: 400 }, // ステージ1
+  { left: 25, top: 400 }, // ステージ2
+  { left: 40, top: 400 }, // ステージ3
+  { left: 55, top: 400 }, // ステージ4
+  { left: 70, top: 400 }, // ステージ5
+  { left: 85, top: 400 }  // ステージ6
 ]
 
 const circlePosition: Position = [
-  { left: 10, top: 200 }, // 1列目
-  { left: 25, top: 200 }, // 2列目
-  { left: 40, top: 200 }, // 3列目
-  { left: 55, top: 200 }, // 4列目
-  { left: 70, top: 200 }, // 5列目
-  { left: 85, top: 200 }  // 6列目
+  { left: 10, top: 510 }, // 1列目
+  { left: 25, top: 510 }, // 2列目
+  { left: 40, top: 510 }, // 3列目
+  { left: 55, top: 510 }, // 4列目
+  { left: 70, top: 510 }, // 5列目
+  { left: 85, top: 510 }  // 6列目
 ]
 
 const linePosition: Position = [
-  { left: 10, top: 200 },  // 1列目
-  { left: 25, top: 200 },  // 2列目
-  { left: 40, top: 200 },  // 3列目
-  { left: 55, top: 200 },  // 4列目
-  { left: 70, top: 200 },  // 5列目
+  { left: 10, top: 510 },  // 1列目
+  { left: 25, top: 510 },  // 2列目
+  { left: 40, top: 510 },  // 3列目
+  { left: 55, top: 510 },  // 4列目
+  { left: 70, top: 510 },  // 5列目
 ]
 
 const Circles = (): JSX.Element => {
@@ -57,7 +57,7 @@ const RootSelect = (): JSX.Element => {
   const rootSelect = useAppSelector((state) => state.rootSelect)
 
   return (
-    <div style={{ display: rootSelect ? 'none' : '' }}>
+    <div style={{ display: rootSelect ? 'none' : '' }} className='root-select'>
       <Container fixed>
         <img
           src={playerImg}
