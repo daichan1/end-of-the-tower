@@ -6,7 +6,6 @@ import { useAppSelector } from '../../redux/hooks'
 import { hpAdjustment } from '../../common/battle'
 import uuid from '../../common/uuid'
 import playerImg from '../../images/player.png'
-import '../../styles/battle/style.scss'
 
 const CustomLinearProgress = styled(LinearProgress)({
   width: 100,
@@ -21,12 +20,12 @@ const Player = (): JSX.Element => {
       <img src={playerImg} alt='プレイヤー' className='player-img' />
       <span className='damage' key={uuid()}>{playerDamage < 0 ? "" : playerDamage}</span>
       <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp, player.maxHp, 0)}/>
-      <Typography variant="subtitle1" component="div">
+      <Typography variant="subtitle1" component="div" className='hp'>
         {player && player.hp}/{player.maxHp}
       </Typography>
       <div>
         <ShieldIcon />
-        <span>{player.defense}</span>
+        <span className='shield'>{player.defense}</span>
       </div>
     </div>
   )

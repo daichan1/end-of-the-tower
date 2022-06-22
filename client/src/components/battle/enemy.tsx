@@ -49,12 +49,12 @@ const Enemy = (props: Props): JSX.Element => {
       <img src={enemyImg} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
       <span className='damage' key={uuid()}>{enemy.damage < 0 ? "" : enemy.damage}</span>
       <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
-      <Typography variant="subtitle1" component="div">
+      <Typography variant="subtitle1" component="div" className='hp'>
         {enemy.hp}/{enemy.maxHp}
       </Typography>
       <div>
         <ShieldIcon />
-        <span>{enemy.defense}</span>
+        <span className='shield'>{enemy.defense}</span>
       </div>
     </div>
   )
