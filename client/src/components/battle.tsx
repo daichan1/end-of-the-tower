@@ -259,7 +259,7 @@ const Battle = (): JSX.Element => {
   }, [playerActionCount])
 
   return (
-    <div style={{ display: battle ? 'none' : '' }}>
+    <div style={{ display: battle ? 'none' : '' }} className='battle'>
       <Header />
 
       <Container fixed>
