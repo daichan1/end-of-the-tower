@@ -5,5 +5,5 @@ class Enemy < ActiveRecord::Base
   validates :attack, presence: true
   validates :defense, presence: true
   validates :floor_number, presence: true
-  validates :is_boss, presence: true
+  validates :is_boss, inclusion: { in: [true, false] }
 end
