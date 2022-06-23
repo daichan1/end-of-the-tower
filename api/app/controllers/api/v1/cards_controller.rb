@@ -1,6 +1,6 @@
 class Api::V1::CardsController < ApplicationController
   def index
-    player = Player.find(1)
+    player = Player.find_by(name: "all")
     cards = Card.where(player_id: player.id)
     effect_types = EffectType.all
     card_result = cards.map { |card|
