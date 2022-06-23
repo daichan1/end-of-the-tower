@@ -8,5 +8,6 @@ RSpec.describe 'EnemiesAPI' do
     json = JSON.parse(response.body)
 
     expect(response.status).to eq(200)
+    expect(json[0]['name']).to eq('スライム')
   end
 end
