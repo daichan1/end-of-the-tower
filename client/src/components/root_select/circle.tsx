@@ -49,7 +49,8 @@ const Circle = (props: Props): JSX.Element => {
   }
 
   return (
-    <div
+    <div>
+      <button
       className={
         `circle
         ${player.stage === rootNumber ? "next-stage" : ""}
@@ -57,7 +58,7 @@ const Circle = (props: Props): JSX.Element => {
         `}
       style={{ left: left + '%', top: top }}
       onClick={battleStart}
-    >
+      />
     </div>
   )
 }

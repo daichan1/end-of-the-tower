@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "browserslist": {
@@ -47,6 +47,7 @@
     "eslint": "^8.18.0",
     "eslint-plugin-react": "^7.30.1",
     "identity-obj-proxy": "^3.0.0",
+    "jest-environment-jsdom": "^28.1.1",
     "node-sass": "^7.0.1",
     "react-redux": "^8.0.2",
     "react-test-renderer": "^18.2.0",
