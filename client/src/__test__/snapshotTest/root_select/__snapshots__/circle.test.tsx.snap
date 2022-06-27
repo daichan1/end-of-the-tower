@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Circle Component display choice circle 1`] = `
+<div>
+  <button
+    className="circle
+        next-stage
+        
+        "
+    onClick={[Function]}
+    style={
+      Object {
+        "left": "10%",
+        "top": 510,
+      }
+    }
+  />
+</div>
+`;
+
+exports[`Circle Component display clear circle 1`] = `
+<div>
+  <button
+    className="circle
+        
+        clear
+        "
+    onClick={[Function]}
+    style={
+      Object {
+        "left": "10%",
+        "top": 510,
+      }
+    }
+  />
+</div>
+`;
+
+exports[`Circle Component display not choice circle 1`] = `
+<div>
+  <button
+    className="circle
+        
+        
+        "
+    onClick={[Function]}
+    style={
+      Object {
+        "left": "10%",
+        "top": 510,
+      }
+    }
+  />
+</div>
+`;

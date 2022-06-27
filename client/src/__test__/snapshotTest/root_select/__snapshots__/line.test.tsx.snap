@@ -12,16 +12,3 @@ exports[`Line Component display line component 1`] = `
   }
 />
 `;
-
-exports[`display line component 1`] = `
-<div
-  className="line"
-  style={
-    Object {
-      "left": "calc(10% + 20px)",
-      "top": 520,
-      "width": "calc(15% - 20px)",
-    }
-  }
-/>
-`;
