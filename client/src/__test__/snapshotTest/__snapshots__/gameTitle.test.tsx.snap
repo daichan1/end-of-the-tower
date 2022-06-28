@@ -1,0 +1,98 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GameTitle Component Snapshot not render game title component 1`] = `
+<div
+  className="game-title"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-1ewlecp-MuiGrid-root"
+    style={
+      Object {
+        "height": 600,
+      }
+    }
+  >
+    <h1
+      className="title"
+    >
+      End of the Tower
+    </h1>
+    <button
+      className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButtonBase-root  css-sghohy-MuiButtonBase-root-MuiButton-root"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      ゲームスタート
+      <span
+        className="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+      />
+    </button>
+  </div>
+</div>
+`;
+
+exports[`GameTitle Component Snapshot render game title component 1`] = `
+<div
+  className="game-title"
+  style={
+    Object {
+      "display": "",
+    }
+  }
+>
+  <div
+    className="MuiGrid-root MuiGrid-container MuiGrid-direction-xs-column css-1ewlecp-MuiGrid-root"
+    style={
+      Object {
+        "height": 600,
+      }
+    }
+  >
+    <h1
+      className="title"
+    >
+      End of the Tower
+    </h1>
+    <button
+      className="MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButtonBase-root  css-sghohy-MuiButtonBase-root-MuiButton-root"
+      disabled={false}
+      onBlur={[Function]}
+      onClick={[Function]}
+      onContextMenu={[Function]}
+      onDragLeave={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      onKeyUp={[Function]}
+      onMouseDown={[Function]}
+      onMouseLeave={[Function]}
+      onMouseUp={[Function]}
+      onTouchEnd={[Function]}
+      onTouchMove={[Function]}
+      onTouchStart={[Function]}
+      tabIndex={0}
+      type="button"
+    >
+      ゲームスタート
+    </button>
+  </div>
+</div>
+`;
