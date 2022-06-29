@@ -3,7 +3,7 @@ import { PlayerType } from "../../types/model"
 import playerReducer from '../../redux/slice/playerSlice'
 import rootSelectReducer from '../../redux/slice/rootSelectSlice'
 
-type PreloadedState = {
+export type PreloadedState = {
   player: PlayerType
   rootSelect: boolean
 }
