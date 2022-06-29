@@ -1,11 +1,11 @@
 import { configureStore, EnhancedStore } from "@reduxjs/toolkit"
-import { PlayerType } from "../../types/model"
-import playerReducer from '../../redux/slice/playerSlice'
-import rootSelectReducer from '../../redux/slice/rootSelectSlice'
+import { PlayerType } from "../../../types/model"
+import playerReducer from '../../../redux/slice/playerSlice'
+import playerDamageReducer from '../../../redux/slice/playerDamageSlice'
 
 export type PreloadedState = {
   player: PlayerType
-  rootSelect: boolean
+  playerDamage: number
 }
 
 // テストデータ
@@ -23,16 +23,16 @@ const initialState: PreloadedState = {
     nameplate: [],
     cemetery: []
   },
-  rootSelect: false
+  playerDamage: 0,
 }
 
-// rootSelect component用のテスト用のstore
-export const rootSelectStore = (preloadedState: PreloadedState = initialState): EnhancedStore => {
+// player component用のテスト用のstore
+export const playerStore = (preloadedState: PreloadedState = initialState): EnhancedStore => {
   return configureStore(
     {
       reducer: {
         player: playerReducer,
-        rootSelect: rootSelectReducer
+        playerDamage: playerDamageReducer,
       },
       preloadedState
     }

@@ -18,14 +18,14 @@ const Player = (): JSX.Element => {
   return (
     <div>
       <img src={playerImg} alt='プレイヤー' className='player-img' />
-      <span className='damage' key={uuid()}>{playerDamage < 0 ? "" : playerDamage}</span>
+      <span className='damage' data-testid='playerDamage' key={uuid()}>{playerDamage < 0 ? "" : playerDamage}</span>
       <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp, player.maxHp, 0)}/>
-      <Typography variant="subtitle1" component="div" className='hp'>
+      <Typography variant="subtitle1" component="div" className='hp' data-testid='playerHp'>
         {player && player.hp}/{player.maxHp}
       </Typography>
       <div>
         <ShieldIcon />
-        <span className='shield'>{player.defense}</span>
+        <span className='shield' data-testid='playerDefense'>{player.defense}</span>
       </div>
     </div>
   )

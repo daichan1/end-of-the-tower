@@ -17,7 +17,7 @@ const initialState: PreloadedState = {
   rootSelect: true
 }
 
-// gameTitle用のテスト用のstore
+// gameTitle component用のテスト用のstore
 export const gameTitleStore = (preloadedState: PreloadedState = initialState): EnhancedStore => {
   return configureStore(
     {
