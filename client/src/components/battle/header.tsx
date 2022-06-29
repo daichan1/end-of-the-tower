@@ -21,7 +21,7 @@ const Header = (): JSX.Element => {
     <CustomAppBar position='static'>
       <Toolbar>
         <CustomTypography variant="h6">プレイヤー</CustomTypography>
-        <Typography variant="h6">{player && player.name}</Typography>
+        <Typography variant="h6" data-testid='playerName'>{player && player.name}</Typography>
       </Toolbar>
     </CustomAppBar>
   )
