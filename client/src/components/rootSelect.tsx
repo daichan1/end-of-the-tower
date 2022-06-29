@@ -57,7 +57,7 @@ const RootSelect = (): JSX.Element => {
   const rootSelect = useAppSelector((state) => state.rootSelect)
 
   return (
-    <div style={{ display: rootSelect ? 'none' : '' }} className='root-select'>
+    <div style={{ display: rootSelect ? 'none' : '' }} className='root-select' data-testid='rootSelect'>
       <Container fixed>
         <img
           src={playerImg}
