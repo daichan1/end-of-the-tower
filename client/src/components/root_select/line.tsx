@@ -12,6 +12,7 @@ const Line = (props: Props): JSX.Element => {
   return (
     <div
       className='line'
+      data-testid='line'
       style={{
         left: `calc(${props.left}% + ${circleWidth}px)`,
         top: props.top + (circleHeight / 2),
