@@ -4,7 +4,7 @@ const Energy = (): JSX.Element => {
   const ENERGY_MAX = 3
   const player = useAppSelector((state) => state.player)
   return (
-    <div>
+    <div data-testid='energy'>
       {player && player.energy}/{ENERGY_MAX}
     </div>
   )
