@@ -31,7 +31,7 @@ const Enemy = (props: Props): JSX.Element => {
   const DisplayChoiceEnemy = (props: ChoiceEnemy): JSX.Element => {
     const { enemyNumber } = props
     if (choiceEnemyNumber === enemyNumber) {
-      return <div><ArrowDownwardIcon /></div>
+      return <div data-testid='choiceEnemy'><ArrowDownwardIcon /></div>
     } else {
       return <div></div>
     }
@@ -47,14 +47,14 @@ const Enemy = (props: Props): JSX.Element => {
     <div>
       <DisplayChoiceEnemy enemyNumber={index} />
       <img src={enemyImg} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
-      <span className='damage' key={uuid()}>{enemy.damage < 0 ? "" : enemy.damage}</span>
+      <span className='damage' key={uuid()} data-testid='enemyDamage'>{enemy.damage < 0 ? "" : enemy.damage}</span>
       <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
-      <Typography variant="subtitle1" component="div" className='hp'>
+      <Typography variant="subtitle1" component="div" className='hp' data-testid='enemyHp'>
         {enemy.hp}/{enemy.maxHp}
       </Typography>
       <div>
         <ShieldIcon />
-        <span className='shield'>{enemy.defense}</span>
+        <span className='shield' data-testid='enemyDefense'>{enemy.defense}</span>
       </div>
     </div>
   )
