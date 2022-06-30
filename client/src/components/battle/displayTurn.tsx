@@ -20,9 +20,9 @@ const EnemyTurn = styled(Paper)({
 const DisplayTurn = (): JSX.Element => {
   const turn = useAppSelector((state) => state.turn)
   if (turn) {
-    return <PlayerTurn elevation={1} >プレイヤーのターン</PlayerTurn>
+    return <PlayerTurn elevation={1} data-testid='playerTurn'>プレイヤーのターン</PlayerTurn>
   } else {
-    return <EnemyTurn elevation={1} >敵のターン</EnemyTurn>
+    return <EnemyTurn elevation={1} data-testid='enemyTurn'>敵のターン</EnemyTurn>
   }
 }
 
