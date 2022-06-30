@@ -6,7 +6,7 @@ const Deck = (): JSX.Element => {
   const player = useAppSelector((state) => state.player)
   return (
     <div className='deck'>
-      <Avatar className='deck-count'>{player.deck.length}</Avatar>
+      <Avatar className='deck-count' data-testid='deckCount'>{player.deck.length}</Avatar>
     </div>
   )
 }
