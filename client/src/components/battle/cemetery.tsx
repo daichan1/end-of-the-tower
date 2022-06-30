@@ -6,7 +6,7 @@ const Cemetery = (): JSX.Element => {
   const player = useAppSelector((state) => state.player)
   return (
     <div className='cemetery'>
-      <Avatar className='cemetery-count'>{player.cemetery.length}</Avatar>
+      <Avatar className='cemetery-count' data-testid='cemeteryCount'>{player.cemetery.length}</Avatar>
     </div>
   )
 }
