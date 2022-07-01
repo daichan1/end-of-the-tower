@@ -33,12 +33,12 @@ const Card = (props: Props): JSX.Element => {
   const { width, height, cssClass, card, clickCard } = props
 
   return (
-    <MuiCard sx={{ width: width, height: height }} className={cssClass} onClick={() => clickCard(card)}>
+    <MuiCard sx={{ width: width, height: height }} className={cssClass} onClick={() => clickCard(card)} data-testid='card'>
       <CustomCardHeader
         disableTypography
-        subheader={<Typography variant="body2">{card.name}</Typography>}
+        subheader={<Typography variant="body2" data-testid='cardName'>{card.name}</Typography>}
         sx={{ padding: 1 }}
-        avatar={<CardCost>{card.cost}</CardCost>}
+        avatar={<CardCost data-testid='cardCost'>{card.cost}</CardCost>}
       />
       <CardMedia
         component="img"
@@ -47,7 +47,7 @@ const Card = (props: Props): JSX.Element => {
         alt="カード"
       />
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography variant="body2" color="text.secondary" data-testid='cardDescription'>
           {card.description}
         </Typography>
       </CardContent>
