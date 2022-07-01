@@ -43,7 +43,7 @@ const Reward = (): JSX.Element => {
 
   const displayRewardCards = (): JSX.Element[] => {
     return reward.displayCards.map((card, index) =>
-      <Grid item xs={4} key={index}>
+      <Grid item xs={4} key={index} data-testid='rewardCard'>
         <Card
           width={150}
           height={200}
@@ -101,7 +101,7 @@ const Reward = (): JSX.Element => {
   }
 
   return (
-    <div style={{ display: reward.disabled ? 'none' : '' }} className='reward'>
+    <div style={{ display: reward.disabled ? 'none' : '' }} className='reward' data-testid='reward'>
 
       <Container>
 
@@ -130,7 +130,7 @@ const Reward = (): JSX.Element => {
         onClose={handleClose}
         aria-labelledby="modal-reward"
       >
-        <div id='modal-reward'>
+        <div id='modal-reward' data-testid='modalRewardCard'>
           <ModalRewardCard />
         </div>
       </Modal>
