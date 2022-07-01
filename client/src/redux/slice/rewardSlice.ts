@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { CardType } from '../../types/model'
 
-type Reward = {
+export type Reward = {
   disabled: boolean
   displayCards: CardType[]
   cards: CardType[]
