@@ -1,7 +1,7 @@
 import { screen, fireEvent } from "@testing-library/react"
-import { render } from '../../testProvider'
-import Reward from '../../../components/reward'
-import { rewardStore, PreloadedState, cards } from '../../factories/reward'
+import { render } from '../testProvider'
+import Reward from '../../components/reward'
+import { rewardStore, PreloadedState, cards } from '../factories/reward'
 
 describe("reward component", () => {
   it("initial render", () => {

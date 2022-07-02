@@ -74,7 +74,7 @@ const Battle = (): JSX.Element => {
     const maxGridSize = 6
     const gridSize = maxGridSize / fightEnemies.length
     return fightEnemies.map((enemy, index) =>
-      <Grid item xs={gridSize} className='enemy' key={index}>
+      <Grid item xs={gridSize} className='enemy' key={index} data-testid='enemy'>
         <Enemy enemy={enemy} index={index} />
       </Grid>
     )
@@ -259,7 +259,7 @@ const Battle = (): JSX.Element => {
   }, [playerActionCount])
 
   return (
-    <div style={{ display: battle ? 'none' : '' }} className='battle'>
+    <div style={{ display: battle ? 'none' : '' }} className='battle' data-testid='battle'>
       <Header />
 
       <Container fixed>
@@ -304,6 +304,7 @@ const Battle = (): JSX.Element => {
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
+        data-testid='modalCard'
       >
         <div id='modal-modal-title'>
           <Card
