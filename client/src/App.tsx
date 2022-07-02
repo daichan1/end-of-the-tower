@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import CssBaseline from '@mui/material/CssBaseline'
 import axiosClient from './api/axios'
 import { ResEnemies, ResCard } from './types/api/response'
 import { useAppDispatch, useAppSelector } from './redux/hooks'
@@ -49,6 +50,7 @@ const App = (): JSX.Element => {
 
   return (
     <div>
+      <CssBaseline />
       <GameTitle />
       <RootSelect />
       <Battle />
