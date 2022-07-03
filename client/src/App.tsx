@@ -10,6 +10,7 @@ import GameTitle from './components/gameTitle'
 import RootSelect from './components/rootSelect'
 import Battle from './components/battle'
 import Reward from './components/reward'
+import ErrorBoundary from './error/errorBoundary'
 import { createEnemyList } from './data/enemyList'
 
 const App = (): JSX.Element => {
@@ -51,10 +52,12 @@ const App = (): JSX.Element => {
   return (
     <div>
       <CssBaseline />
-      <GameTitle />
-      <RootSelect />
-      <Battle />
-      <Reward />
+      <ErrorBoundary>
+        <GameTitle />
+        <RootSelect />
+        <Battle />
+        <Reward />
+      </ErrorBoundary>
     </div>
   )
 }
