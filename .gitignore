@@ -3,9 +3,11 @@
 client/build
 client/node_modules
 client/.env
+client/.env.production
 client/coverage
 
 api/.env
+api/.env.production
 api/.bundle
 api/log/*
 api/tmp/*
@@ -21,3 +23,7 @@ api/config/master.key
 
 docker/db/mysql_data
 docker/db/db-variables.env
+docker/client/Dockerfile.prod
+docker/nginx/nginx.production.conf
+
+docker-compose.prod.yml
