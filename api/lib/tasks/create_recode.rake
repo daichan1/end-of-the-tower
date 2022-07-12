@@ -79,4 +79,21 @@ namespace :create_record do
       end
     end
   end
+
+  desc "create effect_types record"
+  task effect_types: :environment do
+    begin
+      csv_path = Rails.root.join("tmp/effect_type_data.csv")
+    rescue
+      puts "ファイルが存在していません"
+      return
+    end
+
+    ActiveRecord::Base.transaction do
+      CSV.foreach(csv_path, headers: true) do |data|
+        effect_type = EffectType.new(name: data['name'])
+        effect_type.save!
+      end
+    end
+  end
 end
