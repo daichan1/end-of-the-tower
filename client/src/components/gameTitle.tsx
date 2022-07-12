@@ -16,7 +16,6 @@ import { setRewardCards } from '../redux/slice/rewardSlice'
 import { resCardToCard, getAllPlayerRewardCards } from '../common/reward'
 import { initializeAllPlayerCards, initializePlayerUniqueCards } from '../battle/deck'
 import { cardsShuffle } from '../common/battle'
-import playerImg from '../images/player.png'
 import '../styles/gameTitle/style.scss'
 
 const ModalMuiCard = styled(MuiCard)({
@@ -39,6 +38,10 @@ const ModalMuiCardContent = styled(CardContent)({
   justifyContent: "center",
   alignItems: "center"
 })
+
+const attackerImage = "https://end-of-the-tower.s3.ap-northeast-1.amazonaws.com/images/players/attacker.png"
+const shooterImage = "https://end-of-the-tower.s3.ap-northeast-1.amazonaws.com/images/players/shooter.png"
+const snaiperImage = "https://end-of-the-tower.s3.ap-northeast-1.amazonaws.com/images/players/sniper.png"
 
 const GameTitle = (): JSX.Element => {
   const [open, setOpen] = useState<boolean>(false)
@@ -109,7 +112,7 @@ const GameTitle = (): JSX.Element => {
               <Grid container justifyContent="center">
                 <Grid item xs={4} className='player'>
                   <div>
-                    <img src={playerImg} alt="アタッカー" className='player-img' />
+                    <img src={attackerImage} alt="アタッカー" className='player-img' />
                   </div>
                   <Button
                     variant="contained"
@@ -120,7 +123,7 @@ const GameTitle = (): JSX.Element => {
                 </Grid>
                 <Grid item xs={4} className='player'>
                   <div>
-                    <img src={playerImg} alt="シューター" className='player-img' />
+                    <img src={shooterImage} alt="シューター" className='player-img' />
                   </div>
                   <Button
                     variant="contained"
@@ -131,7 +134,7 @@ const GameTitle = (): JSX.Element => {
                 </Grid>
                 <Grid item xs={4} className='player'>
                   <div>
-                    <img src={playerImg} alt="スナイパー" className='player-img' />
+                    <img src={snaiperImage} alt="スナイパー" className='player-img' />
                   </div>
                   <Button
                     variant="contained"

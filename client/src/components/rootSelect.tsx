@@ -3,7 +3,6 @@ import Container from '@mui/material/Container'
 import Circle from './root_select/circle'
 import Line from './root_select/line'
 import { Position } from '../types/root_select/index'
-import playerImg from '../images/player.png'
 import '../styles/battle/style.scss'
 
 const playerPosition: Position = [
@@ -60,7 +59,7 @@ const RootSelect = (): JSX.Element => {
     <div style={{ display: rootSelect ? 'none' : '' }} className='root-select' data-testid='rootSelect'>
       <Container fixed>
         <img
-          src={playerImg}
+          src={player.imageUrl}
           alt="プレイヤー"
           className='player-img'
           style={{ position: "absolute", left: playerPosition[player.stage].left + '%', top: playerPosition[player.stage].top }}

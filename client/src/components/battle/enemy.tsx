@@ -11,7 +11,6 @@ import { resetPlayerDamage } from '../../redux/slice/playerDamageSlice'
 import { setChoiceEnemyNumber } from '../../redux/slice/choiceEnemySlice'
 import uuid from '../../common/uuid'
 import { hpAdjustment } from '../../common/battle'
-import enemyImg from '../../images/enemy.png'
 
 type Props = {
   enemy: EnemyType
@@ -46,7 +45,7 @@ const Enemy = (props: Props): JSX.Element => {
   return (
     <div>
       <DisplayChoiceEnemy enemyNumber={index} />
-      <img src={enemyImg} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
+      <img src={enemy.imageUrl} alt={enemy.name} className='enemy-img' onClick={() => enemyImageClick(index)} />
       <span className='damage' key={uuid()} data-testid='enemyDamage'>{enemy.damage < 0 ? "" : enemy.damage}</span>
       <CustomLinearProgress variant="determinate" value={hpAdjustment(enemy.hp, enemy.maxHp, 0)}/>
       <Typography variant="subtitle1" component="div" className='hp' data-testid='enemyHp'>
