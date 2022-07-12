@@ -5,7 +5,6 @@ import ShieldIcon from '@mui/icons-material/Shield'
 import { useAppSelector } from '../../redux/hooks'
 import { hpAdjustment } from '../../common/battle'
 import uuid from '../../common/uuid'
-import playerImg from '../../images/player.png'
 
 const CustomLinearProgress = styled(LinearProgress)({
   width: 100,
@@ -17,7 +16,7 @@ const Player = (): JSX.Element => {
   const playerDamage = useAppSelector((state) => state.playerDamage)
   return (
     <div>
-      <img src={playerImg} alt='プレイヤー' className='player-img' />
+      <img src={player.imageUrl} alt='プレイヤー' className='player-img' />
       <span className='damage' data-testid='playerDamage' key={uuid()}>{playerDamage < 0 ? "" : playerDamage}</span>
       <CustomLinearProgress variant="determinate" value={hpAdjustment(player.hp, player.maxHp, 0)}/>
       <Typography variant="subtitle1" component="div" className='hp' data-testid='playerHp'>

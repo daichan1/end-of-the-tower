@@ -6,7 +6,6 @@ import CardMedia from '@mui/material/CardMedia'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import { CardType } from '../../types/model/index'
-import playerImg from '../../images/player.png'
 import '../../styles/battle/style.scss'
 
 type Props = {
@@ -43,7 +42,7 @@ const Card = (props: Props): JSX.Element => {
       <CardMedia
         component="img"
         height="55"
-        image={playerImg}
+        image={card.imageUrl}
         alt="カード"
       />
       <CardContent>
