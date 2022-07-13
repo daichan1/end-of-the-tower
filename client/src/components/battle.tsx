@@ -86,6 +86,7 @@ const Battle = (): JSX.Element => {
         <Card
           width={125}
           height={175}
+          imgHeight={55}
           cssClass="nameplate"
           card={card}
           clickCard={selectCard}
@@ -310,6 +311,7 @@ const Battle = (): JSX.Element => {
           <Card
             width={150}
             height={200}
+            imgHeight={70}
             cssClass="select-card"
             card={confirmCard}
             clickCard={actionCard}

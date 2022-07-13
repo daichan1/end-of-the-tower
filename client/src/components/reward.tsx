@@ -47,6 +47,7 @@ const Reward = (): JSX.Element => {
         <Card
           width={150}
           height={200}
+          imgHeight={75}
           cssClass="reward-card"
           card={card}
           clickCard={selectCard}
@@ -88,6 +89,7 @@ const Reward = (): JSX.Element => {
       <Card
           width={200}
           height={250}
+          imgHeight={100}
           cssClass="modal-reward-card"
           card={rewardCard}
           clickCard={addRewardCard}

@@ -11,6 +11,7 @@ import '../../styles/battle/style.scss'
 type Props = {
   width: number
   height: number
+  imgHeight: number
   cssClass: string
   card: CardType
   clickCard: (card: CardType) => void
@@ -29,7 +30,7 @@ const CardCost = styled(Avatar)({
 })
 
 const Card = (props: Props): JSX.Element => {
-  const { width, height, cssClass, card, clickCard } = props
+  const { width, height, imgHeight, cssClass, card, clickCard } = props
 
   return (
     <MuiCard sx={{ width: width, height: height }} className={cssClass} onClick={() => clickCard(card)} data-testid='card'>
@@ -41,7 +42,7 @@ const Card = (props: Props): JSX.Element => {
       />
       <CardMedia
         component="img"
-        height="55"
+        height={imgHeight}
         image={card.imageUrl}
         alt="カード"
       />
