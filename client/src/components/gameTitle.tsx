@@ -55,15 +55,15 @@ const GameTitle = (): JSX.Element => {
 
   const playerSelect = (): void => handleOpen()
 
-  const gameStart = (playerId: number): void => {
-    getPlayer(playerId)
+  const gameStart = (playerName: string): void => {
+    getPlayer(playerName)
     dispatch(disableGameTitle())
     dispatch(displayRootSelect())
     handleClose()
   }
 
-  const getPlayer = async (playerId: number): Promise<void> => {
-    await axiosClient.get(`/v1/players/${playerId}`)
+  const getPlayer = async (playerName: string): Promise<void> => {
+    await axiosClient.get(`/v1/players/${playerName}`)
     .then(res => {
       const resData: ResPlayerCards = res.data
       const defaultAllPlayerCards = initializeAllPlayerCards(cards)
@@ -116,7 +116,7 @@ const GameTitle = (): JSX.Element => {
                   </div>
                   <Button
                     variant="contained"
-                    onClick={() => gameStart(2)}
+                    onClick={() => gameStart("アタッカー")}
                   >
                     アタッカー
                   </Button>
@@ -127,7 +127,7 @@ const GameTitle = (): JSX.Element => {
                   </div>
                   <Button
                     variant="contained"
-                    onClick={() => gameStart(3)}
+                    onClick={() => gameStart("シューター")}
                   >
                     シューター
                   </Button>
@@ -138,7 +138,7 @@ const GameTitle = (): JSX.Element => {
                   </div>
                   <Button
                     variant="contained"
-                    onClick={() => gameStart(4)}
+                    onClick={() => gameStart("スナイパー")}
                   >
                     スナイパー
                   </Button>
