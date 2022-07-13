@@ -20,7 +20,7 @@ describe("card component", () => {
 
   it("initial render", () => {
     const dummyFunction = jest.fn((card: CardType) => jest.fn())
-    render(<Card width={125} height={175} cssClass="test" card={card} clickCard={dummyFunction} />)
+    render(<Card width={125} height={175} imgHeight={55} cssClass="test" card={card} clickCard={dummyFunction} />)
 
     const cardName = screen.getByTestId('cardName')
     const cardCost = screen.getByTestId('cardCost')
@@ -35,7 +35,7 @@ describe("card component", () => {
 
   it("card click", () => {
     const dummyFunction = jest.fn((card: CardType) => jest.fn())
-    render(<Card width={125} height={175} cssClass="test" card={card} clickCard={dummyFunction} />)
+    render(<Card width={125} height={175} imgHeight={55} cssClass="test" card={card} clickCard={dummyFunction} />)
 
     const cardComponent = screen.getByTestId('card')
     fireEvent.click(cardComponent)
