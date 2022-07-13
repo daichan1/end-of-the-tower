@@ -5,9 +5,13 @@ class Api::V1::PlayersController < ApplicationController
   end
 
   def show
-    player = Player.find(params[:id])
-    cards = Card.where(player_id: player.id)
-    effect_types = EffectType.all
+    begin
+      player = Player.find_by!(name: params[:name])
+      cards = Card.where(player_id: player.id)
+      effect_types = EffectType.all
+    rescue
+      render json: [], status: 500
+    end
     card_result = cards.map { |card|
       {
         id: card.id,
@@ -30,6 +34,6 @@ class Api::V1::PlayersController < ApplicationController
       player: player,
       cards: card_result
     }
-    render json: result
+    render json: result, status: 200
   end
 end
