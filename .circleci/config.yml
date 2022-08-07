@@ -8,12 +8,12 @@ jobs:
     docker:
       - image: circleci/ruby:2.5.3
       - image: circleci/node:16.13.1
+    working_directory: ~/end-of-the-tower
     steps:
       - checkout:
           path: ~/end-of-the-tower
-      - run: cd ~/end-of-the-tower/api
-      - ruby/install-deps
-      - run: cd ~/end-of-the-tower/client
+      - ruby/install-deps:
+          path: ./api/vendor/bundle
       - node/install-packages:
           cache-path: ~/end-of-the-tower/client/node_modules
           override-ci-command: npm install
