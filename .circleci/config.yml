@@ -12,8 +12,8 @@ jobs:
     steps:
       - checkout:
           path: ~/end-of-the-tower
-      - ruby/install-deps:
-          path: ./api/vendor/bundle
+      - run: cd api
+      - ruby/install-deps
       - node/install-packages:
           cache-path: ~/end-of-the-tower/client/node_modules
           override-ci-command: npm install
