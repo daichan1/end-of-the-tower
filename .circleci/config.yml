@@ -14,10 +14,11 @@ jobs:
           path: ~/end-of-the-tower
       - ruby/install-deps:
           app-dir: ./api
-      - node/install-packages:
-          app-dir: ./client
-          cache-path: ~/end-of-the-tower/client/node_modules
-          override-ci-command: npm install
+      - run: cd client && node --version && npm --version
+      # - node/install-packages:
+      #     app-dir: ./client
+      #     cache-path: ~/end-of-the-tower/client/node_modules
+      #     override-ci-command: npm install
 
 workflows:
   version: 2
