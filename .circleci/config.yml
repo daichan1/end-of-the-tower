@@ -4,27 +4,34 @@ orbs:
   node: circleci/node@5.0.2
 
 jobs:
-  build:
+  api_build:
+    working_directory: ~/end-of-the-tower/api
     docker:
       - image: circleci/ruby:2.5.3
-      - image: circleci/node:16.13.1
-    working_directory: ~/end-of-the-tower
     steps:
       - checkout:
           path: ~/end-of-the-tower
-      - ruby/install-deps:
-          app-dir: ./api
-      - run: node --version && npm --version
-      # - node/install-packages:
-      #     app-dir: ./client
-      #     cache-path: ~/end-of-the-tower/client/node_modules
-      #     override-ci-command: npm install
+      - ruby/install-deps
+
+  client_build:
+    working_directory: ~/end-of-the-tower/client
+    docker:
+      - image: circleci/node:16.13.1
+    steps:
+      - checkout:
+          path: ~/end-of-the-tower
+      - node/install-packages:
+          cache-path: ~/end-of-the-tower/client/node_modules
+          override-ci-command: npm install
 
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
+      - api_build
+      - client_build:
+          requires:
+            - api_build
       # - test:
       #   requires:
       #     - build
