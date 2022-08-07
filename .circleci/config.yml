@@ -15,6 +15,7 @@ jobs:
       - ruby/install-deps:
           app-dir: ./api
       - node/install-packages:
+          app-dir: ./client
           cache-path: ~/end-of-the-tower/client/node_modules
           override-ci-command: npm install
 
