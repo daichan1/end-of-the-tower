@@ -10,7 +10,7 @@ jobs:
       - image: circleci/node:16.13.1
     steps:
       - checkout:
-        path: ~/end-of-the-tower
+          path: ~/end-of-the-tower
       - run: cd ~/end-of-the-tower/api
       - ruby/install-deps
       - run: cd ~/end-of-the-tower/client
