@@ -13,6 +13,8 @@ jobs:
       - checkout:
           path: ~/end-of-the-tower
       - run: cd api
+      - run: pwd
+      - run: ls
       - ruby/install-deps
       - node/install-packages:
           cache-path: ~/end-of-the-tower/client/node_modules
