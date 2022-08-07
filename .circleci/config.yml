@@ -1,26 +1,37 @@
-# Use the latest 2.1 version of CircleCI pipeline process engine.
-# See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+orbs:
+  ruby: circleci/ruby@1.8.0
+  node: circleci/node@5.0.2
 
-# Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
+  api_build:
+    working_directory: ~/end-of-the-tower/api
     docker:
-      - image: cimg/base:stable
-    # Add steps to the job
-    # See: https://circleci.com/docs/2.0/configuration-reference/#steps
+      - image: circleci/ruby:2.5.3
     steps:
-      - checkout
-      - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+      - checkout:
+          path: ~/end-of-the-tower
+      - ruby/install-deps
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+  client_build:
+    working_directory: ~/end-of-the-tower/client
+    docker:
+      - image: circleci/node:16.13.1
+    steps:
+      - checkout:
+          path: ~/end-of-the-tower
+      - node/install-packages:
+          cache-path: ~/end-of-the-tower/client/node_modules
+          override-ci-command: npm install
+
 workflows:
-  say-hello-workflow:
+  version: 2
+  build_and_test:
     jobs:
-      - say-hello
+      - api_build
+      - client_build:
+          requires:
+            - api_build
+      # - test:
+      #   requires:
+      #     - build
