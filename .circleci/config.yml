@@ -33,7 +33,7 @@ jobs:
           MYSQL_TEST_DATABASE: end_of_the_tower_test
           MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
-    enviroment:
+    environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
       APP_DATABASE_HOST: "127.0.0.1"
