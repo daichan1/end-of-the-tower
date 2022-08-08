@@ -58,8 +58,8 @@ workflows:
           requires:
             - api_build
       - api_test:
-        requires:
-          - client_build
+          requires:
+            - client_build
       # - client_test:
       #   requires:
       #     - api_test
