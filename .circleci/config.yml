@@ -24,6 +24,31 @@ jobs:
           cache-path: ~/end-of-the-tower/client/node_modules
           override-ci-command: npm install
 
+  api_test:
+    working_directory: ~/end-of-the-tower/api
+    docker:
+      - image: circleci/ruby:2.5.3
+      - image: circleci/mysql:5.5
+        environment:
+          MYSQL_TEST_DATABASE: end_of_the_tower_test
+          MYSQL_USER: root
+          MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    enviroment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      APP_DATABASE_HOST: "127.0.0.1"
+      RAILS_ENV: test
+    steps:
+      - checkout:
+          path: ~/end-of-the-tower
+      - ruby/install-deps
+      - run:
+          name: Database setup
+          command: rails db:migrate
+      - run:
+          name: api test
+          command: rspec
+
 workflows:
   version: 2
   build_and_test:
@@ -32,6 +57,9 @@ workflows:
       - client_build:
           requires:
             - api_build
-      # - test:
+      - api_test:
+        requires:
+          - client_build
+      # - client_test:
       #   requires:
-      #     - build
+      #     - api_test
