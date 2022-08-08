@@ -32,7 +32,7 @@ jobs:
         environment:
           MYSQL_TEST_DATABASE: end_of_the_tower_test
           MYSQL_USER: root
-          MYSQL_PASSWORD: $MYSQL_ROOT_PASSWORD
+          MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
