@@ -8,19 +8,21 @@ import { store } from './redux/store'
 // import reportWebVitals from './reportWebVitals';
 
 const container = document.getElementById("root")
-const root = createRoot(container!)
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />}></Route>
-          <Route path="*" element={<Error404 />}></Route>
-        </Routes>
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
-)
+if (container !== null) {
+  const root = createRoot(container)
+  root.render(
+    <React.StrictMode>
+      <Provider store={store}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />}></Route>
+            <Route path="*" element={<Error404 />}></Route>
+          </Routes>
+        </BrowserRouter>
+      </Provider>
+    </React.StrictMode>
+  )
+}
 
 // Webサイト改善のレポート機能
 // reportWebVitals(console.log);

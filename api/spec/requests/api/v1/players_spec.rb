@@ -6,7 +6,7 @@ RSpec.describe 'PlayersAPI' do
     effect_type = create(:effect_type)
     FactoryBot.create(:attacker_card, player_id: player.id, effect_type_id: effect_type.id)
 
-    get "/api/v1/players/#{player.id}"
+    get api_v1_player_path(player.name)
     json = JSON.parse(response.body)
 
     expect(response.status).to eq(200)
