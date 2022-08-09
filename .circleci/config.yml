@@ -53,6 +53,20 @@ jobs:
           name: api test
           command: bundle exec rspec
 
+  client_test:
+    working_directory: ~/end-of-the-tower/client
+    docker:
+      - image: circleci/node:16.13.1
+    steps:
+      - checkout:
+          path: ~/end-of-the-tower
+      - node/install-packages:
+          cache-path: ~/end-of-the-tower/client/node_modules
+          override-ci-command: npm install
+      - run:
+          name: client test
+          command: npm run test
+
 workflows:
   version: 2
   build_and_test:
@@ -64,6 +78,6 @@ workflows:
       - api_test:
           requires:
             - client_build
-      # - client_test:
-      #   requires:
-      #     - api_test
+      - client_test:
+        requires:
+          - api_test
