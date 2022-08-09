@@ -23,6 +23,9 @@ jobs:
       - node/install-packages:
           cache-path: ~/end-of-the-tower/client/node_modules
           override-ci-command: npm install
+      - run:
+          name: client build
+          command: npm run build
 
   api_test:
     working_directory: ~/end-of-the-tower/api
